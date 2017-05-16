@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_home"
+        android:enabled="true"
+        android:icon="@drawable/home"
+        android:title="@string/title_home" />
+
+    <item
+        android:id="@+id/navigation_mode"
+        android:enabled="true"
+        android:icon="@drawable/mode"
+        android:title="@string/title_mode" />
+
+    <item
+        android:id="@+id/navigation_schedule"
+        android:enabled="true"
+        android:icon="@drawable/schedule"
+        android:title="@string/title_schedule" />
+
+    <item
+        android:id="@+id/navigation_setting"
+        android:enabled="true"
+        android:icon="@drawable/setting"
+        android:title="@string/title_setting" />
+
+</menu>
