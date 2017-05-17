@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:key="setting_activity_top_title"
+    android:title="Settings">
+
+
+
+
+    <!-- 설정를 구성하는 Layout XML -->
+    <!-- @author croute -->
+    <!-- @since 2011.02.25 -->
+    <SwitchPreference
+
+        android:defaultValue="false"
+        android:key="push_later"
+        android:summary="나중에 알립니다"
+        android:switchTextOff="OFF"
+        android:switchTextOn="ON"
+        android:title="PUSH LATER" />
+
+    <PreferenceCategory
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:key="setting_activity_account"
+        android:title="APP INFORMATION ">
+        <Preference
+            android:key="setting_activity_id"
+            android:title="APP NAME"
+            android:selectable="true" />
+        <Preference
+            android:key="setting_activity_app_version"
+            android:title="APP VERISION"
+            android:selectable="true" />
+        <Preference
+            android:summary="개발자에게 메일을 보냅니다"
+            android:key="sending_email"
+            android:title="SENDING EMAIL" >
+            <intent
+                android:action="android.intent.action.SENDTO"
+                android:data="mailto:wer2wer@naver.com" />
+        </Preference>
+
+    </PreferenceCategory>
+
+
+    <PreferenceCategory
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:key="setting_activity_pushalarm"
+        android:title="ALARM SETTING">
+        <CheckBoxPreference
+            android:key="setting_activity_alarm_reiceive"
+            android:title="ALARM SETTING" android:defaultValue="true"/>
+    </PreferenceCategory>
+
+    <Preference
+        android:key="back"
+        android:title="HOME"
+        android:selectable="true" />
+    <intent
+        android:action="MainActivity"
+        android:targetPackage="com.example.coding1.sjeong.groupapplication"
+        android:targetClass=".MainActivity" />
+
+
+
+</PreferenceScreen>
