@@ -8,98 +8,111 @@ public class Schedule {
 
     private String start;
     private String end;
-    private Boolean sun;
-    private Boolean mon;
-    private Boolean tue;
-    private Boolean wed;
-    private Boolean thu;
-    private Boolean fri;
-    private Boolean sat;
+    private int sun;
+    private int mon;
+    private int tue;
+    private int wed;
+    private int thu;
+    private int fri;
+    private int sat;
     private String modename;
     private String premodename;
     private int id;
 
-    public int getId(){return id;};
-
     public String getStart() {
         return start;
+    }
+
+    public void setStart(String start) {
+        this.start = start;
     }
 
     public String getEnd() {
         return end;
     }
 
-    public Boolean getSun() {
-        return sun;
-    }
-
-    public Boolean getMon() {
-        return mon;
-    }
-
-    public Boolean getTue() {
-        return tue;
-    }
-
-    public Boolean getWed() {
-        return wed;
-    }
-
-    public Boolean getThu() {
-        return thu;
-    }
-
-    public Boolean getFri() {
-        return fri;
-    }
-
-    public Boolean getSat() {
-        return sat;
-    }
-
-    public String getModename() { return modename;}
-
-    public String getPremodename() { return premodename;}
-
-    public void setId(int id){this.id = id;}
-
-    public void setStart(String start){
-        this.start = start;
-    }
-
-    public void setEnd(String end){
+    public void setEnd(String end) {
         this.end = end;
     }
 
-    public void setSun(Boolean sun){
+    public int getSun() {
+        return sun;
+    }
+
+    public void setSun(int sun) {
         this.sun = sun;
     }
 
-    public void setMon(Boolean mon){
+    public int getMon() {
+        return mon;
+    }
+
+    public void setMon(int mon) {
         this.mon = mon;
     }
 
-    public void setTue(Boolean tue){
+    public int getTue() {
+        return tue;
+    }
+
+    public void setTue(int tue) {
         this.tue = tue;
     }
 
-    public void setWed(Boolean wed){
+    public int getWed() {
+        return wed;
+    }
+
+    public void setWed(int wed) {
         this.wed = wed;
     }
 
-    public void setThu(Boolean thu){
+    public int getThu() {
+        return thu;
+    }
+
+    public void setThu(int thu) {
         this.thu = thu;
     }
 
-    public void setFri(Boolean fri){
+    public int getFri() {
+        return fri;
+    }
+
+    public void setFri(int fri) {
         this.fri = fri;
     }
 
-    public void setSat(Boolean sat){
+    public int getSat() {
+        return sat;
+    }
+
+    public void setSat(int sat) {
         this.sat = sat;
     }
 
-    public void setModename(String modename) { this.modename = modename; }
+    public String getModename() {
+        return modename;
+    }
 
-    public void setPremodename(String premodename) { this.premodename = premodename; }
+    public void setModename(String modename) {
+        this.modename = modename;
+    }
+
+    public String getPremodename() {
+        return premodename;
+    }
+
+    public void setPremodename(String premodename) {
+        this.premodename = premodename;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
 }

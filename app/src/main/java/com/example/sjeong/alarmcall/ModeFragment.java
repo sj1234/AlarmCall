@@ -40,7 +40,7 @@ public class ModeFragment extends Fragment{
 
         listView = (ListView)view.findViewById(R.id.listView);
 
-        FloatingActionButton fab = (FloatingActionButton)view.findViewById(R.id.fab);
+        FloatingActionButton fab = (FloatingActionButton)view.findViewById(R.id.fab_mode);
         // 이벤트 적용
         fab.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -5,29 +5,46 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.example.sjeong.alarmcall.ModeSetActivity">
+    tools:context="com.example.sjeong.alarmcall.ModeSetActivity"
+    android:background="@color/backcolor">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="2"
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/modename"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|center_horizontal"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="8dp" />
+
+    </FrameLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_weight="1"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:background="@drawable/bigbackground">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
             android:layout_marginLeft="8dp"
-            android:layout_weight="1"
-            android:background="@drawable/background">
+            android:layout_weight="1">
 
             <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
                 android:layout_gravity="center"
                 android:layout_marginRight="8dp"
                 android:layout_weight="1"
@@ -39,14 +56,16 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_weight="4"
-                android:text="즐겨찾기" />
+                android:text="즐겨찾기"
+                android:textColor="@color/textcolor"/>
 
             <TextView
                 android:id="@+id/startxt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center|right"
-                android:layout_weight="4" />
+                android:layout_weight="4"
+                android:textColor="@color/textcolor"/>
 
             <ImageButton
                 android:id="@+id/star"
@@ -66,12 +85,11 @@
             android:layout_height="match_parent"
             android:layout_marginBottom="8dp"
             android:layout_marginLeft="8dp"
-            android:layout_weight="1"
-            android:background="@drawable/background">
+            android:layout_weight="1">
 
             <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
                 android:layout_gravity="center"
                 android:layout_marginRight="8dp"
                 android:layout_weight="1"
@@ -82,14 +100,16 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_weight="4"
-                android:text="즐겨찾기 외" />
+                android:text="즐겨찾기 외"
+                android:textColor="@color/textcolor"/>
 
             <TextView
                 android:id="@+id/contacttxt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center|right"
-                android:layout_weight="4" />
+                android:layout_weight="4"
+                android:textColor="@color/textcolor"/>
 
             <ImageButton
                 android:id="@+id/contact"
@@ -109,12 +129,11 @@
             android:layout_height="match_parent"
             android:layout_marginBottom="8dp"
             android:layout_marginLeft="8dp"
-            android:layout_weight="1"
-            android:background="@drawable/background">
+            android:layout_weight="1">
 
             <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
                 android:layout_gravity="center"
                 android:layout_marginRight="8dp"
                 android:layout_weight="1"
@@ -125,14 +144,16 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_weight="4"
-                android:text="모르는 번호" />
+                android:text="모르는 번호"
+                android:textColor="@color/textcolor"/>
 
             <TextView
                 android:id="@+id/unknowntxt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center|right"
-                android:layout_weight="4" />
+                android:layout_weight="4"
+                android:textColor="@color/textcolor"/>
 
             <ImageButton
                 android:id="@+id/unknown"
@@ -150,23 +171,24 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginLeft="8dp"
-            android:layout_weight="1"
-            android:background="@drawable/background">
+            android:layout_weight="1">
 
             <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
                 android:layout_gravity="center"
                 android:layout_marginRight="8dp"
                 android:layout_weight="1"
                 android:src="@drawable/timecount" />
 
             <TextView
+                android:id="@+id/textView2"
                 android:layout_width="30dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_weight="9"
-                android:text="긴급전화" />
+                android:text="긴급전화"
+                android:textColor="@color/textcolor" />
 
         </LinearLayout>
 
@@ -174,8 +196,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginLeft="8dp"
-            android:layout_weight="1"
-            android:background="@drawable/background">
+            android:layout_marginRight="8dp"
+            android:layout_weight="1">
 
             <ImageView
                 android:layout_width="30dp"
@@ -190,7 +212,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_weight="3"
-                android:text="TIME" />
+                android:text="TIME"
+                android:textColor="@color/textcolor" />
 
             <Spinner
                 android:id="@+id/timespinner"
@@ -198,7 +221,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_weight="5"
-                android:entries="@array/time" />
+                android:entries="@array/time"
+                android:textColor="@color/textcolor" />
 
         </LinearLayout>
 
@@ -207,8 +231,8 @@
             android:layout_height="match_parent"
             android:layout_marginBottom="8dp"
             android:layout_marginLeft="8dp"
-            android:layout_weight="1"
-            android:background="@drawable/background">>
+            android:layout_marginRight="8dp"
+            android:layout_weight="1">
 
             <ImageView
                 android:layout_width="30dp"
@@ -223,7 +247,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_weight="3"
-                android:text="COUNT" />
+                android:text="COUNT"
+                android:textColor="@color/textcolor"/>
 
             <Spinner
                 android:id="@+id/countspinner"
@@ -231,14 +256,17 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_weight="5"
-                android:entries="@array/count" />/>
+                android:entries="@array/count"
+                android:textColor="@color/textcolor" />
 
         </LinearLayout>
 
+    </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1">
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp">
 
             <Button
                 android:id="@+id/set"
@@ -257,23 +285,6 @@
                 android:text="삭제" />
 
         </LinearLayout>
-    </LinearLayout>
-
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:layout_weight="3">
-
-        <EditText
-            android:id="@+id/modename"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center|center_horizontal"
-            android:layout_marginBottom="8dp"
-            android:layout_marginLeft="8dp" />
-
-    </FrameLayout>
 
 
 </LinearLayout>

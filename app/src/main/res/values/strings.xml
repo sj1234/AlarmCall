@@ -9,8 +9,19 @@
     <string name="action_save">Save</string>
 
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="hello_blank_fragment1">Hello blank fragment1</string>
-    <string name="hello_blank_fragment2">Hello blank fragment2</string>
     <string name="hello_blank_fragment3">Hello blank fragment3</string>
+
+    <string name="timeSet">timeSet</string>
+    <string name="timeReset">timeReset</string>
+    <string name="Clear">Clear</string>
+    <string name="Sun">Sun</string>
+    <string name="Mon">Mon</string>
+    <string name="Tue">Tue</string>
+    <string name="Wed">Wed</string>
+    <string name="Thu">Thu</string>
+    <string name="Fri">Fri</string>
+    <string name="Sat">Sat</string>
+    <string name="Alarm_StartingTime">Alarm_StartingTime</string>
+    <string name="Alarm_FinishingTime">Alarm_FinishingTime</string>
+    <string name="amSw">amSw</string>
 </resources>
