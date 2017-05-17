@@ -10,6 +10,19 @@ import android.preference.SwitchPreference;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.app.Activity;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.net.NetworkInfo;
+import android.os.Bundle;
+import android.preference.CheckBoxPreference;
+import android.preference.PreferenceActivity;
+import android.preference.Preference.OnPreferenceClickListener;
+import android.preference.PreferenceManager;
+import android.widget.CompoundButton;
+import android.widget.Switch;
+import android.widget.Toast;
+
 
 public class SettingFragment extends PreferenceFragment {
     // TODO: Rename parameter arguments, choose names that match
@@ -20,13 +33,89 @@ public class SettingFragment extends PreferenceFragment {
         addPreferencesFromResource(R.xml.pref_settings);
         Preference pAppName = (Preference) findPreference("setting_activity_id");
         Preference pAppVersion = (Preference) findPreference("setting_activity_app_version");
-        CheckBoxPreference cbpAlarmReceive = (CheckBoxPreference) findPreference("setting_activity_alarm_reiceive");
+       // CheckBoxPreference cbpAlarmReceive = (CheckBoxPreference) findPreference("setting_activity_alarm_reiceive");
         Preference pEmail = (Preference) findPreference("sending_email");
         final SwitchPreference pPushlater =  (SwitchPreference) findPreference("push_later");
-        Preference pBack = (Preference) findPreference("back");
+
+
+        pAppName.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                Toast.makeText(getActivity(), "Alarm Call", Toast.LENGTH_SHORT).show();
+                return false;
+            }
+        });
+
+        pAppVersion.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                Toast.makeText(getActivity(), "Beta", Toast.LENGTH_SHORT).show();
+                return false;
+            }
+        });
+
+        pEmail.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                Toast.makeText(getActivity(), "Sending Email", Toast.LENGTH_SHORT).show();
+                return false;
+            }
+        });
+
+
+
+        PreferenceManager preferenceManager = getPreferenceManager();
+        preferenceManager.setSharedPreferencesName("Later");
+        preferenceManager.setSharedPreferencesMode(Activity.MODE_PRIVATE);
+
+        pPushlater.setChecked(preferenceManager.getSharedPreferences().getString("onoff", "off").equals("on"));
+
+
+        pPushlater.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+
+
+                PreferenceManager preferenceManager = getPreferenceManager();
+                preferenceManager.setSharedPreferencesName("Later");
+                preferenceManager.setSharedPreferencesMode(Activity.MODE_PRIVATE);
+                SharedPreferences preferences = getPreferenceManager().getSharedPreferences();
+                SharedPreferences.Editor editor = preferences.edit();
+                if (pPushlater.isChecked()==true){
+                    editor.putString("onoff", "on");
+                } else {
+                    editor.putString("onoff", "off");
+                }
+                editor.commit();
+
+                return false;
+            }
+        });
+
+
+
     }
 
+    public boolean onPreferenceClick(Preference preference) {
+        // 어플리케이션 이름
+        if (preference.getKey().equals("setting_activity_id")) {
+        }
+        // 어플리케이션 버전
+        else if (preference.getKey().equals("setting_activity_app_version")) {
+        }
+        // 알림 받기
+        else if (preference.getKey().equals("setting_activity_alarm_reiceive")) {
+        }
+        else if (preference.getKey().equals("sending_email")) {
+        }
+        else if (preference.getKey().equals("push_later")) {
+        }
+        else if (preference.getKey().equals("back")) {
+        }
+        return false;
 
+
+    }
 
 
     @Override
