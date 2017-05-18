@@ -98,6 +98,7 @@ public class ModeFragment extends Fragment{
                     editor.putInt("count", mode.getCount());
 
                     editor.commit();
+                    onResume();
                     break;
             }
         }
