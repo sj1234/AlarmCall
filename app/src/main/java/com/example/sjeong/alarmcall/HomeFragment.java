@@ -82,12 +82,18 @@ public class HomeFragment extends Fragment {
             unknown = preferences.getInt("unknown", 4);
             time = preferences.getInt("time", 0);
             count = preferences.getInt("count", 0);
-
+            /*
             nowname.setText("현재 모드 : "+name);
             nowstar.setText("즐겨찾기 : "+RingInformation(star));
             nowcontact.setText("즐겨찾기 외 저장된 번호 : "+RingInformation(contact));
             nowunknown.setText("모르는 번호 : "+RingInformation(unknown));
             nowtimecount.setText("긴급전화 : "+time+"분안에 "+count+"회 이상");
+            */
+            nowname.setText(name);
+            nowstar.setText("  "+RingInformation(star));
+            nowcontact.setText("  "+RingInformation(contact));
+            nowunknown.setText("  "+RingInformation(unknown));
+            nowtimecount.setText("  "+time+"분안에 "+count+"회 이상");
         }
     }
 
