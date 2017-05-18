@@ -5,100 +5,263 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.example.sjeong.groupapplication.ScheduleSetActivity">
+    tools:context="com.example.sjeong.alarmcall.ModeSetActivity"
+    android:layout_margin="8dp">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/bigbackground"
+        android:layout_weight="9">
 
-        <Button
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:orientation="vertical"
+            android:layout_marginLeft="8dp"
+            android:layout_weight="5">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_weight="1"
+                    android:src="@drawable/schedule_time" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="20sp"
+                    android:layout_weight="10"
+                    android:text="스케줄 시간 설정"
+                    android:textColor="@color/textcolor"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_weight="1"/>
+
+
+                <TextView
+                    android:id="@+id/amStart"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="4"
+                    android:text="Alarm_StartingTime"
+                    android:textColor="@color/textcolor"/>
+
+                <ImageButton
+                    android:id="@+id/timeSet"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_weight="3"
+                    android:onClick="onButton"
+                    android:src="@drawable/schedule_time"
+                    android:background="#00000000"
+                    android:scaleType="fitCenter"/>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_weight="1"/>
+
+                <TextView
+                    android:id="@+id/amFinish"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Alarm_FinishingTime"
+                    android:layout_weight="4"
+                    android:textColor="@color/textcolor"/>
+
+                <ImageButton
+                    android:id="@+id/timeReset"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:onClick="onButton"
+                    android:layout_weight="3"
+                    android:src="@drawable/schedule_time"
+                    android:background="#00000000"
+                    android:scaleType="fitCenter"/>
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_weight="2">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="모드 선택"
+                android:layout_marginLeft="8dp"
+                android:layout_weight="2"
+                android:textColor="@color/textcolor"/>
+
+            <Spinner
+                android:id="@+id/spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:layout_editor_absoluteX="8dp"
+                tools:layout_editor_absoluteY="340dp"
+                android:layout_weight="1"
+                android:layout_marginRight="8dp"/>
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginTop="16dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                android:layout_weight="8"
+                android:src="@drawable/schedule_week" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="반복 선택"
+                android:layout_marginLeft="8dp"
+                android:layout_weight="1"
+                android:textColor="@color/textcolor"/>
+
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
-            android:text="@string/timeSet"
-            android:id="@+id/timeSet"
-            android:onClick="onButton"/>
+            android:orientation="horizontal"
+            android:layout_marginTop="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_gravity="center"
+            android:layout_weight="1">
 
-        <TextView
-            android:id="@+id/amStart"
-            android:layout_width="wrap_content"
+            <ToggleButton
+                android:layout_height="40dp"
+                android:layout_width="40dp"
+                android:id="@+id/toggle_mon"
+                android:textOn="Mon"
+                android:textOff="Mon"
+                android:textAppearance="?android:attr/textAppearanceSmall"/>
+
+            <ToggleButton
+                android:layout_height="40dp"
+                android:layout_width="40dp"
+                android:id="@+id/toggle_tue"
+                android:textOn="Tue"
+                android:textOff="Tue"
+                android:textAppearance="?android:attr/textAppearanceSmall"/>
+
+            <ToggleButton
+                android:layout_height="40dp"
+                android:layout_width="40dp"
+                android:id="@+id/toggle_wed"
+                android:textOn="Wed"
+                android:textOff="Wed"
+                android:textAppearance="?android:attr/textAppearanceSmall"/>
+
+            <ToggleButton
+                android:layout_height="40dp"
+                android:layout_width="40dp"
+                android:id="@+id/toggle_thu"
+                android:textOn="Thu"
+                android:textOff="Thu"
+                android:textAppearance="?android:attr/textAppearanceSmall"/>
+
+            <ToggleButton
+                android:layout_height="40dp"
+                android:layout_width="40dp"
+                android:id="@+id/toggle_fri"
+                android:textOn="Fri"
+                android:textOff="Fri"
+                android:textAppearance="?android:attr/textAppearanceSmall"/>
+
+            <ToggleButton
+                android:id="@+id/toggle_sun"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textOff="Sun"
+                android:textOn="Sun" />
+
+            <ToggleButton android:layout_height="40dp" android:layout_width="40dp" android:id="@+id/toggle_sat" android:textOn="Sat" android:textOff="Sat" android:textAppearance="?android:attr/textAppearanceSmall"/>
+
+        </LinearLayout>
+
+        <Switch
             android:layout_height="wrap_content"
-            android:text="Alarm_StartingTime" />
+            android:layout_width="wrap_content"
+            android:text="amSw"
+            android:id="@+id/amSw"
+            android:textOn="On"
+            android:textOff="Off"
+            android:checked="true"
+            android:layout_weight="1"
+            android:layout_gravity="center"/>
 
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <Button
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:text="@string/timeReset"
-            android:id="@+id/timeReset"
-            android:onClick="onButton"/>
-
-        <TextView
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:text="Alarm_FinishingTime"
-            android:id="@+id/amFinish" />
-
-    </LinearLayout>
-
-
-    <Spinner
-        android:id="@+id/spinner"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:layout_editor_absoluteX="8dp"
-        tools:layout_editor_absoluteY="340dp"/>
-
-    <LinearLayout
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:orientation="horizontal">
-
-        <ToggleButton android:layout_height="40dp" android:layout_width="40dp" android:id="@+id/toggle_sun" android:textOn="Sun" android:textOff="Sun" android:textAppearance="?android:attr/textAppearanceSmall"/>
-
-        <ToggleButton android:layout_height="40dp" android:layout_width="40dp" android:id="@+id/toggle_mon" android:textOn="Mon" android:textOff="Mon" android:textAppearance="?android:attr/textAppearanceSmall"/>
-
-        <ToggleButton android:layout_height="40dp" android:layout_width="40dp" android:id="@+id/toggle_tue" android:textOn="Tue" android:textOff="Tue" android:textAppearance="?android:attr/textAppearanceSmall"/>
-
-        <ToggleButton android:layout_height="40dp" android:layout_width="40dp" android:id="@+id/toggle_wed" android:textOn="Wed" android:textOff="Wed" android:textAppearance="?android:attr/textAppearanceSmall"/>
-
-        <ToggleButton android:layout_height="40dp" android:layout_width="40dp" android:id="@+id/toggle_thu" android:textOn="Thu" android:textOff="Thu" android:textAppearance="?android:attr/textAppearanceSmall"/>
-
-        <ToggleButton android:layout_height="40dp" android:layout_width="40dp" android:id="@+id/toggle_fri" android:textOn="Fri" android:textOff="Fri" android:textAppearance="?android:attr/textAppearanceSmall"/>
-
-        <ToggleButton android:layout_height="40dp" android:layout_width="40dp" android:id="@+id/toggle_sat" android:textOn="Sat" android:textOff="Sat" android:textAppearance="?android:attr/textAppearanceSmall"/>
-
-    </LinearLayout>
-
-    <Switch
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:text="amSw"
-        android:id="@+id/amSw"
-        android:textOn="On"
-        android:textOff="Off"
-        android:checked="true"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center">
+        android:layout_gravity="center"
+        android:layout_weight="1"
+        android:layout_margin="8dp">
 
         <Button
             android:id="@+id/save"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="저장" />
+            android:text="저장"
+            android:layout_weight="1"
+            android:background="#00000000"/>
 
         <Button
             android:id="@+id/delete"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="삭제" />
+            android:text="삭제"
+            android:layout_weight="1"
+            android:background="#00000000"/>
 
     </LinearLayout>
 

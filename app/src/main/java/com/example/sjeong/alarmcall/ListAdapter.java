@@ -1,12 +1,13 @@
 package com.example.sjeong.alarmcall;
 
+import android.app.Activity;
 import android.content.Context;
-import android.util.Log;
+import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -57,9 +58,18 @@ public class ListAdapter extends BaseAdapter {
         }
 
         TextView textView = (TextView) convertView.findViewById(R.id.itemmode);
-        Button buttonselect = (Button)convertView.findViewById(R.id.select) ;
+        ImageButton buttonselect = (ImageButton)convertView.findViewById(R.id.select) ;
 
-        Log.i("test listbutton", arraylist.get(position).toString());
+        SharedPreferences preferences =  context.getSharedPreferences("Mode", Activity.MODE_PRIVATE);
+        if(preferences.getString("set","off").equals("on") && preferences.getString("name"," ").equals(arraylist.get(position).toString())) {
+            convertView.setBackgroundResource(R.drawable.listselectbackground);
+            buttonselect.setImageResource(R.drawable.call);
+        }
+        else {
+            convertView.setBackgroundResource(R.drawable.listbackground);
+            buttonselect.setImageResource(R.drawable.call_end);
+        }
+
         textView.setText(arraylist.get(position).toString());
         if(onClickListener != null) {
             textView.setTag(arraylist.get(position).toString());
@@ -68,7 +78,6 @@ public class ListAdapter extends BaseAdapter {
             buttonselect.setTag(arraylist.get(position).toString());
             buttonselect.setOnClickListener(onClickListener);
         }
-
         return convertView;
 
     }

@@ -32,32 +32,37 @@ public class SettingFragment extends PreferenceFragment {
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.pref_settings);
         Preference pAppName = (Preference) findPreference("setting_activity_id");
-        Preference pAppVersion = (Preference) findPreference("setting_activity_app_version");
+       // Preference pAppHow = (Preference) findPreference("setting_activity_how");
        // CheckBoxPreference cbpAlarmReceive = (CheckBoxPreference) findPreference("setting_activity_alarm_reiceive");
         Preference pEmail = (Preference) findPreference("sending_email");
+        Preference pHow = (Preference) findPreference("setting_activity_how");
         final SwitchPreference pPushlater =  (SwitchPreference) findPreference("push_later");
 
 
         pAppName.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                Toast.makeText(getActivity(), "Alarm Call", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "NAME : Alarm Call \n VERSION : Beta ", Toast.LENGTH_SHORT).show();
                 return false;
             }
         });
 
-        pAppVersion.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                Toast.makeText(getActivity(), "Beta", Toast.LENGTH_SHORT).show();
-                return false;
-            }
-        });
+
+
 
         pEmail.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
                 Toast.makeText(getActivity(), "Sending Email", Toast.LENGTH_SHORT).show();
+                return false;
+            }
+        });
+
+        pHow.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                Intent intent = new Intent(getActivity(), HowToUseActivity.class);
+                startActivity(intent);
                 return false;
             }
         });
@@ -110,7 +115,7 @@ public class SettingFragment extends PreferenceFragment {
         }
         else if (preference.getKey().equals("push_later")) {
         }
-        else if (preference.getKey().equals("back")) {
+        else if (preference.getKey().equals("setting_activity_how")) {
         }
         return false;
 
