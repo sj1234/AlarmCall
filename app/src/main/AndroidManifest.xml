@@ -36,6 +36,11 @@
             android:name=".ModeSetActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar"></activity>
         <activity
+            android:name=".HowToUseActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar">
+        </activity>
+
+        <activity
             android:name=".ScheduleSetActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar"></activity>
 
