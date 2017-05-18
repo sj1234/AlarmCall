@@ -3,10 +3,6 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:key="setting_activity_top_title"
     android:title="Settings">
-
-
-
-
     <!-- 설정를 구성하는 Layout XML -->
     <!-- @author croute -->
     <!-- @since 2011.02.25 -->
@@ -25,12 +21,17 @@
         android:title="APP INFORMATION ">
         <Preference
             android:key="setting_activity_id"
-            android:title="APP NAME"
+            android:title="APP INFO"
             android:selectable="true" />
         <Preference
-            android:key="setting_activity_app_version"
-            android:title="APP VERISION"
-            android:selectable="true" />
+            android:key="setting_activity_how"
+            android:title="HOW TO USE"
+            android:selectable="true">
+
+        </Preference>
+
+
+
         <Preference
             android:summary="개발자에게 메일을 보냅니다"
             android:key="sending_email"
