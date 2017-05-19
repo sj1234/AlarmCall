@@ -33,16 +33,13 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ModeSetActivity"
-            android:theme="@style/Theme.AppCompat.NoActionBar"></activity>
+            android:name=".ModeSetActivity"></activity>
         <activity
-            android:name=".HowToUseActivity"
-            android:theme="@style/Theme.AppCompat.NoActionBar">
+            android:name=".HowToUseActivity">
         </activity>
 
         <activity
-            android:name=".ScheduleSetActivity"
-            android:theme="@style/Theme.AppCompat.NoActionBar"></activity>
+            android:name=".ScheduleSetActivity"></activity>
 
 
         <service android:name=".CallService"/>
