@@ -12,6 +12,7 @@ public class Mode {
     private int unknown;
     private int time;
     private int count;
+    private int draw;
 
     public String getName(){return name;}
 
@@ -24,6 +25,10 @@ public class Mode {
     public int getTime(){return time;}
 
     public int getCount(){return count;}
+
+    public int getDraw() {return draw;}
+
+    public void setDraw(int draw) {this.draw = draw;}
 
     public void setName(String name){this.name = name;}
 

@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="아이콘을 선택하십시오"
+        android:layout_margin="16dp"
+        android:textSize="15sp"
+        android:textColor="#1b736d"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginRight="8dp"
+        android:layout_marginLeft="8dp">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:src="@drawable/icon_book"
+            android:background="#00000000"
+            android:scaleType="fitCenter"
+            android:layout_weight="1"
+            android:layout_marginRight="8dp"
+            android:layout_marginLeft="8dp"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:src="@drawable/icon_movie"
+            android:background="#00000000"
+            android:scaleType="fitCenter"
+            android:layout_weight="1"
+            android:layout_marginRight="8dp"
+            android:layout_marginLeft="8dp"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:src="@drawable/icon_office"
+            android:background="#00000000"
+            android:scaleType="fitCenter"
+            android:layout_weight="1"
+            android:layout_marginRight="8dp"
+            android:layout_marginLeft="8dp"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:src="@drawable/icon_sleep"
+            android:background="#00000000"
+            android:scaleType="fitCenter"
+            android:layout_weight="1"
+            android:layout_marginRight="8dp"
+            android:layout_marginLeft="8dp"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:src="@drawable/icon_tea"
+            android:background="#00000000"
+            android:scaleType="fitCenter"
+            android:layout_weight="1"
+            android:layout_marginRight="8dp"
+            android:layout_marginLeft="8dp"/>
+
+    </LinearLayout>
+
+    <RadioGroup
+        android:id="@+id/icon_group"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginRight="8dp"
+        android:layout_marginLeft="8dp">
+
+        <RadioButton
+            android:id="@+id/icon_book"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginRight="8dp"
+            android:layout_marginLeft="8dp"
+            android:tag = "1"
+            android:buttonTint="#1b736d"/>
+
+        <RadioButton
+            android:id="@+id/icon_movie"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginRight="8dp"
+            android:layout_marginLeft="8dp"
+            android:tag = "2"
+            android:buttonTint="#1b736d"/>
+
+        <RadioButton
+            android:id="@+id/icon_office"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginRight="8dp"
+            android:layout_marginLeft="8dp"
+            android:tag = "3"
+            android:buttonTint="#1b736d"/>
+
+        <RadioButton
+            android:id="@+id/icon_sleep"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginRight="8dp"
+            android:layout_marginLeft="8dp"
+            android:tag = "4"
+            android:buttonTint="#1b736d"/>
+
+        <RadioButton
+            android:id="@+id/icon_tea"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginRight="8dp"
+            android:layout_marginLeft="8dp"
+            android:tag = "5"
+            android:buttonTint="#1b736d"/>
+
+
+    </RadioGroup>
+
+
+
+</LinearLayout>

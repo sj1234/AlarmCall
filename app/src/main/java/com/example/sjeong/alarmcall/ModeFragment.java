@@ -56,7 +56,7 @@ public class ModeFragment extends Fragment{
     @Override
     public void onResume(){
         super.onResume();
-        ArrayList<String> modes = dbManager.getModesName();
+        ArrayList<Mode> modes = dbManager.getModes();
         ListAdapter listAdapter = new ListAdapter(getActivity(), R.layout.listview, modes, onClickListener);
         listView.setAdapter(listAdapter);
     }
@@ -77,6 +77,7 @@ public class ModeFragment extends Fragment{
             String modename = v.getTag().toString();
 
             switch (v.getId()) {
+                case R.id.itemdetail:
                 case R.id.itemmode:
                     Log.i("test tag","수정");
                     Intent intent = new Intent(getActivity(), ModeSetActivity.class);
@@ -96,6 +97,7 @@ public class ModeFragment extends Fragment{
                     editor.putInt("unknown", mode.getUnknown());
                     editor.putInt("time", mode.getTime());
                     editor.putInt("count", mode.getCount());
+                    editor.putInt("draw", mode.getDraw());
 
                     editor.commit();
                     onResume();

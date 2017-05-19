@@ -9,11 +9,14 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,8 +30,10 @@ public class ModeSetActivity extends AppCompatActivity implements View.OnClickLi
     private Mode mode;
     private String name;
 
-    private TextView startxt,contacttxt,unknowntxt,timetxt,counttxt;
+    private TextView startxt,contacttxt,unknowntxt;
     private EditText modename;
+    private View iconview;
+    private ImageButton icon;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +49,9 @@ public class ModeSetActivity extends AppCompatActivity implements View.OnClickLi
 
         Intent intent = getIntent();
         name = intent.getStringExtra("Name");
+
+        icon = (ImageButton)findViewById(R.id.mode_icon);
+        icon.setOnClickListener((View.OnClickListener)this);
 
         ImageButton star = (ImageButton) this.findViewById(R.id.star);
         star.setOnClickListener((View.OnClickListener) this);
@@ -67,8 +75,8 @@ public class ModeSetActivity extends AppCompatActivity implements View.OnClickLi
         contacttxt.setOnClickListener(this);
         unknowntxt = (TextView) findViewById(R.id.unknowntxt);
         unknowntxt.setOnClickListener(this);
-        timetxt = (TextView) findViewById(R.id.timetxt);
-        counttxt = (TextView) findViewById(R.id.counttxt);
+        TextView timetxt = (TextView) findViewById(R.id.timetxt);
+        TextView counttxt = (TextView) findViewById(R.id.counttxt);
 
         mode = new Mode();
 
@@ -78,6 +86,7 @@ public class ModeSetActivity extends AppCompatActivity implements View.OnClickLi
             startxt.setText( RingInformation(mode.getStar()));
             contacttxt.setText(RingInformation(mode.getContact()));
             unknowntxt.setText(RingInformation(mode.getUnknown()));
+            icon.setBackgroundResource(mode.getDraw());
         }
         else {
             mode = new Mode();
@@ -222,7 +231,7 @@ public class ModeSetActivity extends AppCompatActivity implements View.OnClickLi
                 break;
             case R.id.set:
                 mode.setName(modename.getText().toString());
-                if (mode.getName() != null && mode.getStar() > 0 && mode.getContact() > 0 && mode.getUnknown() > 0) {
+                if (mode.getName() != null && mode.getStar() > 0 && mode.getContact() > 0 && mode.getUnknown() > 0 && mode.getDraw() > 0) {
                     if (name == null)
                         dbManager.insertMode(mode);
                      else if (name.equals(preferences.getString("name", "null"))) {
@@ -268,9 +277,50 @@ public class ModeSetActivity extends AppCompatActivity implements View.OnClickLi
                     finish();
                 }
                 break;
+            case R.id.mode_icon:
+                AlertDialog.Builder builder = new AlertDialog.Builder(ModeSetActivity.this);
+
+                LayoutInflater inflater = getLayoutInflater();
+                iconview = inflater.inflate(R.layout.mode_icon_select, null);
+                builder.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        RadioGroup radioGroup= (RadioGroup)iconview.findViewById(R.id.icon_group);
+                        RadioButton radioButton = (RadioButton)radioGroup.findViewById(radioGroup.getCheckedRadioButtonId());
+                        mode.setDraw(IconImage(Integer.parseInt(radioButton.getTag().toString())));
+                        icon.setImageResource(mode.getDraw());
+                        dialog.dismiss();
+                    }
+                }).setNegativeButton("취소", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+
+                builder.setView(iconview);
+                builder.show();
+                break;
             default:
                 break;
 
+        }
+    }
+
+    private int IconImage(int id){
+        switch (id){
+            case 1:
+                return R.drawable.icon_book;
+            case 2:
+                return R.drawable.icon_movie;
+            case 3:
+                return R.drawable.icon_office;
+            case 4:
+                return R.drawable.icon_sleep;
+            case 5:
+                return R.drawable.icon_tea;
+            default:
+                return R.drawable.icon_sleep;
         }
     }
 

@@ -23,7 +23,7 @@ public class DBManager extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String table = "CREATE TABLE MODE"+ "(NAME TEXT PRIMARY KEY NOT NULL,"+"STAR INTEGER NOT NULL,"+"CONTACT INTEGER NOT NULL,"+"UNKNOWN INTEGER NOT NULL,"+" TIME INTEGER NOT NULL,"+" COUNT INTEGER NOT NULL);";
+        String table = "CREATE TABLE MODE"+ "(NAME TEXT PRIMARY KEY NOT NULL,"+"STAR INTEGER NOT NULL,"+"CONTACT INTEGER NOT NULL,"+"UNKNOWN INTEGER NOT NULL,"+" TIME INTEGER NOT NULL,"+" COUNT INTEGER NOT NULL, DRAW INTEGER NOT NULL);";
         String table2 = "CREATE TABLE SCHEDULE(_id INTEGER PRIMARY KEY AUTOINCREMENT, START TEXT, END TEXT, " +
               "SUN INTEGER, MON INTEGER, TUE INTEGER,WED INTEGER, THU INTEGER, FRI INTEGER, SAT INTEGER, MODENAME TEXT, PREMODENAME TEXT);";
         db.execSQL(table);
@@ -50,8 +50,8 @@ public class DBManager extends SQLiteOpenHelper {
 
     public void insertMode(Mode mode){
         SQLiteDatabase db = getWritableDatabase();
-        String insertmode = "INSERT INTO MODE("+"NAME, STAR, CONTACT, UNKNOWN, TIME, COUNT)"+" VALUES(?, ?, ?, ?, ?, ?);";
-        db.execSQL(insertmode, new Object[]{mode.getName(), mode.getStar(), mode.getContact(), mode.getUnknown(), mode.getTime(), mode.getCount()});
+        String insertmode = "INSERT INTO MODE("+"NAME, STAR, CONTACT, UNKNOWN, TIME, COUNT, DRAW)"+" VALUES(?, ?, ?, ?, ?, ?, ?);";
+        db.execSQL(insertmode, new Object[]{mode.getName(), mode.getStar(), mode.getContact(), mode.getUnknown(), mode.getTime(), mode.getCount(), mode.getDraw()});
         Toast.makeText(dbcontext, "insert", Toast.LENGTH_LONG).show();
         Log.i("test DB", "insert : " + mode.getName()+", "+mode.getStar()+", "+ mode.getContact()+", "+ mode.getUnknown()+", "+ mode.getTime()+", "+ mode.getCount());
     }
@@ -65,8 +65,8 @@ public class DBManager extends SQLiteOpenHelper {
 
     public void updateMode(String originalname, Mode mode){
         SQLiteDatabase db = getWritableDatabase();
-        String updatemode = "UPDATE MODE SET "+"NAME = ?, STAR =?, CONTACT =?, UNKNOWN =?, TIME =?, COUNT =?"+" WHERE NAME=?;";
-        db.execSQL(updatemode, new Object[]{mode.getName().toString(), mode.getStar(), mode.getContact(), mode.getUnknown(), mode.getTime(), mode.getCount(), originalname});
+        String updatemode = "UPDATE MODE SET "+"NAME = ?, STAR =?, CONTACT =?, UNKNOWN =?, TIME =?, COUNT =?, DRAW =?"+" WHERE NAME=?;";
+        db.execSQL(updatemode, new Object[]{mode.getName().toString(), mode.getStar(), mode.getContact(), mode.getUnknown(), mode.getTime(), mode.getCount(), mode.getDraw(), originalname});
 
         Toast.makeText(dbcontext, "update", Toast.LENGTH_LONG).show();
         Log.i("test DB", "update : " + mode.getName()+", "+mode.getStar()+", "+ mode.getContact()+", "+ mode.getUnknown()+", "+ mode.getTime()+", "+ mode.getCount());
@@ -111,6 +111,37 @@ public class DBManager extends SQLiteOpenHelper {
         return modes;
     }
 
+    public ArrayList<Mode> getModes() {
+
+        String string = "SELECT * FROM MODE;";
+        SQLiteDatabase db = getReadableDatabase();
+
+        Cursor cursor = db.rawQuery(string, null);
+        ArrayList<Mode> modes = new ArrayList<Mode>();
+
+        if(cursor.moveToFirst())
+        {
+            do {
+                Mode mode=new Mode();
+                
+                mode.setName(cursor.getString(0));
+                mode.setStar(cursor.getInt(1));
+                mode.setContact(cursor.getInt(2));
+                mode.setUnknown(cursor.getInt(3));
+                mode.setTime(cursor.getInt(4));
+                mode.setCount(cursor.getInt(5));
+                mode.setDraw(cursor.getInt(6));
+
+                modes.add(mode);
+            }
+            while (cursor.moveToNext());
+        }
+        else
+            Log.i("test DBManager", "get mode null");
+
+        return modes;
+    }
+
     public ArrayList<Schedule> getSchedules(){
         String string = "SELECT * FROM SCHEDULE;";
         SQLiteDatabase db = getReadableDatabase();
@@ -147,7 +178,7 @@ public class DBManager extends SQLiteOpenHelper {
 
     public Mode getMode(String modename) {
 
-        String string = "SELECT NAME, STAR, CONTACT, UNKNOWN, TIME, COUNT FROM MODE;";
+        String string = "SELECT * FROM MODE;";
         SQLiteDatabase db = getReadableDatabase();
 
         Cursor cursor = db.rawQuery(string, null);
@@ -164,6 +195,7 @@ public class DBManager extends SQLiteOpenHelper {
                     mode.setUnknown(cursor.getInt(3));
                     mode.setTime(cursor.getInt(4));
                     mode.setCount(cursor.getInt(5));
+                    mode.setDraw(cursor.getInt(6));
                     return mode;
                 }
             }
