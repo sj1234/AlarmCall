@@ -86,7 +86,7 @@ public class ModeSetActivity extends AppCompatActivity implements View.OnClickLi
             startxt.setText( RingInformation(mode.getStar()));
             contacttxt.setText(RingInformation(mode.getContact()));
             unknowntxt.setText(RingInformation(mode.getUnknown()));
-            icon.setBackgroundResource(mode.getDraw());
+            icon.setImageResource(mode.getDraw());
         }
         else {
             mode = new Mode();
@@ -94,6 +94,7 @@ public class ModeSetActivity extends AppCompatActivity implements View.OnClickLi
             startxt.setText("수신음 선택");
             contacttxt.setText("수신음 선택");
             unknowntxt.setText("수신음 선택");
+            icon.setImageResource(R.drawable.icon_empty);
             delete.setText("취소");
         }
 

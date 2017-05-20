@@ -41,40 +41,40 @@ public class ScheduleListAdapter extends BaseAdapter {
     }
 
     @Override
-    public long getItemId(int position) {
-        return position;
-    }
-
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-
-        if (convertView == null) {
-            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.schedulelistview, parent, false);
+        public long getItemId(int position) {
+            return position;
         }
 
-        TextView time = (TextView)convertView.findViewById(R.id.scheduletime);
-        TextView mode = (TextView)convertView.findViewById(R.id.modename);
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
 
-        time.setText(arraylist.get(position).getStart().toString()+"~"+arraylist.get(position).getEnd().toString());
-        mode.setText(arraylist.get(position).getModename().toString());
+            if (convertView == null) {
+                LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                convertView = inflater.inflate(R.layout.schedulelistview, parent, false);
+            }
 
-        Button buttonon = (Button)convertView.findViewById(R.id.scheduleon);
-        Button buttonoff = (Button)convertView.findViewById(R.id.scheduleoff);
+            TextView time = (TextView)convertView.findViewById(R.id.scheduletime);
+            TextView mode = (TextView)convertView.findViewById(R.id.modename);
 
-        if(onClickListener != null) {
-            time.setTag(position);
-            time.setOnClickListener(onClickListener);
+            time.setText(arraylist.get(position).getStart().toString()+"~"+arraylist.get(position).getEnd().toString());
+            mode.setText(arraylist.get(position).getModename().toString());
 
-            mode.setTag(position);
-            mode.setOnClickListener(onClickListener);
+            Button buttonon = (Button)convertView.findViewById(R.id.scheduleon);
+            Button buttonoff = (Button)convertView.findViewById(R.id.scheduleoff);
 
-            buttonon.setTag(position);
-            buttonon.setOnClickListener(onClickListener);
+            if(onClickListener != null) {
+                time.setTag(position);
+                time.setOnClickListener(onClickListener);
 
-            buttonoff.setTag(position);
-            buttonoff.setOnClickListener(onClickListener);
-        }
+                mode.setTag(position);
+                mode.setOnClickListener(onClickListener);
+
+                buttonon.setTag(position);
+                buttonon.setOnClickListener(onClickListener);
+
+                buttonoff.setTag(position);
+                buttonoff.setOnClickListener(onClickListener);
+            }
 
 
         return convertView;

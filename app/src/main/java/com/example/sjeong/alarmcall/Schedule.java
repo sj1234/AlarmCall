@@ -18,6 +18,7 @@ public class Schedule {
     private String modename;
     private String premodename;
     private int id;
+    private int onoff;
 
     public String getStart() {
         return start;
@@ -114,5 +115,9 @@ public class Schedule {
     public void setId(int id) {
         this.id = id;
     }
+
+    public int getOnoff() {return onoff;}
+
+    public void setOnoff(int onoff) {this.onoff = onoff;}
 
 }

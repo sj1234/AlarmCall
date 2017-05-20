@@ -25,7 +25,7 @@ public class DBManager extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         String table = "CREATE TABLE MODE"+ "(NAME TEXT PRIMARY KEY NOT NULL,"+"STAR INTEGER NOT NULL,"+"CONTACT INTEGER NOT NULL,"+"UNKNOWN INTEGER NOT NULL,"+" TIME INTEGER NOT NULL,"+" COUNT INTEGER NOT NULL, DRAW INTEGER NOT NULL);";
         String table2 = "CREATE TABLE SCHEDULE(_id INTEGER PRIMARY KEY AUTOINCREMENT, START TEXT, END TEXT, " +
-              "SUN INTEGER, MON INTEGER, TUE INTEGER,WED INTEGER, THU INTEGER, FRI INTEGER, SAT INTEGER, MODENAME TEXT, PREMODENAME TEXT);";
+              "SUN INTEGER, MON INTEGER, TUE INTEGER,WED INTEGER, THU INTEGER, FRI INTEGER, SAT INTEGER, MODENAME TEXT, PREMODENAME TEXT, ONOFF INTEGER);";
         db.execSQL(table);
         db.execSQL(table2);
 
@@ -58,8 +58,8 @@ public class DBManager extends SQLiteOpenHelper {
 
     public void insertSchedule(Schedule schedule){
         SQLiteDatabase db = getWritableDatabase();
-        String insertschedule = "INSERT INTO SCHEDULE(_id, START, END, SUN, MON, TUE, WED, THU, FRI, SAT, MODENAME, PREMODENAME) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
-        db.execSQL(insertschedule, new Object[]{null, schedule.getStart(), schedule.getEnd(), schedule.getSun(), schedule.getMon(), schedule.getTue(), schedule.getWed(), schedule.getThu(), schedule.getFri(), schedule.getSat(), schedule.getModename().toString(), schedule.getPremodename().toString()});
+        String insertschedule = "INSERT INTO SCHEDULE(_id, START, END, SUN, MON, TUE, WED, THU, FRI, SAT, MODENAME, PREMODENAME, ONOFF) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+        db.execSQL(insertschedule, new Object[]{null, schedule.getStart(), schedule.getEnd(), schedule.getSun(), schedule.getMon(), schedule.getTue(), schedule.getWed(), schedule.getThu(), schedule.getFri(), schedule.getSat(), schedule.getModename().toString(), schedule.getPremodename().toString(), 0});
         Log.i("test DB", "insert : " + schedule.getStart()+", "+schedule.getEnd()+", "+schedule.getModename().toString()+", "+ schedule.getPremodename().toString());
     }
 
@@ -74,8 +74,8 @@ public class DBManager extends SQLiteOpenHelper {
 
     public void updateSchedule(Schedule schedule){
         SQLiteDatabase db = getWritableDatabase();
-        String updateschedule = "UPDATE SCHEDULE SET START =?, END =?, SUN =?, MON =?, TUE =?, WED =?, THU =?, FRI =?, SAT =?, MODENAME =?, PREMODENAME=? WHERE _id =?;";
-        db.execSQL(updateschedule, new Object[]{ schedule.getStart().toString(), schedule.getEnd().toString(), schedule.getSun(), schedule.getMon(), schedule.getTue(), schedule.getWed(), schedule.getThu(), schedule.getFri(), schedule.getSat(), schedule.getModename().toString(), schedule.getPremodename(), schedule.getId()});
+        String updateschedule = "UPDATE SCHEDULE SET START =?, END =?, SUN =?, MON =?, TUE =?, WED =?, THU =?, FRI =?, SAT =?, MODENAME =?, PREMODENAME=?, ONOFF=? WHERE _id =?;";
+        db.execSQL(updateschedule, new Object[]{ schedule.getStart().toString(), schedule.getEnd().toString(), schedule.getSun(), schedule.getMon(), schedule.getTue(), schedule.getWed(), schedule.getThu(), schedule.getFri(), schedule.getSat(), schedule.getModename().toString(), schedule.getPremodename(), schedule.getOnoff(), schedule.getId()});
     }
 
     public void deleteMode(String modename){
@@ -123,7 +123,7 @@ public class DBManager extends SQLiteOpenHelper {
         {
             do {
                 Mode mode=new Mode();
-                
+
                 mode.setName(cursor.getString(0));
                 mode.setStar(cursor.getInt(1));
                 mode.setContact(cursor.getInt(2));
@@ -165,6 +165,7 @@ public class DBManager extends SQLiteOpenHelper {
                 schedule.setSat(cursor.getInt(9));
                 schedule.setModename(cursor.getString(10));
                 schedule.setPremodename(cursor.getString(11));
+                schedule.setOnoff(cursor.getInt(12));
 
                 schedules.add(schedule);
 
@@ -232,6 +233,7 @@ public class DBManager extends SQLiteOpenHelper {
                     schedule.setSat(cursor.getInt(9));
                     schedule.setModename(cursor.getString(10));
                     schedule.setPremodename(cursor.getString(11));
+                    schedule.setOnoff(cursor.getInt(12));
                     Log.i("test DBManager", "get schedule "+cursor.getString(1)+", "+cursor.getString(2)+", "+cursor.getString(10));
                     return schedule;
                 }
