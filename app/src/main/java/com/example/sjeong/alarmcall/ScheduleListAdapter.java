@@ -6,7 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -55,30 +55,66 @@ public class ScheduleListAdapter extends BaseAdapter {
 
             TextView time = (TextView)convertView.findViewById(R.id.scheduletime);
             TextView mode = (TextView)convertView.findViewById(R.id.modename);
+            TextView repeat = (TextView) convertView.findViewById(R.id.repeat);
+            ImageButton buttonon = (ImageButton)convertView.findViewById(R.id.scheduleon);
 
-            time.setText(arraylist.get(position).getStart().toString()+"~"+arraylist.get(position).getEnd().toString());
-            mode.setText(arraylist.get(position).getModename().toString());
+            if(arraylist.get(position).getOnoff()==1){
+                convertView.setBackgroundResource(R.drawable.selectlistbackground);
+                buttonon.setImageResource(R.drawable.schedule_start);
+            }
+            else{
+                convertView.setBackgroundResource(R.drawable.listbackground);
+                buttonon.setImageResource(R.drawable.schedule_end);
+            }
 
-            Button buttonon = (Button)convertView.findViewById(R.id.scheduleon);
-            Button buttonoff = (Button)convertView.findViewById(R.id.scheduleoff);
+            time.setText(arraylist.get(position).getStart().toString()+" ~ "+arraylist.get(position).getEnd().toString());
+            mode.setText("모드  "+arraylist.get(position).getModename().toString());
+            repeat.setText("반복 "+RepeatWeek(arraylist.get(position)));
 
             if(onClickListener != null) {
                 time.setTag(position);
                 time.setOnClickListener(onClickListener);
-
                 mode.setTag(position);
                 mode.setOnClickListener(onClickListener);
+                repeat.setTag(position);
+                repeat.setOnClickListener(onClickListener);
 
-                buttonon.setTag(position);
+                String tag = position+"/"+arraylist.get(position).getOnoff();
+                buttonon.setTag(tag);
                 buttonon.setOnClickListener(onClickListener);
-
-                buttonoff.setTag(position);
-                buttonoff.setOnClickListener(onClickListener);
             }
 
 
         return convertView;
 
+    }
+
+    public String RepeatWeek(Schedule schedule){
+        String string = "";
+
+        if(schedule.getSun()==1)
+            string = string+"일 ";
+        if(schedule.getMon()==1)
+            string = string+"월 ";
+        if(schedule.getTue()==1)
+            string = string+"화 ";
+        if(schedule.getWed()==1)
+            string = string+"수 ";
+        if(schedule.getThu()==1)
+            string = string+"목 ";
+        if(schedule.getFri()==1)
+            string = string+"금 ";
+        if(schedule.getSat()==1)
+            string = string+"토";
+
+        if(string.equals("일 월 화 수 목 금 토"))
+            string = "매일";
+        if(string.equals("월 화 수 목 금 "))
+            string = "주중";
+        if((string.equals("일 토")))
+            string="주말";
+
+        return string;
     }
 }
 

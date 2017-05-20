@@ -76,6 +76,7 @@ public class DBManager extends SQLiteOpenHelper {
         SQLiteDatabase db = getWritableDatabase();
         String updateschedule = "UPDATE SCHEDULE SET START =?, END =?, SUN =?, MON =?, TUE =?, WED =?, THU =?, FRI =?, SAT =?, MODENAME =?, PREMODENAME=?, ONOFF=? WHERE _id =?;";
         db.execSQL(updateschedule, new Object[]{ schedule.getStart().toString(), schedule.getEnd().toString(), schedule.getSun(), schedule.getMon(), schedule.getTue(), schedule.getWed(), schedule.getThu(), schedule.getFri(), schedule.getSat(), schedule.getModename().toString(), schedule.getPremodename(), schedule.getOnoff(), schedule.getId()});
+        Log.i("test DB", "update : " + schedule.getSun() +"/"+ schedule.getMon()+"/"+ schedule.getTue()+"/"+schedule.getWed()+"/"+schedule.getThu()+"/"+schedule.getFri()+"/"+schedule.getSat());
     }
 
     public void deleteMode(String modename){
@@ -245,6 +246,43 @@ public class DBManager extends SQLiteOpenHelper {
             Log.i("test DBManager", "get mode null");
 
         return null;
+    }
+
+    public Schedule getScheduleId(int id) {
+        String string = "SELECT * FROM SCHEDULE;";
+        SQLiteDatabase db = getReadableDatabase();
+
+        Cursor cursor = db.rawQuery(string, null);
+        Schedule schedule=new Schedule();
+
+        if(cursor.moveToFirst())
+        {
+            do {
+                if (cursor.getInt(0)==id) {
+                    schedule.setId(cursor.getInt(0));
+                    schedule.setStart(cursor.getString(1));
+                    schedule.setEnd(cursor.getString(2));
+                    schedule.setSun(cursor.getInt(3));
+                    schedule.setMon(cursor.getInt(4));
+                    schedule.setTue(cursor.getInt(5));
+                    schedule.setWed(cursor.getInt(6));
+                    schedule.setThu(cursor.getInt(7));
+                    schedule.setFri(cursor.getInt(8));
+                    schedule.setSat(cursor.getInt(9));
+                    schedule.setModename(cursor.getString(10));
+                    schedule.setPremodename(cursor.getString(11));
+                    schedule.setOnoff(cursor.getInt(12));
+                    Log.i("test DBManager", "get schedule "+cursor.getString(1)+", "+cursor.getString(2)+", "+cursor.getString(10));
+                    return schedule;
+                }
+            }
+            while (cursor.moveToNext());
+        }
+        else
+            Log.i("test DBManager", "get mode null");
+
+        return null;
+
     }
 
 }

@@ -86,18 +86,25 @@ public class ModeFragment extends Fragment{
                     break;
                 case R.id.select:
                     Log.i("test tag", "현재");
-                    Mode mode = dbManager.getMode(modename);
 
                     SharedPreferences preferences = getActivity().getSharedPreferences("Mode", Activity.MODE_PRIVATE);
                     SharedPreferences.Editor editor = preferences.edit();
-                    editor.putString("set", "on");
-                    editor.putString("name", mode.getName());
-                    editor.putInt("star", mode.getStar());
-                    editor.putInt("contact", mode.getContact());
-                    editor.putInt("unknown", mode.getUnknown());
-                    editor.putInt("time", mode.getTime());
-                    editor.putInt("count", mode.getCount());
-                    editor.putInt("draw", mode.getDraw());
+
+                    if(preferences.getString("name", "").equals(modename)) {
+                        editor.putString("set", "off");
+                    }
+                    else {
+                        Mode mode = dbManager.getMode(modename);
+
+                        editor.putString("set", "on");
+                        editor.putString("name", mode.getName());
+                        editor.putInt("star", mode.getStar());
+                        editor.putInt("contact", mode.getContact());
+                        editor.putInt("unknown", mode.getUnknown());
+                        editor.putInt("time", mode.getTime());
+                        editor.putInt("count", mode.getCount());
+                        editor.putInt("draw", mode.getDraw());
+                    }
 
                     editor.commit();
                     onResume();

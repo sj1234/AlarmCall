@@ -55,6 +55,13 @@
             android:enabled="true"
             android:exported="true" />
 
+        <receiver
+            android:name=".AlarmReceiver">
+            <intent-filter>
+                <action android:name="com.example.saran.realapplication.ALARM_START"/>
+            </intent-filter>
+        </receiver>
+
     </application>
 
 </manifest>

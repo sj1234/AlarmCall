@@ -9,7 +9,7 @@
     <ListView
         android:id="@+id/schedulelistView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="460dp"/>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab_schedule"

@@ -1,7 +1,10 @@
 package com.example.sjeong.alarmcall;
 
 import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -63,18 +66,6 @@ public class ScheduleSetActivity extends AppCompatActivity {
         toggleSat = (ToggleButton) findViewById(R.id.toggle_sat);
 
 
-        aSwitch =(Switch)findViewById(R.id.amSw);
-        aSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked == true) {
-                    Toast.makeText(ScheduleSetActivity.this, "ON", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(ScheduleSetActivity.this, "OFF", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-
         starttext = (TextView) findViewById(R.id.amStart);
         finishtext = (TextView) findViewById(R.id.amFinish);
 
@@ -96,17 +87,97 @@ public class ScheduleSetActivity extends AppCompatActivity {
                     break;
                 }
             }
+            if(schedule.getSun()==1)
+                toggleSun.setChecked(Boolean.TRUE);
+            if(schedule.getMon()==1)
+                toggleMon.setChecked(Boolean.TRUE);
+            if(schedule.getTue()==1)
+                toggleTue.setChecked(Boolean.TRUE);
+            if(schedule.getWed()==1)
+                toggleWed.setChecked(Boolean.TRUE);
+            if(schedule.getThu()==1)
+                toggleThu.setChecked(Boolean.TRUE);
+            if(schedule.getFri()==1)
+                toggleFri.setChecked(Boolean.TRUE);
+            if(schedule.getSat()==1)
+                toggleSat.setChecked(Boolean.TRUE);
         }
         else // 새로 추가인 경우
         {
             schedule = new Schedule();
+            schedule.setMon(0);
+            schedule.setTue(0);
+            schedule.setWed(0);
+            schedule.setThu(0);
+            schedule.setFri(0);
+            schedule.setSat(0);
+            schedule.setSun(0);
             delete.setText("취소");
         }
+
+        toggleSun.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){schedule.setSun(1);}
+                else{schedule.setSun(0);}
+            }
+        });
+        toggleMon.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){schedule.setMon(1);}
+                else{schedule.setMon(0);}
+            }
+        });
+        toggleTue.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){schedule.setTue(1);}
+                else{schedule.setTue(0);}
+            }
+        });
+        toggleWed.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){schedule.setWed(1);}
+                else{schedule.setWed(0);}
+            }
+        });
+        toggleThu.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){schedule.setThu(1);}
+                else{schedule.setThu(0);}
+            }
+        });
+        toggleFri.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){schedule.setFri(1);}
+                else{schedule.setFri(0);}
+            }
+        });
+        toggleSat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){schedule.setSat(1);}
+                else{schedule.setSat(0);}
+            }
+        });
 
         delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(position!=null) {
+                    if(schedule.getOnoff()==1) {
+                        // 알람종료
+                        Intent intent = new Intent(ScheduleSetActivity.this,AlarmReceiver.class);
+                        AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+                        PendingIntent amIntent = PendingIntent.getBroadcast(ScheduleSetActivity.this,schedule.getId()*2,intent,PendingIntent.FLAG_UPDATE_CURRENT);
+                        am.cancel(amIntent);
+                        amIntent = PendingIntent.getBroadcast(ScheduleSetActivity.this,(schedule.getId()*2)+1,intent,PendingIntent.FLAG_UPDATE_CURRENT);
+                        am.cancel(amIntent);
+                    }
                     dbManager.deleteSchedule(schedule.getId());
                     finish();
                 }
@@ -135,23 +206,14 @@ public class ScheduleSetActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 if (schedule.getModename() != null && schedule.getStart() != null && schedule.getEnd() != null) {
-                    schedule.setMon(0);
-                    schedule.setTue(0);
-                    schedule.setWed(0);
-                    schedule.setThu(0);
-                    schedule.setFri(0);
-                    schedule.setSat(0);
-                    schedule.setSun(0);
-
                     if(position!=null) {
-                        Toast.makeText(ScheduleSetActivity.this, "저장 "+schedule.getId(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ScheduleSetActivity.this, "수정 저장 ", Toast.LENGTH_SHORT).show();
                         dbManager.updateSchedule(schedule);
                     }
                     else {
                         Toast.makeText(ScheduleSetActivity.this, "저장", Toast.LENGTH_SHORT).show();
                         dbManager.insertSchedule(schedule);
                     }
-
                     ScheduleSetActivity.this.finish();
                 }
                 else
