@@ -1,11 +1,13 @@
 package com.example.sjeong.alarmcall;
 
+import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
 import android.graphics.PixelFormat;
 import android.os.IBinder;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
@@ -14,9 +16,10 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
-
+import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import com.android.internal.telephony.ITelephony;
-
+import android.content.Context;
 import java.lang.reflect.Method;
 import java.util.Calendar;
 
@@ -28,6 +31,10 @@ public class CallService extends Service {
     private WindowManager windowManager;
     private Button later;
     private String number;
+    private SharedPreferences preferences0;
+    private int latercalltime;
+    private Context timecontext;
+
 
     @Override
     public void onCreate() {
@@ -118,6 +125,38 @@ public class CallService extends Service {
         //RTC_WAKEUP : 지금 시간을 기준으로 알람이 동작, sleep모드여도 실행한다.
         alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingintent);
     }
+
+   /*
+    // 나중에 알람이 오도록
+    private void LaterCallAlarm(Context context,String number){
+        AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
+
+        Intent alarmintent= new Intent(this, LaterCall.class);
+        alarmintent.putExtra("phonenumber", number); // 전화번호 정보 전달
+        PendingIntent pendingintent=PendingIntent.getBroadcast(this, 0, alarmintent, PendingIntent.FLAG_ONE_SHOT);
+        preferences0 = context.getSharedPreferences("time", Activity.MODE_PRIVATE);
+
+        Calendar calendar = Calendar.getInstance(); // 현재시간
+        latercalltime = preferences0.getInt("time",5);
+
+       /* if(latercalltime == 5) {
+            calendar.add(Calendar.SECOND, 5);  // 현재시간 10분 후 (test는 15초 후로)
+        }
+        else if(latercalltime == 10){
+            calendar.add(Calendar.SECOND, 10);
+        }
+        else if(latercalltime == 15){
+            calendar.add(Calendar.SECOND, 15);
+        }
+        else if(latercalltime == 30){
+            calendar.add(Calendar.SECOND, 30);
+        }
+        */
+        //RTC_WAKEUP : 지금 시간을 기준으로 알람이 동작, sleep모드여도 실행한다.
+      //  alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingintent);
+      //  timecontext = context;
+    //}
+
 
     // 통화 차단
     private void EndCall(){

@@ -70,9 +70,21 @@ public class SettingFragment extends PreferenceFragment {
             }
         });
 
+        PreferenceManager preferenceManager0 = getPreferenceManager();
+        preferenceManager0.setSharedPreferencesName("time");
+        preferenceManager0.setSharedPreferencesMode(Activity.MODE_PRIVATE);
+
+
         pSetting.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
+
+                PreferenceManager preferenceManager0 = getPreferenceManager();
+                preferenceManager0.setSharedPreferencesName("time");
+                preferenceManager0.setSharedPreferencesMode(Activity.MODE_PRIVATE);
+                SharedPreferences preferences0 = getPreferenceManager().getSharedPreferences();
+                final SharedPreferences.Editor editor0 = preferences0.edit();
+
                 final CharSequence[] items0 = {"5", "10", "15", "30"};
 
                 AlertDialog.Builder alertDialogBuilder0 = new AlertDialog.Builder(getActivity());
@@ -83,15 +95,16 @@ public class SettingFragment extends PreferenceFragment {
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
 
-                                if (items0[id].equals("5")){}
+                                if (items0[id].equals("5")){editor0.putInt("time",5);}
 
-                                else if (items0[id].equals("10")){}
+                                else if (items0[id].equals("10")){editor0.putInt("time",10);}
 
-                                else if (items0[id].equals("15")){}
+                                else if (items0[id].equals("15")){editor0.putInt("time",15);}
 
-                                else if (items0[id].equals("30")){}
+                                else if (items0[id].equals("30")){editor0.putInt("time",30);}
 
 
+                                editor0.commit();
 
                                 dialog.dismiss();
                             }
