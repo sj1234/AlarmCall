@@ -14,6 +14,11 @@
         android:switchTextOff="OFF"
         android:switchTextOn="ON"
         android:title="PUSH LATER" />
+    <Preference
+        android:key="push_setting"
+        android:summary="나중에 알림시간을 정합니다"
+        android:title="PUSH SETTING"
+        android:selectable="true" />
 
     <PreferenceCategory
         xmlns:android="http://schemas.android.com/apk/res/android"

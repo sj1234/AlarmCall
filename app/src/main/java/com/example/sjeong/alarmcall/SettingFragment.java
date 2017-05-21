@@ -1,7 +1,9 @@
 package com.example.sjeong.alarmcall;
 
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.Preference;
@@ -36,6 +38,7 @@ public class SettingFragment extends PreferenceFragment {
        // CheckBoxPreference cbpAlarmReceive = (CheckBoxPreference) findPreference("setting_activity_alarm_reiceive");
         Preference pEmail = (Preference) findPreference("sending_email");
         Preference pHow = (Preference) findPreference("setting_activity_how");
+        Preference pSetting = (Preference) findPreference("push_setting");
         final SwitchPreference pPushlater =  (SwitchPreference) findPreference("push_later");
 
 
@@ -66,6 +69,42 @@ public class SettingFragment extends PreferenceFragment {
                 return false;
             }
         });
+
+        pSetting.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                final CharSequence[] items0 = {"5", "10", "15", "30"};
+
+                AlertDialog.Builder alertDialogBuilder0 = new AlertDialog.Builder(getActivity());
+
+                // 제목셋팅
+                alertDialogBuilder0.setTitle("시간 선택");
+                alertDialogBuilder0.setSingleChoiceItems(items0, -1,
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+
+                                if (items0[id].equals("5")){}
+
+                                else if (items0[id].equals("10")){}
+
+                                else if (items0[id].equals("15")){}
+
+                                else if (items0[id].equals("30")){}
+
+
+
+                                dialog.dismiss();
+                            }
+                        });
+                AlertDialog alertDialog0 = alertDialogBuilder0.create();
+                // 다이얼로그 보여주기
+                alertDialog0.show();
+
+                return false;
+            }
+        });
+
+
 
 
 
@@ -116,6 +155,8 @@ public class SettingFragment extends PreferenceFragment {
         else if (preference.getKey().equals("push_later")) {
         }
         else if (preference.getKey().equals("setting_activity_how")) {
+        }
+        else if (preference.getKey().equals("push_setting")) {
         }
         return false;
 
