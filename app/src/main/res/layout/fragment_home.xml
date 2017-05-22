@@ -22,12 +22,13 @@
             android:layout_weight="0.09" />
 
 
-        <TextView
-            android:id="@+id/textView7"
+        <ImageView
+            android:id="@+id/nowicon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:background="@drawable/icon_off"
+            android:background="#00000000"
+            android:scaleType="fitCenter"
             android:gravity="center"/>
 
         <TextView
