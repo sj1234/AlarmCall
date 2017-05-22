@@ -72,6 +72,7 @@ public class CallService extends Service {
             windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
             LayoutInflater layoutInflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE); // 부분레이아웃
             view = layoutInflater.inflate(R.layout.popup, null);
+            windowManager.addView(view, params);
 
             textcallnumber = (TextView) view.findViewById(R.id.call_number);
 
@@ -99,7 +100,6 @@ public class CallService extends Service {
                 }
             });
         }
-        windowManager.addView(view, params);
         return START_REDELIVER_INTENT;
     }
 
@@ -111,8 +111,12 @@ public class CallService extends Service {
     }
 
     public void removePopup() {
-        if (view != null && windowManager != null) windowManager.removeView(view);
-        view = null;
+        if (view != null && windowManager != null){
+            windowManager.removeView(view);
+            view = null;
+            windowManager = null;
+        }
+        Log.i("test popup", "remove pop");
     }
 
     // 나중에 알람이 오도록
