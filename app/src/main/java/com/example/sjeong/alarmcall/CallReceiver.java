@@ -36,6 +36,7 @@ public class CallReceiver extends BroadcastReceiver {
     private HandleRing handleRing;
     private SharedPreferences preferences;
     private int latercallonoff;
+    private String Phonename;
 
 
     @Override
@@ -178,11 +179,13 @@ public class CallReceiver extends BroadcastReceiver {
                 if (phoneNumber.equals(number)) {
                     if (star.equals("1")) {
                         Log.i(Tag, "star Number " + star + " / " + phoneNumber);
+                        Phonename =  cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
                         return 1;
                     } // 즐겨찾기
                     else {
                         Toast.makeText(callcontext, "있는번호", Toast.LENGTH_SHORT).show();
                         Log.i(Tag, "know Number " + phoneNumber);
+                        Phonename =  cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
                         return 2;
                     } // 전화번호부에 있는 번호
                 }
@@ -276,6 +279,7 @@ public class CallReceiver extends BroadcastReceiver {
     private void PopupServiceOn(String incommingnumber){
         Intent intent = new Intent(callcontext, CallService.class);
         intent.putExtra("number", incommingnumber);
+        intent.putExtra("name", Phonename);
         callcontext.startService(intent);
 
     }

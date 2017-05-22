@@ -109,6 +109,16 @@ public class AlarmReceiver extends BroadcastReceiver{
                     editor.commit();
                 }
 
+                // 위젯 변경
+                Intent wintent = new Intent(context, AppWidget.class);
+                wintent.setAction("com.example.sjeong.AlarmCall.CHANGE");
+                PendingIntent pendindintent = PendingIntent.getBroadcast(context, 0, wintent, 0);
+                try {
+                    pendindintent.send();
+                } catch (PendingIntent.CanceledException e) {
+                    e.printStackTrace();
+                }
+
                 if(schedule.getMon() + schedule.getFri() + schedule.getSat() + schedule.getSun() + schedule.getThu() + schedule.getTue() + schedule.getWed()==0) {
                     schedule.setOnoff(0);
                     dbManager.updateSchedule(schedule);

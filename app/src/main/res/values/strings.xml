@@ -23,5 +23,7 @@
     <string name="Sat">Sat</string>
     <string name="Alarm_StartingTime">Alarm_StartingTime</string>
     <string name="Alarm_FinishingTime">Alarm_FinishingTime</string>
-    <string name="amSw">amSw</string>
+
+    <string name="appwidget_text">ALARM CALL</string>
+    <string name="add_widget">Add widget</string>
 </resources>

@@ -2,6 +2,7 @@ package com.example.sjeong.alarmcall;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -104,6 +105,16 @@ public class ModeFragment extends Fragment{
                         editor.putInt("time", mode.getTime());
                         editor.putInt("count", mode.getCount());
                         editor.putInt("draw", mode.getDraw());
+                    }
+
+                    // 위젯 변경
+                    Intent wintent = new Intent(getActivity(), AppWidget.class);
+                    wintent.setAction("com.example.sjeong.AlarmCall.CHANGE");
+                    PendingIntent pendindintent = PendingIntent.getBroadcast(getActivity(), 0, wintent, 0);
+                    try {
+                        pendindintent.send();
+                    } catch (PendingIntent.CanceledException e) {
+                        e.printStackTrace();
                     }
 
                     editor.commit();

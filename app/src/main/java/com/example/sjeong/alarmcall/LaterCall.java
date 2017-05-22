@@ -25,6 +25,7 @@ public class LaterCall extends BroadcastReceiver {
         String number = intent.getStringExtra("phonenumber");
         number = number.replace(" ", "");
         number = number.replace("-", "");
+        String name = intent.getStringExtra("name");
 
         // 푸시 알람
         Uri uri = Uri.parse("tel:"+number);

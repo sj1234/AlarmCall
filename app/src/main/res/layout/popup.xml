@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="#c5dfff"
+    android:background="#ffffff"
     android:gravity="center_vertical"
     android:orientation="vertical"
     android:padding="16dp">
@@ -18,7 +18,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="AlarmCall"
-            android:textColor="#848484"
+            android:textColor="#1b736d"
             android:textSize="10sp"
             android:layout_gravity="left"
             android:layout_weight="15"/>
@@ -52,7 +52,7 @@
         android:layout_height="wrap_content"
         android:background="#00000000"
         android:text="나중에 알림"
-        android:textColor="#848484"/>
+        android:textColor="#1b736d"/>
 
 </LinearLayout>
 

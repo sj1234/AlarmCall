@@ -107,6 +107,12 @@ public class ScheduleFragment extends Fragment {
 
                         calStart.set(calStart.get(Calendar.YEAR), calStart.get(Calendar.MONTH) , calStart.get(Calendar.DATE), Integer.parseInt(start[0]), Integer.parseInt(start[1]),0);
                         calEnd.set(calEnd.get(Calendar.YEAR), calEnd.get(Calendar.MONTH) , calEnd.get(Calendar.DATE), Integer.parseInt(end[0]), Integer.parseInt(end[1]),0);
+
+                        if (calStart.compareTo(Calendar.getInstance()) <= 0) {
+                            calStart.add(Calendar.DATE, 1);
+                            calEnd.add(Calendar.DATE, 1);
+                        }
+
                         amSet(calStart, schedule.getId(), Boolean.TRUE);
                         amSet(calEnd, schedule.getId(), Boolean.FALSE);
                     }

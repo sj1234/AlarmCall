@@ -55,7 +55,6 @@ public class ScheduleSetActivity extends AppCompatActivity {
             dbManager.ReadDB();
         }
 
-
         // 화면 설정
         toggleSun = (ToggleButton) findViewById(R.id.toggle_sun);
         toggleMon = (ToggleButton) findViewById(R.id.toggle_mon);
@@ -206,15 +205,28 @@ public class ScheduleSetActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 if (schedule.getModename() != null && schedule.getStart() != null && schedule.getEnd() != null) {
-                    if(position!=null) {
-                        Toast.makeText(ScheduleSetActivity.this, "수정 저장 ", Toast.LENGTH_SHORT).show();
-                        dbManager.updateSchedule(schedule);
+
+                    String starttime = schedule.getStart().toString();
+                    String endtime = schedule.getEnd().toString();
+                    String[] start = starttime.split(":");
+                    String[] end = endtime.split(":");
+
+                    if(Integer.parseInt(start[0])<Integer.parseInt(end[0]) || (Integer.parseInt(start[0])==Integer.parseInt(end[0]) && Integer.parseInt(start[1])<Integer.parseInt(end[1]))){
+
+                        if(position!=null) {
+                            Toast.makeText(ScheduleSetActivity.this, "수정 저장 ", Toast.LENGTH_SHORT).show();
+                            dbManager.updateSchedule(schedule);
+                        }
+                        else {
+                            Toast.makeText(ScheduleSetActivity.this, "저장", Toast.LENGTH_SHORT).show();
+                            dbManager.insertSchedule(schedule);
+                        }
+                        ScheduleSetActivity.this.finish();
+
                     }
-                    else {
-                        Toast.makeText(ScheduleSetActivity.this, "저장", Toast.LENGTH_SHORT).show();
-                        dbManager.insertSchedule(schedule);
+                    else{
+                        Toast.makeText(ScheduleSetActivity.this, "스케줄 시작시간이 종료시간 이전이여야 합니다. ", Toast.LENGTH_SHORT).show();
                     }
-                    ScheduleSetActivity.this.finish();
                 }
                 else
                     Toast.makeText(ScheduleSetActivity.this, "모든 내용을 입력하십시오", Toast.LENGTH_SHORT).show();
