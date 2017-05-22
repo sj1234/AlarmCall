@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.app.Service;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.PixelFormat;
@@ -29,11 +28,9 @@ public class CallService extends Service {
     private TextView textcallnumber;
     private WindowManager.LayoutParams params;
     private WindowManager windowManager;
-    private Button later;
+    private ImageButton close;
     private String number;
-    private SharedPreferences preferences0;
-    private int latercalltime;
-    private Context timecontext;
+    private String name;
 
 
     @Override
@@ -43,11 +40,10 @@ public class CallService extends Service {
         // popup 설정
         windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
         Display display = windowManager.getDefaultDisplay();
-        int width = (int) (display.getWidth() * 0.9); //Display 사이즈의 90%
 
         // width, hight, 락스크린상태에도 맨 위로 띄우고 클릭 받음, 뷰를 제외한 부분의 터치 가능(포커스를 가지지 않음),Lock 화면 위로 실행, keygurd 해지, 스크린 킨 상태로 유지
         params = new WindowManager.LayoutParams(
-                width,
+                WindowManager.LayoutParams.WRAP_CONTENT,
                 WindowManager.LayoutParams.WRAP_CONTENT,
                 WindowManager.LayoutParams.TYPE_SYSTEM_ERROR,
                 WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
@@ -67,17 +63,19 @@ public class CallService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         number = intent.getStringExtra("number");
+        name = intent.getStringExtra("name");
 
         if( number.equals("off")){
             removePopup();
         }
         else {
+            windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
             LayoutInflater layoutInflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE); // 부분레이아웃
             view = layoutInflater.inflate(R.layout.popup, null);
 
             textcallnumber = (TextView) view.findViewById(R.id.call_number);
 
-            ImageButton close = (ImageButton) view.findViewById(R.id.popup_close);
+            close = (ImageButton) view.findViewById(R.id.popup_close);
             close.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -85,19 +83,23 @@ public class CallService extends Service {
                 }
             });
 
-            later = (Button) view.findViewById(R.id.popup_later);
-            windowManager.addView(view, params);
-            textcallnumber.setText(number);
+            if(name!=null)
+                textcallnumber.setText( name +" "+number);
+            else
+                textcallnumber.setText(number);
 
+
+            Button later = (Button) view.findViewById(R.id.popup_later);
             later.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    LaterCallAlarm(number);
+                    LaterCallAlarm(number, name);
                     Log.i("test later","service to later");
                     EndCall();
                 }
             });
         }
+        windowManager.addView(view, params);
         return START_REDELIVER_INTENT;
     }
 
@@ -114,11 +116,12 @@ public class CallService extends Service {
     }
 
     // 나중에 알람이 오도록
-    private void LaterCallAlarm(String number){
+    private void LaterCallAlarm(String number, String name){
         AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
 
         Intent alarmintent= new Intent(this, LaterCall.class);
         alarmintent.putExtra("phonenumber", number); // 전화번호 정보 전달
+        alarmintent.putExtra("name", name); // 전화번호 정보 전달
         PendingIntent pendingintent=PendingIntent.getBroadcast(this, 0, alarmintent, PendingIntent.FLAG_ONE_SHOT);
 
         SharedPreferences preferences = getSharedPreferences("Later", Activity.MODE_PRIVATE);

@@ -1,0 +1,16 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#00000000"
+    android:padding="@dimen/widget_margin">
+
+    <ImageButton
+        android:id="@+id/buttonWidget"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="Button"
+        android:background="#00000000"
+        android:padding="0dp"
+        android:scaleType="fitCenter"/>
+
+</RelativeLayout>
