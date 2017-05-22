@@ -28,7 +28,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:background="@drawable/icon_off"
-            android:gravity="center" />
+            android:gravity="center"/>
 
         <TextView
             android:id="@+id/nowname"
