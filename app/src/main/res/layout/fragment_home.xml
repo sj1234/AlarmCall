@@ -76,7 +76,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="          ★ 즐겨찾기 외 저장된 번호" />
+                android:text="          ★ 즐겨찾기 외" />
 
             <TextView
                 android:id="@+id/nowcontact"
