@@ -4,8 +4,8 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
 
-    <color name="backcolor">#e15a5f94</color>
     <color name="textcolor">#494949</color>
-    <color name="floating">#393a73</color>
+    <color name="colorDark">#1b736d</color>
+    <color name="colorLight">#31cfc5</color>
 
 </resources>

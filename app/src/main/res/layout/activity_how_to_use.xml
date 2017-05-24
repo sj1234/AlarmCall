@@ -5,8 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.example.sjeong.alarmcall.HowToUseActivity"
-    android:background="@color/backcolor">
+    tools:context="com.example.sjeong.alarmcall.HowToUseActivity">
 
     <FrameLayout
         android:layout_width="match_parent"
