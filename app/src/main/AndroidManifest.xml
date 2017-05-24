@@ -32,14 +32,22 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
-            android:name=".ModeSetActivity"></activity>
-        <activity
-            android:name=".HowToUseActivity">
+            android:name=".ModeSetActivity"
+            android:screenOrientation="portrait">
         </activity>
 
         <activity
-            android:name=".ScheduleSetActivity"></activity>
+            android:name=".HowToUseActivity"
+            android:screenOrientation="portrait">
+        </activity>
+
+        <activity
+            android:name=".ScheduleSetActivity"
+            android:screenOrientation="portrait">
+
+        </activity>
 
 
         <service android:name=".CallService"/>

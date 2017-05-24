@@ -261,21 +261,33 @@ public class ModeSetActivity extends AppCompatActivity implements View.OnClickLi
                     finish();
                 }
                 else {
-                    if (preferences.getString("name", "null").equals(name)) {
-                        if (preferences.getString("set", "off").equals("off")) {
-                            dbManager.deleteMode(name);
-                            SharedPreferences.Editor editor = preferences.edit();
-                            editor.putString("name", "null");
-                            editor.commit();
+                    android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(ModeSetActivity.this);
+                    builder.setMessage("모드를 삭제하시겠습니까?");
+                    builder.setPositiveButton("예",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    SharedPreferences preferences =context.getSharedPreferences("Mode", Activity.MODE_PRIVATE);
 
-                            Toast.makeText(context, "삭제 완료", Toast.LENGTH_SHORT).show();
-                        } else
-                            Toast.makeText(context, "현재 모드라 삭제 불가능 합니다.", Toast.LENGTH_SHORT).show();
-                    } else {
-                        dbManager.deleteMode(name);
-                        Toast.makeText(context, "삭제 완료", Toast.LENGTH_SHORT).show();
-                    }
-                    finish();
+                                    if (preferences.getString("name", "null").equals(name)) {
+                                        if (preferences.getString("set", "off").equals("off")) {
+                                            dbManager.deleteMode(name);
+                                            SharedPreferences.Editor editor = preferences.edit();
+                                            editor.putString("name", "null");
+                                            editor.commit();
+
+                                            Toast.makeText(context, "모드를 삭제하였습니다.", Toast.LENGTH_SHORT).show();
+                                            finish();
+                                        } else
+                                            Toast.makeText(context, "현재 모드라 삭제 불가능 합니다.", Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        dbManager.deleteMode(name);
+                                        Toast.makeText(context, "모드를 삭제하였습니다.", Toast.LENGTH_SHORT).show();
+                                        finish();
+                                    }
+                                }
+                            });
+                    builder.setNegativeButton("아니오", null);
+                    builder.show();
                 }
                 break;
             case R.id.mode_icon:

@@ -5,9 +5,11 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
@@ -15,7 +17,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.Spinner;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -27,9 +28,7 @@ import java.util.Calendar;
 
 public class ScheduleSetActivity extends AppCompatActivity {
 
-    private String Tag = "test ScheduleSetActivity";
     private ToggleButton toggleSun,toggleMon,toggleTue,toggleWed,toggleThu,toggleFri,toggleSat;
-    private Switch aSwitch;
     private DBManager dbManager;
     private Schedule schedule;
     private String position;
@@ -40,7 +39,6 @@ public class ScheduleSetActivity extends AppCompatActivity {
     Calendar calSet = (Calendar) calNow1.clone();
     Calendar calNow2 = Calendar.getInstance();
     Calendar calReset = (Calendar) calNow2.clone();
-    Boolean setRec = Boolean.FALSE; // True?대㈃ set False?대㈃ reset
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -168,17 +166,28 @@ public class ScheduleSetActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(position!=null) {
-                    if(schedule.getOnoff()==1) {
-                        // 알람종료
-                        Intent intent = new Intent(ScheduleSetActivity.this,AlarmReceiver.class);
-                        AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-                        PendingIntent amIntent = PendingIntent.getBroadcast(ScheduleSetActivity.this,schedule.getId()*2,intent,PendingIntent.FLAG_UPDATE_CURRENT);
-                        am.cancel(amIntent);
-                        amIntent = PendingIntent.getBroadcast(ScheduleSetActivity.this,(schedule.getId()*2)+1,intent,PendingIntent.FLAG_UPDATE_CURRENT);
-                        am.cancel(amIntent);
-                    }
-                    dbManager.deleteSchedule(schedule.getId());
-                    finish();
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(ScheduleSetActivity.this);
+                    builder.setMessage("스케줄을 삭제하시겠습니까?");
+                    builder.setPositiveButton("예",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    if(schedule.getOnoff()==1) {
+                                        // 알람종료
+                                        Intent intent = new Intent(ScheduleSetActivity.this,AlarmReceiver.class);
+                                        AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+                                        PendingIntent amIntent = PendingIntent.getBroadcast(ScheduleSetActivity.this,schedule.getId()*2,intent,PendingIntent.FLAG_UPDATE_CURRENT);
+                                        am.cancel(amIntent);
+                                        amIntent = PendingIntent.getBroadcast(ScheduleSetActivity.this,(schedule.getId()*2)+1,intent,PendingIntent.FLAG_UPDATE_CURRENT);
+                                        am.cancel(amIntent);
+                                    }
+                                    dbManager.deleteSchedule(schedule.getId());
+                                    Toast.makeText(getApplicationContext(),"스케줄을 삭제하였습니다..",Toast.LENGTH_LONG).show();
+                                    finish();
+                                }
+                            });
+                    builder.setNegativeButton("아니오", null);
+                    builder.show();
                 }
                 else
                     finish();
