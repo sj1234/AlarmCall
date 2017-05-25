@@ -70,11 +70,12 @@ public class HomeFragment extends Fragment {
         SharedPreferences preferences = getActivity().getSharedPreferences("Mode", Activity.MODE_PRIVATE);
 
         if(preferences.getString("set", "off").equals("off")) {
-            nowname.setText("현재 모드 : off");
+            nowname.setText("OFF");
             nowstar.setText("");
             nowcontact.setText("");
             nowunknown.setText("");
             nowtimecount.setText("");
+            nowicon.setImageResource(R.drawable.icon_off);
             return ;
         }
         else{
