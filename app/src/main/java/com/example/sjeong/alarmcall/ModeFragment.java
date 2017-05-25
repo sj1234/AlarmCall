@@ -92,7 +92,10 @@ public class ModeFragment extends Fragment{
                     SharedPreferences.Editor editor = preferences.edit();
 
                     if(preferences.getString("name", "").equals(modename)) {
-                        editor.putString("set", "off");
+                        if(preferences.getString("set", "off").equals("off"))
+                            editor.putString("set", "on");
+                        else
+                            editor.putString("set", "off");
                     }
                     else {
                         Mode mode = dbManager.getMode(modename);

@@ -60,12 +60,23 @@ public class AlarmReceiver extends BroadcastReceiver{
             editor.putInt("unknown", mode.getUnknown());
             editor.putInt("time", mode.getTime());
             editor.putInt("count", mode.getCount());
+            editor.putInt("draw", mode.getDraw());
             editor.commit();
 
             // 현재 실행중인 스케줄로 등록
             editor = preferencesschedule.edit();
             editor.putInt("id", id);
             editor.commit();
+
+            // 위젯 변경
+            Intent wintent = new Intent(context, AppWidget.class);
+            wintent.setAction("com.example.sjeong.AlarmCall.CHANGE");
+            PendingIntent pendindintent = PendingIntent.getBroadcast(context, 0, wintent, 0);
+            try {
+                pendindintent.send();
+            } catch (PendingIntent.CanceledException e) {
+                e.printStackTrace();
+            }
 
             Log.i(Tag, "changing to " + schedule.getModename());
             NotificationManager notificationmanager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
@@ -106,6 +117,8 @@ public class AlarmReceiver extends BroadcastReceiver{
                     editor.putInt("unknown", mode.getUnknown());
                     editor.putInt("time", mode.getTime());
                     editor.putInt("count", mode.getCount());
+                    editor.putInt("draw", mode.getDraw());
+
                     editor.commit();
                 }
 
