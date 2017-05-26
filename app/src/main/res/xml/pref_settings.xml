@@ -6,6 +6,10 @@
     <!-- 설정를 구성하는 Layout XML -->
     <!-- @author croute -->
     <!-- @since 2011.02.25 -->
+    <PreferenceCategory
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:key="setting_activity_account"
+        android:title="LATER CALL "></PreferenceCategory>
     <SwitchPreference
 
         android:defaultValue="false"
@@ -25,10 +29,12 @@
         android:key="setting_activity_account"
         android:title="APP INFORMATION ">
         <Preference
+            android:summary="앱정보를 보여줍니다."
             android:key="setting_activity_id"
             android:title="APP INFO"
             android:selectable="true" />
         <Preference
+            android:summary="어플 사용법"
             android:key="setting_activity_how"
             android:title="HOW TO USE"
             android:selectable="true">
