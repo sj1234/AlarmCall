@@ -37,15 +37,19 @@ public class AlarmReceiver extends BroadcastReceiver{
             // 반복이 있는 경우
             if (schedule.getMon() + schedule.getFri() + schedule.getSat() + schedule.getSun() + schedule.getThu() + schedule.getTue() + schedule.getWed() > 0){
                 Calendar calStart = Calendar.getInstance();
-                calStart.set(calStart.get(Calendar.YEAR), calStart.get(Calendar.MONTH) , calStart.get(Calendar.DATE), calStart.get(Calendar.HOUR), calStart.get(Calendar.MINUTE),0);
+                calStart.set(calStart.get(Calendar.YEAR), calStart.get(Calendar.MONTH) , calStart.get(Calendar.DATE), calStart.get(Calendar.HOUR_OF_DAY), calStart.get(Calendar.MINUTE),0);
 
                 am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
                 PendingIntent pend = PendingIntent.getBroadcast(context, id*2, intent, PendingIntent.FLAG_UPDATE_CURRENT);
                 am.cancel(pend);
                 am.setExact(AlarmManager.RTC_WAKEUP, calStart.getTimeInMillis()+ 24*60*60*1000, pend); // 24시간 후에 다시 set한다.
 
-                if(CompareWeek(schedule)==0) // 오늘 반복 아님!
+                if(CompareWeek(schedule)==0) { // 오늘 반복 아님!
+                    Log.i(Tag, "오늘 반복이 아님");
                     return;
+                }
+                else
+                    Log.i(Tag, "오늘 반복!");
             }
 
             PendingIntent p = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
@@ -121,15 +125,19 @@ public class AlarmReceiver extends BroadcastReceiver{
             // 반복이 있는 경우
             if (schedule.getMon() + schedule.getFri() + schedule.getSat() + schedule.getSun() + schedule.getThu() + schedule.getTue() + schedule.getWed() > 0){
                 Calendar calStart = Calendar.getInstance();
-                calStart.set(calStart.get(Calendar.YEAR), calStart.get(Calendar.MONTH) , calStart.get(Calendar.DATE), calStart.get(Calendar.HOUR), calStart.get(Calendar.MINUTE),0);
+                calStart.set(calStart.get(Calendar.YEAR), calStart.get(Calendar.MONTH) , calStart.get(Calendar.DATE), calStart.get(Calendar.HOUR_OF_DAY), calStart.get(Calendar.MINUTE),0);
 
                 am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
                 PendingIntent pend = PendingIntent.getBroadcast(context, (id*2)+1, intent, PendingIntent.FLAG_UPDATE_CURRENT);
                 am.cancel(pend);
                 am.setExact(AlarmManager.RTC_WAKEUP, calStart.getTimeInMillis()+ 24*60*60*1000, pend); // 24시간 후에 다시 set한다.
 
-                if(CompareWeek(schedule)==0) // 오늘 반복 아님!
+                if(CompareWeek(schedule)==0) { // 오늘 반복 아님!
+                    Log.i(Tag, "오늘 반복이 아님");
                     return;
+                }
+                else
+                    Log.i(Tag, "오늘 반복!");
             }
 
 

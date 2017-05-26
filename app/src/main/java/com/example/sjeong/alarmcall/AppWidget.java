@@ -46,9 +46,11 @@ public class AppWidget extends AppWidgetProvider {
 
             if(preferences.getString("set","off").equals("off")) {
                 views.setImageViewResource(R.id.buttonWidget, R.drawable.icon_off);
+                views.setTextViewText(R.id.widgetname, "Mode OFF");
             }
             else{
                 views.setImageViewResource(R.id.buttonWidget, preferences.getInt("draw", R.drawable.icon_off));
+                views.setTextViewText(R.id.widgetname, preferences.getString("name", "null") );
             }
             // Instruct the widget manager to update the widget
             appWidgetManager.updateAppWidget(appWidgetId, views);
