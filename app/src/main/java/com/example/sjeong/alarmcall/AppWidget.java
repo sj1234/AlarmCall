@@ -76,17 +76,31 @@ public class AppWidget extends AppWidgetProvider {
                 Toast.makeText(context,"Mode On "+preferences.getString("name", "null"), Toast.LENGTH_LONG).show();
                 editor.putString("set", "on");
                 editor.commit();
+
+                // 스케줄 실행중인 경우 ( 스케줄 종료 )
+                SharedPreferences preferencesschedule = context.getSharedPreferences("Schedule", Activity.MODE_PRIVATE);
+                if(preferencesschedule.getInt("id", -1) > -1) {
+                    SharedPreferences.Editor editorschedule =  preferencesschedule.edit();
+                    editorschedule.putInt("id", -1);
+                    editorschedule.commit();
+                }
             }
             else if(preferences.getString("set", "off").equals("on")){
                 Toast.makeText(context,"Mode Off", Toast.LENGTH_LONG).show();
                 editor.putString("set", "off");
                 editor.commit();
+
+                // 스케줄 실행중인 경우 ( 스케줄 종료 )
+                SharedPreferences preferencesschedule = context.getSharedPreferences("Schedule", Activity.MODE_PRIVATE);
+                if(preferencesschedule.getInt("id", -1) > -1) {
+                    SharedPreferences.Editor editorschedule =  preferencesschedule.edit();
+                    editorschedule.putInt("id", -1);
+                    editorschedule.commit();
+                }
             }
-            else {
+            else
                 Toast.makeText(context,"No Mode Set Before", Toast.LENGTH_LONG).show();
-                editor.putString("set", "off");
-                editor.commit();
-            }
+
 
             AppWidgetManager manager = AppWidgetManager.getInstance(context);
             this.onUpdate(context, manager, manager.getAppWidgetIds(new ComponentName(context, AppWidget.class)));

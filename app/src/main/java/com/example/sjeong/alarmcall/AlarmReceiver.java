@@ -63,7 +63,17 @@ public class AlarmReceiver extends BroadcastReceiver{
             editor.putInt("draw", mode.getDraw());
             editor.commit();
 
-            // 현재 실행중인 스케줄로 등록
+            // 이전 스케줄이 반복이 없을 경우 리스트 색 변화하도록 이전 알람을 취소할까???
+            if(preferencesschedule.getInt("id", -1) > -1) {
+                Schedule preschedule = dbManager.getScheduleId(preferencesschedule.getInt("id", -1));
+                if (preschedule.getMon() + preschedule.getFri() + preschedule.getSat() + preschedule.getSun() + preschedule.getThu() + preschedule.getTue() + preschedule.getWed() == 0) {
+                    preschedule.setOnoff(0);
+                    dbManager.updateSchedule(preschedule);
+                    Log.i(Tag, "반복 없음");
+                }
+            }
+
+            // 현재 실행중인 스케줄로 등록 ( 이전 스케줄 알람이 리스크에서 색변하는 부분???????)
             editor = preferencesschedule.edit();
             editor.putInt("id", id);
             editor.commit();
@@ -110,15 +120,18 @@ public class AlarmReceiver extends BroadcastReceiver{
                 else{
                     Mode mode = dbManager.getMode(schedule.getPremodename());
 
-                    editor.putString("set", "on");
-                    editor.putString("name", mode.getName());
-                    editor.putInt("star", mode.getStar());
-                    editor.putInt("contact", mode.getContact());
-                    editor.putInt("unknown", mode.getUnknown());
-                    editor.putInt("time", mode.getTime());
-                    editor.putInt("count", mode.getCount());
-                    editor.putInt("draw", mode.getDraw());
-
+                    if(mode.getName()==null) // premode 가 삭제된 경우 오류.....
+                        editor.putString("set", "off");
+                    else {
+                        editor.putString("set", "on");
+                        editor.putString("name", mode.getName());
+                        editor.putInt("star", mode.getStar());
+                        editor.putInt("contact", mode.getContact());
+                        editor.putInt("unknown", mode.getUnknown());
+                        editor.putInt("time", mode.getTime());
+                        editor.putInt("count", mode.getCount());
+                        editor.putInt("draw", mode.getDraw());
+                    }
                     editor.commit();
                 }
 
