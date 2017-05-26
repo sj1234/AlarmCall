@@ -1,6 +1,7 @@
 package com.example.sjeong.alarmcall;
 
 import android.app.Activity;
+import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -10,9 +11,12 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.Log;
 
+import java.util.Calendar;
+
 public class AlarmReceiver extends BroadcastReceiver{
     private String Tag = "test Receiver1";
     private DBManager dbManager;
+    private AlarmManager am;
 
     public void onReceive(Context context, Intent intent) {
 
@@ -25,13 +29,28 @@ public class AlarmReceiver extends BroadcastReceiver{
         Log.i(Tag, "receiver start");
         boolean setRec = intent.getBooleanExtra("alReceiver", Boolean.TRUE); // ※ True : defaultValue
         int id = Integer.parseInt(intent.getStringExtra("id")); // 스케줄 id 불러옴
+        am = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
+        Schedule schedule = dbManager.getScheduleId(id);
 
         if(setRec) { // true일 때 시작 스케줄
-            Intent i = new Intent(context,ScheduleSetActivity.class);
+
+            // 반복이 있는 경우
+            if (schedule.getMon() + schedule.getFri() + schedule.getSat() + schedule.getSun() + schedule.getThu() + schedule.getTue() + schedule.getWed() > 0){
+                Calendar calStart = Calendar.getInstance();
+                calStart.set(calStart.get(Calendar.YEAR), calStart.get(Calendar.MONTH) , calStart.get(Calendar.DATE), calStart.get(Calendar.HOUR), calStart.get(Calendar.MINUTE),0);
+
+                am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+                PendingIntent pend = PendingIntent.getBroadcast(context, id*2, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                am.cancel(pend);
+                am.setExact(AlarmManager.RTC_WAKEUP, calStart.getTimeInMillis()+ 24*60*60*1000, pend); // 24시간 후에 다시 set한다.
+
+                if(CompareWeek(schedule)==0) // 오늘 반복 아님!
+                    return;
+            }
+
             PendingIntent p = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
 
             //바꿀 모드 chgMode
-            Schedule schedule = dbManager.getScheduleId(id);
             Mode mode = dbManager.getMode(schedule.getModename());
             SharedPreferences preferences = context.getSharedPreferences("Mode", Activity.MODE_PRIVATE);
             SharedPreferences preferencesschedule = context.getSharedPreferences("Schedule", Activity.MODE_PRIVATE);
@@ -63,7 +82,7 @@ public class AlarmReceiver extends BroadcastReceiver{
             editor.putInt("draw", mode.getDraw());
             editor.commit();
 
-            // 이전 스케줄이 반복이 없을 경우 리스트 색 변화하도록 이전 알람을 취소할까???
+            // 이전 스케줄이 반복이 없을 경우 리스트 색 변화하도록
             if(preferencesschedule.getInt("id", -1) > -1) {
                 Schedule preschedule = dbManager.getScheduleId(preferencesschedule.getInt("id", -1));
                 if (preschedule.getMon() + preschedule.getFri() + preschedule.getSat() + preschedule.getSun() + preschedule.getThu() + preschedule.getTue() + preschedule.getWed() == 0) {
@@ -73,7 +92,7 @@ public class AlarmReceiver extends BroadcastReceiver{
                 }
             }
 
-            // 현재 실행중인 스케줄로 등록 ( 이전 스케줄 알람이 리스크에서 색변하는 부분???????)
+            // 현재 실행중인 스케줄로 등록
             editor = preferencesschedule.edit();
             editor.putInt("id", id);
             editor.commit();
@@ -99,16 +118,28 @@ public class AlarmReceiver extends BroadcastReceiver{
         }
         else if(!setRec){ // false일 때 종료 스케줄
 
+            // 반복이 있는 경우
+            if (schedule.getMon() + schedule.getFri() + schedule.getSat() + schedule.getSun() + schedule.getThu() + schedule.getTue() + schedule.getWed() > 0){
+                Calendar calStart = Calendar.getInstance();
+                calStart.set(calStart.get(Calendar.YEAR), calStart.get(Calendar.MONTH) , calStart.get(Calendar.DATE), calStart.get(Calendar.HOUR), calStart.get(Calendar.MINUTE),0);
+
+                am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+                PendingIntent pend = PendingIntent.getBroadcast(context, (id*2)+1, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                am.cancel(pend);
+                am.setExact(AlarmManager.RTC_WAKEUP, calStart.getTimeInMillis()+ 24*60*60*1000, pend); // 24시간 후에 다시 set한다.
+
+                if(CompareWeek(schedule)==0) // 오늘 반복 아님!
+                    return;
+            }
+
+
             SharedPreferences preferences = context.getSharedPreferences("Schedule", Activity.MODE_PRIVATE);
 
             if(preferences.getInt("id", -1)==id){
                 SharedPreferences.Editor editor = preferences.edit();
                 editor.putInt("id", -1);
                 editor.commit();
-
-                Intent i = new Intent(context, ScheduleSetActivity.class);
                 PendingIntent p = PendingIntent.getBroadcast(context, 1, intent, PendingIntent.FLAG_CANCEL_CURRENT);
-                Schedule schedule = dbManager.getScheduleId(id);
 
                 preferences = context.getSharedPreferences("Mode", Activity.MODE_PRIVATE);
                 editor = preferences.edit();
@@ -163,5 +194,29 @@ public class AlarmReceiver extends BroadcastReceiver{
             }
         }
 
+    }
+
+    public int CompareWeek(Schedule schedule){
+        Calendar cal = Calendar.getInstance();
+        int week =cal.get(Calendar.DAY_OF_WEEK); // 1 일요일 2 월요일.........
+
+        switch(week){
+            case 1:
+                return schedule.getSun();
+            case 2:
+                return schedule.getMon();
+            case 3:
+                return schedule.getTue();
+            case 4:
+                return schedule.getWed();
+            case 5:
+                return schedule.getThu();
+            case 6:
+                return schedule.getFri();
+            case 7:
+                return schedule.getSat();
+            default:
+                return 0;
+        }
     }
 }

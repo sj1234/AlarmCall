@@ -113,16 +113,19 @@ public class ModeFragment extends Fragment{
                     // 스케줄 실행중인 경우 ( 스케줄 종료 ), 이전 스케줄이 반복이 없을 경우 리스트 색 변화
                     SharedPreferences preferencesschedule = getActivity().getSharedPreferences("Schedule", Activity.MODE_PRIVATE);
                     if(preferencesschedule.getInt("id", -1) > -1) {
+                    /*
                         Schedule preschedule = dbManager.getScheduleId(preferencesschedule.getInt("id", -1));
                         if (preschedule.getMon() + preschedule.getFri() + preschedule.getSat() + preschedule.getSun() + preschedule.getThu() + preschedule.getTue() + preschedule.getWed() == 0) {
                             preschedule.setOnoff(0);
                             dbManager.updateSchedule(preschedule);
                             Log.i("test node schedule 색", "반복 없음");
                         }
+                        */
                         SharedPreferences.Editor editorschedule =  preferencesschedule.edit();
                         editorschedule.putInt("id", -1);
                         editorschedule.commit();
                     }
+
 
                     // 위젯 변경
                     Intent wintent = new Intent(getActivity(), AppWidget.class);

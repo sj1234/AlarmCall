@@ -8,6 +8,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.Toast;
 
@@ -18,7 +19,7 @@ public class AppWidget extends AppWidgetProvider {
 
     final static String ACTION_CLICK = "com.example.sjeong.AlarmCall.CLICK";
     final static String ACTION_CHANGE = "com.example.sjeong.AlarmCall.CHANGE";
-    private int ImageChange;
+    private DBManager dbManager;
 
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager, int appWidgetId) {
 
@@ -67,6 +68,13 @@ public class AppWidget extends AppWidgetProvider {
 
     @Override
     public void onReceive(Context context, Intent intent) {
+
+        // DB생성
+        if (dbManager == null) {
+            dbManager = new DBManager(context, "AlarmCall", null, 1);
+            dbManager.ReadDB();
+        }
+
         // 위젯 업데이트
         if(ACTION_CLICK.equals(intent.getAction())){
             SharedPreferences preferences= context.getSharedPreferences("Mode", Activity.MODE_PRIVATE);
@@ -90,9 +98,15 @@ public class AppWidget extends AppWidgetProvider {
                 editor.putString("set", "off");
                 editor.commit();
 
-                // 스케줄 실행중인 경우 ( 스케줄 종료 )
+                // 스케줄 실행중인 경우 ( 스케줄 종료 ) , 이전 스케줄이 반복이 없을 경우 리스트 색 변화
                 SharedPreferences preferencesschedule = context.getSharedPreferences("Schedule", Activity.MODE_PRIVATE);
                 if(preferencesschedule.getInt("id", -1) > -1) {
+                    Schedule preschedule = dbManager.getScheduleId(preferencesschedule.getInt("id", -1));
+                    if (preschedule.getMon() + preschedule.getFri() + preschedule.getSat() + preschedule.getSun() + preschedule.getThu() + preschedule.getTue() + preschedule.getWed() == 0) {
+                        preschedule.setOnoff(0);
+                        dbManager.updateSchedule(preschedule);
+                        Log.i("test node schedule 색", "반복 없음");
+                    }
                     SharedPreferences.Editor editorschedule =  preferencesschedule.edit();
                     editorschedule.putInt("id", -1);
                     editorschedule.commit();
