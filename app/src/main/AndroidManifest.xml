@@ -54,7 +54,6 @@
         <activity
             android:name=".ScheduleSetActivity"
             android:screenOrientation="portrait">
-
         </activity>
 
 

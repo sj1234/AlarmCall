@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -19,54 +20,64 @@
         android:layout_marginLeft="8dp">
 
         <ImageView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:src="@drawable/icon_book"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_weight="1"
             android:background="#00000000"
             android:scaleType="fitCenter"
-            android:layout_weight="1"
-            android:layout_marginRight="8dp"
-            android:layout_marginLeft="8dp"/>
+            android:src="@drawable/icon_book" />
 
         <ImageView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:src="@drawable/icon_movie"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_weight="1"
             android:background="#00000000"
             android:scaleType="fitCenter"
-            android:layout_weight="1"
-            android:layout_marginRight="8dp"
-            android:layout_marginLeft="8dp"/>
+            android:src="@drawable/icon_movie" />
 
         <ImageView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:src="@drawable/icon_office"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_weight="1"
             android:background="#00000000"
             android:scaleType="fitCenter"
-            android:layout_weight="1"
-            android:layout_marginRight="8dp"
-            android:layout_marginLeft="8dp"/>
+            android:src="@drawable/icon_office" />
 
         <ImageView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:src="@drawable/icon_sleep"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_weight="1"
             android:background="#00000000"
             android:scaleType="fitCenter"
-            android:layout_weight="1"
-            android:layout_marginRight="8dp"
-            android:layout_marginLeft="8dp"/>
+            android:src="@drawable/icon_sleep" />
 
         <ImageView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:src="@drawable/icon_tea"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_weight="1"
             android:background="#00000000"
             android:scaleType="fitCenter"
-            android:layout_weight="1"
+            android:src="@drawable/icon_tea" />
+
+        <ImageView
+            android:id="@+id/empty"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
-            android:layout_marginLeft="8dp"/>
+            android:layout_weight="1"
+            android:background="#00000000"
+            android:scaleType="fitCenter" />
 
     </LinearLayout>
 
@@ -74,63 +85,72 @@
         android:id="@+id/icon_group"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        android:layout_marginLeft="8dp">
+        android:orientation="horizontal"
+        android:weightSum="1">
 
         <RadioButton
             android:id="@+id/icon_book"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginRight="8dp"
             android:layout_marginLeft="8dp"
-            android:tag = "1"
-            android:buttonTint="#1b736d"/>
+            android:layout_marginRight="8dp"
+            android:layout_weight="0.29"
+            android:buttonTint="#1b736d"
+            android:tag="1" />
 
         <RadioButton
             android:id="@+id/icon_movie"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginRight="8dp"
             android:layout_marginLeft="8dp"
-            android:tag = "2"
-            android:buttonTint="#1b736d"/>
+            android:layout_marginRight="8dp"
+            android:layout_weight="0.17"
+            android:buttonTint="#1b736d"
+            android:tag="2" />
 
         <RadioButton
             android:id="@+id/icon_office"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginRight="8dp"
             android:layout_marginLeft="8dp"
-            android:tag = "3"
-            android:buttonTint="#1b736d"/>
+            android:layout_marginRight="8dp"
+            android:layout_weight="0.17"
+            android:buttonTint="#1b736d"
+            android:tag="3" />
 
         <RadioButton
             android:id="@+id/icon_sleep"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginRight="8dp"
             android:layout_marginLeft="8dp"
-            android:tag = "4"
-            android:buttonTint="#1b736d"/>
+            android:layout_marginRight="8dp"
+            android:layout_weight="0.17"
+            android:buttonTint="#1b736d"
+            android:tag="4" />
 
         <RadioButton
             android:id="@+id/icon_tea"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginRight="8dp"
             android:layout_marginLeft="8dp"
-            android:tag = "5"
-            android:buttonTint="#1b736d"/>
+            android:layout_marginRight="8dp"
+            android:layout_weight="0.16"
+            android:buttonTint="#1b736d"
+            android:tag="5" />
+
+        <RadioButton
+            android:id="@+id/icon_empty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:buttonTint="#1b736d"
+            android:tag="6" />
 
 
     </RadioGroup>
-
 
 
 </LinearLayout>
