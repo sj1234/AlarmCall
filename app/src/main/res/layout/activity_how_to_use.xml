@@ -9,7 +9,7 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="33dp"
         android:orientation="vertical">
 
     </FrameLayout>
@@ -36,9 +36,10 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_weight="4"
-                android:text="MODE"
+                android:text="모드"
+
                 android:textColor="@color/textcolor"
-                android:textSize="20sp" />
+                android:textSize="24sp" />
 
             <TextView
                 android:id="@+id/startxt"
@@ -68,13 +69,16 @@
             android:layout_marginLeft="8dp">
 
             <TextView
+                android:id="@+id/textView1"
+
                 android:layout_width="30dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_weight="4"
-                android:text="SCHEDULE"
+                android:text="스케쥴"
+
                 android:textColor="@color/textcolor"
-                android:textSize="20sp" />
+                android:textSize="24sp" />
 
             <TextView
                 android:id="@+id/contacttxt"
@@ -104,13 +108,15 @@
             android:layout_marginLeft="8dp">
 
             <TextView
+                android:id="@+id/textView2"
+
                 android:layout_width="30dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_weight="4"
-                android:text="ETC"
+                android:text="기타"
                 android:textColor="@color/textcolor"
-                android:textSize="20sp" />
+                android:textSize="24sp" />
 
             <TextView
                 android:id="@+id/unknowntxt"

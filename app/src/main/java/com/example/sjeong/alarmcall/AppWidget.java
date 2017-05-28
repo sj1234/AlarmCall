@@ -8,6 +8,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.Toast;
 
@@ -18,7 +19,7 @@ public class AppWidget extends AppWidgetProvider {
 
     final static String ACTION_CLICK = "com.example.sjeong.AlarmCall.CLICK";
     final static String ACTION_CHANGE = "com.example.sjeong.AlarmCall.CHANGE";
-    private int ImageChange;
+    private DBManager dbManager;
 
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager, int appWidgetId) {
 
@@ -45,9 +46,11 @@ public class AppWidget extends AppWidgetProvider {
 
             if(preferences.getString("set","off").equals("off")) {
                 views.setImageViewResource(R.id.buttonWidget, R.drawable.icon_off);
+                views.setTextViewText(R.id.widgetname, "Mode OFF");
             }
             else{
                 views.setImageViewResource(R.id.buttonWidget, preferences.getInt("draw", R.drawable.icon_off));
+                views.setTextViewText(R.id.widgetname, preferences.getString("name", "null") );
             }
             // Instruct the widget manager to update the widget
             appWidgetManager.updateAppWidget(appWidgetId, views);
@@ -67,6 +70,13 @@ public class AppWidget extends AppWidgetProvider {
 
     @Override
     public void onReceive(Context context, Intent intent) {
+
+        // DB생성
+        if (dbManager == null) {
+            dbManager = new DBManager(context, "AlarmCall", null, 1);
+            dbManager.ReadDB();
+        }
+
         // 위젯 업데이트
         if(ACTION_CLICK.equals(intent.getAction())){
             SharedPreferences preferences= context.getSharedPreferences("Mode", Activity.MODE_PRIVATE);
@@ -76,17 +86,37 @@ public class AppWidget extends AppWidgetProvider {
                 Toast.makeText(context,"Mode On "+preferences.getString("name", "null"), Toast.LENGTH_LONG).show();
                 editor.putString("set", "on");
                 editor.commit();
+
+                // 스케줄 실행중인 경우 ( 스케줄 종료 )
+                SharedPreferences preferencesschedule = context.getSharedPreferences("Schedule", Activity.MODE_PRIVATE);
+                if(preferencesschedule.getInt("id", -1) > -1) {
+                    SharedPreferences.Editor editorschedule =  preferencesschedule.edit();
+                    editorschedule.putInt("id", -1);
+                    editorschedule.commit();
+                }
             }
             else if(preferences.getString("set", "off").equals("on")){
                 Toast.makeText(context,"Mode Off", Toast.LENGTH_LONG).show();
                 editor.putString("set", "off");
                 editor.commit();
+
+                // 스케줄 실행중인 경우 ( 스케줄 종료 ) , 이전 스케줄이 반복이 없을 경우 리스트 색 변화
+                SharedPreferences preferencesschedule = context.getSharedPreferences("Schedule", Activity.MODE_PRIVATE);
+                if(preferencesschedule.getInt("id", -1) > -1) {
+                    Schedule preschedule = dbManager.getScheduleId(preferencesschedule.getInt("id", -1));
+                    if (preschedule.getMon() + preschedule.getFri() + preschedule.getSat() + preschedule.getSun() + preschedule.getThu() + preschedule.getTue() + preschedule.getWed() == 0) {
+                        preschedule.setOnoff(0);
+                        dbManager.updateSchedule(preschedule);
+                        Log.i("test node schedule 색", "반복 없음");
+                    }
+                    SharedPreferences.Editor editorschedule =  preferencesschedule.edit();
+                    editorschedule.putInt("id", -1);
+                    editorschedule.commit();
+                }
             }
-            else {
+            else
                 Toast.makeText(context,"No Mode Set Before", Toast.LENGTH_LONG).show();
-                editor.putString("set", "off");
-                editor.commit();
-            }
+
 
             AppWidgetManager manager = AppWidgetManager.getInstance(context);
             this.onUpdate(context, manager, manager.getAppWidgetIds(new ComponentName(context, AppWidget.class)));

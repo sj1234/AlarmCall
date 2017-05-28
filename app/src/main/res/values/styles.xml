@@ -13,4 +13,21 @@
         <item name = "android:windowBackground">@drawable/splash</item>
     </style>
 
+    <style name="DialogFullScreen" parent="@style/Theme.AppCompat.DayNight">
+
+        <item name="android:windowFullscreen">true</item>
+
+        <item name="android:windowFrame">@null</item>
+
+        <item name="android:windowNoTitle">true</item>
+
+        <item name="android:windowIsFloating">true</item>
+
+        <item name="android:windowContentOverlay">@null</item>
+
+        <item name="android:windowBackground">@android:color/transparent</item>
+
+    </style>
+
+
 </resources>

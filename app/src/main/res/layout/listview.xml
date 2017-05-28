@@ -29,7 +29,7 @@
         <TextView
             android:id="@+id/itemmode"
             android:focusable="false"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:textSize="15sp"/>
@@ -37,7 +37,7 @@
         <TextView
             android:id="@+id/itemdetail"
             android:focusable="false"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_marginLeft="16dp"

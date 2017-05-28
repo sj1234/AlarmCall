@@ -84,6 +84,8 @@ public class DBManager extends SQLiteOpenHelper {
         String deletemode = "DELETE FROM MODE WHERE NAME = ?;";
         String deleteschedule = "DELETE FROM SCHEDULE WHERE MODENAME = ?;";
 
+        // 스케줄이 현재 실행중인 경우 알람 해제하기
+
         db.execSQL(deletemode, new Object[]{modename});
         db.execSQL(deleteschedule, new Object[]{modename});
         Log.i("test DB", "delete mode"+modename);
@@ -206,6 +208,7 @@ public class DBManager extends SQLiteOpenHelper {
         else
             Log.i("test DBManager", "get mode null");
 
+        mode.setName(null);
         return mode;
     }
 

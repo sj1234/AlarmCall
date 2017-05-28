@@ -5,10 +5,14 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Display;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -16,11 +20,15 @@ import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.tsengvn.typekit.TypekitContextWrapper;
+
 /**
  * Created by kjh on 2017-05-18.
  */
 
 public class HowToUseActivity extends AppCompatActivity implements View.OnClickListener {
+
     final Context context = this;
 
 
@@ -29,10 +37,26 @@ public class HowToUseActivity extends AppCompatActivity implements View.OnClickL
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
+
         setContentView(R.layout.activity_how_to_use);
+
+        Display display = ((WindowManager) getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
+
+        int width = (int) (display.getWidth() * 0.89);
+
+        int height = (int) (display.getHeight() * 0.70);
+
+        getWindow().getAttributes().width = width;
+
+        getWindow().getAttributes().height = height;
+
+
 
         ImageButton mode = (ImageButton) this.findViewById(R.id.mode);
         mode.setOnClickListener((View.OnClickListener) this);
+
 
         ImageButton schedule = (ImageButton) this.findViewById(R.id.schedule);
         schedule.setOnClickListener((View.OnClickListener) this);
@@ -40,8 +64,20 @@ public class HowToUseActivity extends AppCompatActivity implements View.OnClickL
         ImageButton etc = (ImageButton) this.findViewById(R.id.etc);
         etc.setOnClickListener((View.OnClickListener) this);
 
+       /* Typeface typeface = Typeface.createFromAsset(getAssets(), "bb.ttf");
+       TextView textView = (TextView) findViewById(R.id.textView);
+        textView.setTypeface(typeface);
+        TextView textView1 = (TextView) findViewById(R.id.textView1);
+        textView1.setTypeface(typeface);
+        TextView textView2 = (TextView) findViewById(R.id.textView2);
+        textView2.setTypeface(typeface);*/
 
     }
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(TypekitContextWrapper.wrap(newBase));
+    }
+
 
 
     @Override
