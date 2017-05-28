@@ -9,7 +9,10 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Display;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -34,7 +37,22 @@ public class HowToUseActivity extends AppCompatActivity implements View.OnClickL
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
+
         setContentView(R.layout.activity_how_to_use);
+
+        Display display = ((WindowManager) getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
+
+        int width = (int) (display.getWidth() * 0.89);
+
+        int height = (int) (display.getHeight() * 0.70);
+
+        getWindow().getAttributes().width = width;
+
+        getWindow().getAttributes().height = height;
+
+
 
         ImageButton mode = (ImageButton) this.findViewById(R.id.mode);
         mode.setOnClickListener((View.OnClickListener) this);

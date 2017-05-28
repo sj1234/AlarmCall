@@ -49,7 +49,11 @@
 
         <activity
             android:name=".HowToUseActivity"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.Dialog"
+
+
+            >
         </activity>
 
         <activity
