@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -79,19 +80,22 @@ public class ScheduleFragment extends Fragment {
     View.OnClickListener onClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            String position = v.getTag().toString();
+            String[] scheduletag = v.getTag().toString().split("/");
             Intent intent;
 
             switch (v.getId()) {
                 case R.id.scheduletime:
                 case R.id.modename:
                 case R.id.repeat:
-                    intent = new Intent(getActivity(), ScheduleSetActivity.class);
-                    intent.putExtra("Position", position);
-                    startActivity(intent);
+                    if(scheduletag[1].equals("0")) { // 스케줄이 on 인경우 수정 불가, off인 경우만 수정 가능
+                        intent = new Intent(getActivity(), ScheduleSetActivity.class);
+                        intent.putExtra("Position", scheduletag[0]);
+                        startActivity(intent);
+                    }
+                    else
+                        Toast.makeText(getActivity(), "스케줄 OFF시에만 수정 가능합니다.", Toast.LENGTH_SHORT).show();
                     break;
                 case R.id.scheduleon:
-                    String[] scheduletag = position.split("/");
                     Schedule schedule = dbManager.getSchedule(Integer.parseInt(scheduletag[0]));
                     if(scheduletag[1].equals("0")){ // 스케줄이 off 였다가 on된 경우
                         schedule.setOnoff(1);

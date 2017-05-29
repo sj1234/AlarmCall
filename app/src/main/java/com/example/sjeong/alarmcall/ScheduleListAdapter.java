@@ -72,14 +72,14 @@ public class ScheduleListAdapter extends BaseAdapter {
             repeat.setText("반복 "+RepeatWeek(arraylist.get(position)));
 
             if(onClickListener != null) {
-                time.setTag(position);
-                time.setOnClickListener(onClickListener);
-                mode.setTag(position);
-                mode.setOnClickListener(onClickListener);
-                repeat.setTag(position);
-                repeat.setOnClickListener(onClickListener);
-
                 String tag = position+"/"+arraylist.get(position).getOnoff();
+
+                time.setTag(tag);
+                time.setOnClickListener(onClickListener);
+                mode.setTag(tag);
+                mode.setOnClickListener(onClickListener);
+                repeat.setTag(tag);
+                repeat.setOnClickListener(onClickListener);
                 buttonon.setTag(tag);
                 buttonon.setOnClickListener(onClickListener);
             }
