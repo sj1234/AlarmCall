@@ -159,7 +159,7 @@ public class AlarmReceiver extends BroadcastReceiver{
                 else{
                     Mode mode = dbManager.getMode(schedule.getPremodename());
 
-                    if(mode.getName()==null) // premode 가 삭제된 경우 오류.....
+                    if(mode.getName()==null) // premode 가 삭제된 경우 off로
                         editor.putString("set", "off");
                     else {
                         editor.putString("set", "on");

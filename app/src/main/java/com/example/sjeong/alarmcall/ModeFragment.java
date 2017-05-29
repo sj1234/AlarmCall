@@ -94,8 +94,9 @@ public class ModeFragment extends Fragment{
                     if(preferences.getString("name", "").equals(modename)) {
                         if(preferences.getString("set", "off").equals("off"))
                             editor.putString("set", "on");
-                        else
+                        else {
                             editor.putString("set", "off");
+                        }
                     }
                     else {
                         Mode mode = dbManager.getMode(modename);
