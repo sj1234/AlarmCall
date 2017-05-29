@@ -96,6 +96,14 @@ public class ModeFragment extends Fragment{
                             editor.putString("set", "on");
                         else {
                             editor.putString("set", "off");
+
+                            // 나중에 알림 해제
+                            SharedPreferences laterpreferences= getActivity().getSharedPreferences("Later", Activity.MODE_PRIVATE);
+                            if(laterpreferences.getString("onoff", "off").equals("on")){
+                                SharedPreferences.Editor latereditor = laterpreferences.edit();
+                                latereditor.putString("onoff", "off");
+                                latereditor.commit();
+                            }
                         }
                     }
                     else {

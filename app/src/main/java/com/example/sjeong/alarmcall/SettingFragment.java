@@ -114,7 +114,14 @@ public class SettingFragment extends PreferenceFragment {
 
                 SharedPreferences.Editor editor = preferences.edit();
                 if (pPushlater.isChecked()){
-                    editor.putString("onoff", "on");
+                    SharedPreferences modepreferences = getActivity().getSharedPreferences("Mode", Activity.MODE_PRIVATE);
+                    // 모드 켜져있을 때만 나중에 알림 가능
+                    if(modepreferences.getString("set", "off").equals("on"))
+                        editor.putString("onoff", "on");
+                    else {
+                        pPushlater.setChecked(Boolean.FALSE);
+                        Toast.makeText(getActivity(), "모드 사용시에만 가능합니다.", Toast.LENGTH_SHORT).show();
+                    }
                 } else {
                     editor.putString("onoff", "off");
                 }
