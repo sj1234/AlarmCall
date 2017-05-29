@@ -1,25 +1,14 @@
 package com.example.sjeong.alarmcall;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
-import android.view.Display;
 import android.view.View;
 import android.view.Window;
-import android.view.WindowManager;
-import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.tsengvn.typekit.TypekitContextWrapper;
 
@@ -37,32 +26,30 @@ public class HowToUseActivity extends AppCompatActivity implements View.OnClickL
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
-
         setContentView(R.layout.activity_how_to_use);
 
-        Display display = ((WindowManager) getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
+        //Display display = ((WindowManager) getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
+        //int width = (int) (display.getWidth() * 0.89);
+        //int height = (int) (display.getHeight() * 0.70);
+        //getWindow().getAttributes().width = width;
+        //getWindow().getAttributes().height = height;
 
-        int width = (int) (display.getWidth() * 0.89);
+        TextView text_mode = (TextView) this.findViewById(R.id.set_text_mode);
+        text_mode.setOnClickListener((View.OnClickListener) this);
+        TextView text_schedule = (TextView) this.findViewById(R.id.set_text_schedule);
+        text_schedule.setOnClickListener((View.OnClickListener) this);
+        TextView text_etc = (TextView) this.findViewById(R.id.set_text_etc);
+        text_etc.setOnClickListener((View.OnClickListener) this);
 
-        int height = (int) (display.getHeight() * 0.70);
-
-        getWindow().getAttributes().width = width;
-
-        getWindow().getAttributes().height = height;
-
-
-
-        ImageButton mode = (ImageButton) this.findViewById(R.id.mode);
+        ImageButton mode = (ImageButton) this.findViewById(R.id.set_mode);
         mode.setOnClickListener((View.OnClickListener) this);
-
-
-        ImageButton schedule = (ImageButton) this.findViewById(R.id.schedule);
+        ImageButton schedule = (ImageButton) this.findViewById(R.id.set_schedule);
         schedule.setOnClickListener((View.OnClickListener) this);
-
-        ImageButton etc = (ImageButton) this.findViewById(R.id.etc);
+        ImageButton etc = (ImageButton) this.findViewById(R.id.set_etc);
         etc.setOnClickListener((View.OnClickListener) this);
+        ImageButton exit = (ImageButton) this.findViewById(R.id.exit);
+        exit.setOnClickListener((View.OnClickListener) this);
 
        /* Typeface typeface = Typeface.createFromAsset(getAssets(), "bb.ttf");
        TextView textView = (TextView) findViewById(R.id.textView);
@@ -78,20 +65,17 @@ public class HowToUseActivity extends AppCompatActivity implements View.OnClickL
         super.attachBaseContext(TypekitContextWrapper.wrap(newBase));
     }
 
-
-
     @Override
     public void onClick(View v) {
         Intent intent=null;
 
         switch (v.getId()) {
-            case R.id.mode:
+            case R.id.set_text_mode:
+            case R.id.set_mode:
                 AlertDialog.Builder alertDialogBuilder1 = new AlertDialog.Builder(
                         context);
-
                 // 제목셋팅
                 alertDialogBuilder1.setTitle("모드 사용법");
-
                 // AlertDialog 셋팅
                 alertDialogBuilder1
                         .setMessage("우리 어플은 사용자의 편의대로 여러가지 모드를 만들어 상황에 맞게 사용할 수 있습니다.\n\n1.우측하단의+ 버튼으로 모드를 생성할 수 있습니다.\n\n" +
@@ -121,17 +105,14 @@ public class HowToUseActivity extends AppCompatActivity implements View.OnClickL
                 // 다이얼로그 보여주기
                 alertDialog1.show();
                 break;
-
-
-
-            case R.id.schedule:
+            case R.id.set_text_schedule:
+            case R.id.set_schedule:
 
                 AlertDialog.Builder alertDialogBuilder2 = new AlertDialog.Builder(
                         context);
 
                 // 제목셋팅
                 alertDialogBuilder2.setTitle("스케쥴 사용법");
-
                 // AlertDialog 셋팅
                 alertDialogBuilder2
                         .setMessage("이미 생성해둔 모드를 원하는 요일과 시간대에 따라 다르게 활성화 할 수 있게 해주는 기능입니다.\n\n1.우측하단의 + 버튼으로 스케쥴을 생성할 수 있습니다.\n\n" +
@@ -156,13 +137,11 @@ public class HowToUseActivity extends AppCompatActivity implements View.OnClickL
 
                 // 다이얼로그 생성
                 AlertDialog alertDialog2 = alertDialogBuilder2.create();
-
                 // 다이얼로그 보여주기
                 alertDialog2.show();
-
-
                 break;
-            case R.id.etc:
+            case R.id.set_text_etc:
+            case R.id.set_etc:
                 AlertDialog.Builder alertDialogBuilder3 = new AlertDialog.Builder(
                         context);
 
@@ -190,17 +169,14 @@ public class HowToUseActivity extends AppCompatActivity implements View.OnClickL
                                         dialog.cancel();
                                     }
                                 });
-
                 // 다이얼로그 생성
                 AlertDialog alertDialog3 = alertDialogBuilder3.create();
-
                 // 다이얼로그 보여주기
                 alertDialog3.show();
-
-
-
                 break;
-
+            case R.id.exit:
+                HowToUseActivity.this.finish();
+                break;
             default:
                 break;
         }
