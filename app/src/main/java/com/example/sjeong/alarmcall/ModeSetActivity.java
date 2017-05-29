@@ -276,7 +276,7 @@ public class ModeSetActivity extends AppCompatActivity implements View.OnClickLi
                 else {
                     android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(ModeSetActivity.this);
                     builder.setMessage("모드를 삭제하시겠습니까?");
-                    builder.setPositiveButton("예",
+                    builder.setNegativeButton("예",
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
                                     SharedPreferences preferences =context.getSharedPreferences("Mode", Activity.MODE_PRIVATE);
@@ -299,7 +299,7 @@ public class ModeSetActivity extends AppCompatActivity implements View.OnClickLi
                                     }
                                 }
                             });
-                    builder.setNegativeButton("아니오", null);
+                    builder.setPositiveButton("아니오", null);
                     builder.show();
                 }
                 break;
@@ -307,7 +307,7 @@ public class ModeSetActivity extends AppCompatActivity implements View.OnClickLi
                 AlertDialog.Builder builder = new AlertDialog.Builder(ModeSetActivity.this);
                 LayoutInflater inflater = getLayoutInflater();
                 iconview = inflater.from(this).inflate(R.layout.mode_icon_select,null);
-                builder.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                builder.setNegativeButton("확인", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         RadioGroup radioGroup= (RadioGroup)iconview.findViewById(R.id.icon_group);
@@ -316,7 +316,7 @@ public class ModeSetActivity extends AppCompatActivity implements View.OnClickLi
                         icon.setImageResource(mode.getDraw());
                         dialog.dismiss();
                     }
-                }).setNegativeButton("취소", new DialogInterface.OnClickListener() {
+                }).setPositiveButton("취소", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();

@@ -169,7 +169,7 @@ public class ScheduleSetActivity extends AppCompatActivity {
 
                     AlertDialog.Builder builder = new AlertDialog.Builder(ScheduleSetActivity.this);
                     builder.setMessage("스케줄을 삭제하시겠습니까?");
-                    builder.setPositiveButton("예",
+                    builder.setNegativeButton("예",
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
                                     if(schedule.getOnoff()==1) {
@@ -186,7 +186,7 @@ public class ScheduleSetActivity extends AppCompatActivity {
                                     finish();
                                 }
                             });
-                    builder.setNegativeButton("아니오", null);
+                    builder.setPositiveButton("아니오", null);
                     builder.show();
                 }
                 else
