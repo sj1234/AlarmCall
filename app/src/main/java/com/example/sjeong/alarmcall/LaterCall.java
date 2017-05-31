@@ -30,7 +30,7 @@ public class LaterCall extends BroadcastReceiver {
         // 푸시 알람
         Uri uri = Uri.parse("tel:"+number);
         NotificationManager notificationmanager = (NotificationManager)context.getSystemService(context.NOTIFICATION_SERVICE);
-        PendingIntent pendingintent = PendingIntent.getActivity(context, 0, new Intent(Intent.ACTION_CALL, uri), PendingIntent.FLAG_ONE_SHOT);
+        PendingIntent pendingintent = PendingIntent.getActivity(context, Integer.parseInt(number), new Intent(Intent.ACTION_CALL, uri), PendingIntent.FLAG_ONE_SHOT);
         Notification.Builder builder = new Notification.Builder(context);
 
         builder.setSmallIcon(R.drawable.call).setTicker("AlarmCall 나중에 알림").setWhen(System.currentTimeMillis())

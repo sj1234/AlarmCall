@@ -84,16 +84,7 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
-        <receiver
-            android:name=".TestReceiver"
-            android:enabled="true"
-            android:exported="true" />
 
-        <service
-            android:name=".BootTimeService"
-            android:enabled="true"
-            android:exported="true">
-        </service>
     </application>
 
 </manifest>

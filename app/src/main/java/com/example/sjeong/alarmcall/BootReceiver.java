@@ -7,71 +7,57 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 public class BootReceiver extends BroadcastReceiver {
     private String Tag = "test BootReceiver";
     private DBManager dbManager;
     private AlarmManager am;
-    public void onReceive(Context context, Intent intent) { // 테스트용
-        if (intent.getAction().equals("android.intent.action.BOOT_COMPLETED")) {
-            Log.i(Tag, "Bootreceiver start");
-            Calendar calendar= Calendar.getInstance();
-            AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-            intent = new Intent(context, BootTimeService.class);
-            PendingIntent sender = PendingIntent.getService(context, 100, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-// 부팅 후 3분 뒤에 실행되도록.
-            am.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis()+(3*60*1000), sender);
-            Log.i(Tag, "Bootreceiver finish");
-        }
-    }
-    /*
-    // 실제 동작하는 부분
+
+    // 부팅 시 스케줄 등록
     public void onReceive(Context context, Intent intent) {
-        int finId=1;
-        int i =1; //id는 1부터니까.
 
-        if (intent.getAction().equals("android.intent.action.BOOT_COMPLETED")) {
-            try {
-                // DB생성
-                if (dbManager == null) {
-                    dbManager = new DBManager(context, "AlarmCall", null, 1);
-                    dbManager.ReadDB();
+        Log.i(Tag, "Bootreceiver start");
+
+        // DB생성
+        if (dbManager == null) {
+            dbManager = new DBManager(context, "AlarmCall", null, 1);
+            dbManager.ReadDB();
+        }
+
+        ArrayList<Schedule> arraySchedule = dbManager.getSchedules();
+
+        for(Schedule schedule:arraySchedule){
+            if(schedule.getOnoff()==1){
+                String starttime = schedule.getStart().toString();
+                String endtime = schedule.getEnd().toString();
+                String[] start = starttime.split(":");
+                String[] end = endtime.split(":");
+
+                Calendar calStart = Calendar.getInstance();
+                Calendar calEnd = Calendar.getInstance();
+
+                calStart.set(calStart.get(Calendar.YEAR), calStart.get(Calendar.MONTH) , calStart.get(Calendar.DATE), Integer.parseInt(start[0]), Integer.parseInt(start[1]),0);
+                calEnd.set(calEnd.get(Calendar.YEAR), calEnd.get(Calendar.MONTH) , calEnd.get(Calendar.DATE), Integer.parseInt(end[0]), Integer.parseInt(end[1]),0);
+
+                if (calStart.compareTo(Calendar.getInstance()) <= 0) {
+                    calStart.add(Calendar.DATE, 1);
+                    calEnd.add(Calendar.DATE, 1);
                 }
-                // Schedule schedule = dbManager.getScheduleId();를 써야하나 ?? 여기에 맨 마지막 schedule id 즉, finId를 불러와서.
-                for(;i<finId;i++){
-                    String[] scheduletag = v.getTag().toString().split("/"); // ??View v를 onReceive에 추가하면 안되고,
-                    Schedule schedule = dbManager.getSchedule(Integer.parseInt(scheduletag[0]));
-                    dbManager.updateSchedule(schedule);
-                    // 각 스케줄의 시작시간,종료시간.
-                    String starttime = schedule.getStart().toString();
-                    String endtime = schedule.getEnd().toString();
-                    String[] start = starttime.split(":");
-                    String[] end = endtime.split(":");
 
-                    Calendar calStart = Calendar.getInstance();
-                    Calendar calEnd = Calendar.getInstance();
-
-                    calStart.set(calStart.get(Calendar.YEAR), calStart.get(Calendar.MONTH) , calStart.get(Calendar.DATE), Integer.parseInt(start[0]), Integer.parseInt(start[1]),0);
-                    calEnd.set(calEnd.get(Calendar.YEAR), calEnd.get(Calendar.MONTH) , calEnd.get(Calendar.DATE), Integer.parseInt(end[0]), Integer.parseInt(end[1]),0);
-
-                    if (calStart.compareTo(Calendar.getInstance()) <= 0) {
-                        calStart.add(Calendar.DATE, 1);
-                        calEnd.add(Calendar.DATE, 1);
-                    }
-
-                    setAlarm(context, schedule.getId(), Boolean.TRUE,calStart);
-                    setAlarm(context, schedule.getId(), Boolean.FALSE,calEnd);
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
+                amSet(context, calStart, schedule.getId(), Boolean.TRUE);
+                amSet(context, calEnd, schedule.getId(), Boolean.FALSE);
             }
         }
     }
 
-    public void setAlarm(Context context,int id, Boolean rec,Calendar calTime){
-        am = (AlarmManager) context.getSystemService(context.ALARM_SERVICE);
+    // 알람설정함수
+    public void amSet(Context context, Calendar calTime, int id, Boolean rec){
+
+        am = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(context, AlarmReceiver.class);
+
         if(rec){ // 시작시간
             intent.putExtra("alReceiver", Boolean.TRUE);
             intent.putExtra("id", id+"");
@@ -87,5 +73,4 @@ public class BootReceiver extends BroadcastReceiver {
             Log.i("test schedule", " 스케줄 종료 시간 :  "+calTime.getTimeInMillis());
         }
     }
-    */
 }
