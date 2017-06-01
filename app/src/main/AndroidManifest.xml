@@ -16,7 +16,10 @@
     // 진동 권한
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     // 뷰 권한
-
+    <uses-permission android:name="android.permission.SEND_SMS" />
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
