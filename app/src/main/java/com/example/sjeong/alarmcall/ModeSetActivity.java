@@ -41,6 +41,7 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 
 public class ModeSetActivity extends AppCompatActivity implements View.OnClickListener{
 
@@ -394,10 +395,131 @@ public class ModeSetActivity extends AppCompatActivity implements View.OnClickLi
 
         if (requestCode == 2) {
             Bundle extras2 = data.getExtras();
+            String filePath = Environment.getExternalStorageDirectory().getAbsolutePath()+
+                    +System.currentTimeMillis()+".png";
+/*
+            File albumfile = null;
+            try {
+                albumfile = createImageFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            if(albumfile != null)
+                albumURI = Uri.fromFile(albumfile);
+            photoURI =  data.getData();
+            cropImage();
+ */
             if (extras2 != null) {
                 Bitmap photo = extras2.getParcelable("data");
+  //              storeCropImage(photo, filePath); // CROP된 이미지를 외부저장소, 앨범에 저장한다.
+  //              SaveBitmapToFileCache(photo,filePath);
                 RoundedAvatarDrawable tmpRoundedAvatarDrawable = new RoundedAvatarDrawable(photo);
                 icon.setImageDrawable(tmpRoundedAvatarDrawable);
+                absoultePath = filePath;
+            }
+
+        }
+    }
+
+    private void cropImage() {
+        Intent cropIntent = new Intent("com.android.camera.action.CROP");
+        cropIntent.setDataAndType(photoURI, "image/*");
+//cropIntent.putExtra("outputX", 200); // crop한 이미지의 x축 크기
+//cropIntent.putExtra("outputY", 200); // crop한 이미지의 y축 크기
+//cropIntent.putExtra("aspectX", 1); // crop 박스의 x축 비율
+//cropIntent.putExtra("aspectY", 1); // crop 박스의 y축 비율
+        cropIntent.putExtra("scale", true);
+        if(album == false) {
+            cropIntent.putExtra("output", photoURI); // 크랍된 이미지를 해당 경로에 저장
+        } else if(album == true){
+            cropIntent.putExtra("output", albumURI); // 크랍된 이미지를 해당 경로에 저장
+        }
+        startActivityForResult(cropIntent, REQUEST_IMAGE_CROP);
+    }
+
+    private File createImageFile() throws IOException {
+/* Create an image file name, 폴더명 지정 방법 (문제 : DIRECTORY_DCIM , DIRECTORY_PICTURE 경로가 없는 폰 존재)
+String imageFileName = "tmp_" + String.valueOf(System.currentTimeMillis());
+File storageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM), "MYAPP/");
+File file = File.createTempFile(imageFileName, ".jpg", storageDir);
+mCurrentPhotoPath = file.getAbsolutePath();
+return file;
+*/
+// 특정 경로와 폴더를 지정하지 않고, 메모리 최상 위치에 저장 방법
+        String imageFileName = "tmp_" + String.valueOf(System.currentTimeMillis()) + ".jpg";
+        File storageDir = new File(Environment.getExternalStorageDirectory(), imageFileName);
+        mCurrentPhotoPath = storageDir.getAbsolutePath();
+        return storageDir;
+    }
+
+    private void storeCropImage(Bitmap bitmap, String filePath) {
+
+        String dirPath = Environment.getExternalStorageDirectory().getAbsolutePath();
+
+        File directory = new File(dirPath);
+
+        if(!directory.exists()) // SmartWheel 디렉터리에 폴더가 없다면 (새로 이미지를 저장할 경우에 속한다.)
+
+            directory.mkdir();
+
+
+        File copyFile = new File(filePath);
+
+        BufferedOutputStream out = null;
+
+
+        try {
+
+            copyFile.createNewFile();
+
+            out = new BufferedOutputStream(new FileOutputStream(copyFile));
+
+      //      bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
+            // 임시 토스트
+            Toast.makeText(getApplicationContext(), " 저장했습니다.", Toast.LENGTH_SHORT).show();
+
+            sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE,
+
+                    Uri.fromFile(copyFile)));
+
+
+            out.flush();
+
+            out.close();
+
+        } catch (Exception e) {
+            Toast.makeText(getApplicationContext(), " 저장안됬습니다.", Toast.LENGTH_SHORT).show();
+            e.printStackTrace();
+
+        }
+
+    }
+
+    private void SaveBitmapToFileCache(Bitmap bitmap, String strFilePath) {
+
+        File fileCacheItem = new File(strFilePath);
+        OutputStream out = null;
+
+        try
+        {
+            fileCacheItem.createNewFile();
+            out = new FileOutputStream(fileCacheItem);
+
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        finally
+        {
+            try
+            {
+                out.close();
+            }
+            catch (IOException e)
+            {
+                e.printStackTrace();
             }
         }
     }
