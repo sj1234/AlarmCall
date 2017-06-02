@@ -17,6 +17,7 @@ public class SettingFragment extends PreferenceFragment {
     // TODO: Rename parameter arguments, choose names that match
 
     private SharedPreferences preferences;
+    private SharedPreferences preferences1;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -29,10 +30,11 @@ public class SettingFragment extends PreferenceFragment {
         Preference pHow = (Preference) findPreference("setting_activity_how");
         final Preference pSetting = (Preference) findPreference("push_setting");
         final SwitchPreference pPushlater =  (SwitchPreference) findPreference("push_later");
+        final SwitchPreference pPushsms =  (SwitchPreference) findPreference("push_sms");
 
         // 정보 받아오기 위해
         preferences= getActivity().getSharedPreferences("Later", Activity.MODE_PRIVATE);
-
+        preferences1= getActivity().getSharedPreferences("Sms", Activity.MODE_PRIVATE);
 
         pAppName.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
@@ -131,6 +133,30 @@ public class SettingFragment extends PreferenceFragment {
             }
         });
 
+        SharedPreferences.Editor editor1 = preferences1.edit();
+        editor1.putString("onoff", "off");
+        editor1.commit();
+
+
+        출처: http://swalloow.tistory.com/59 [MyCloud]
+        pPushsms.setChecked( preferences1.getString("onoff", "off").equals("on"));
+        pPushsms.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+
+                SharedPreferences.Editor editor1 = preferences1.edit();
+                if (pPushsms.isChecked()){
+                   editor1.putString("onoff","on");
+                } else {
+                    editor1.putString("onoff", "off");
+                }
+                editor1.commit();
+
+                return false;
+            }
+        });
+
+
 
     }
 
@@ -147,6 +173,8 @@ public class SettingFragment extends PreferenceFragment {
         else if (preference.getKey().equals("sending_email")) {
         }
         else if (preference.getKey().equals("push_later")) {
+        }
+        else if (preference.getKey().equals("push_sms")) {
         }
         else if (preference.getKey().equals("setting_activity_how")) {
         }

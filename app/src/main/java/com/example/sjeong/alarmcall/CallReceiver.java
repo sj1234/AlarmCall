@@ -39,7 +39,9 @@ public class CallReceiver extends BroadcastReceiver {
     private PhoneStateListener phonelistener;
     private HandleRing handleRing;
     private SharedPreferences preferences;
+    private SharedPreferences preferences1;
     private int latercallonoff;
+    private int smsonoff;
     private String Phonename;
     private DBManager dbManager;
     private String name, sms_string;
@@ -74,6 +76,12 @@ public class CallReceiver extends BroadcastReceiver {
             latercallonoff=0;
         else
             latercallonoff=1;
+
+        preferences1 = context.getSharedPreferences("Sms", Activity.MODE_PRIVATE);
+        if(preferences1.getString("onoff", "off").equals("off"))
+            smsonoff=0;
+        else
+            smsonoff=1;
 
         // 현재모드 받아오기
         preferences = context.getSharedPreferences("Mode", Activity.MODE_PRIVATE);
@@ -288,7 +296,7 @@ public class CallReceiver extends BroadcastReceiver {
     //통화종료
     private void EndCall(String incommingnumber){
 
-        mode=dbManager.getMode("모드1");
+        mode=dbManager.getMode("fddfw");
 
         try {
             Class c = Class.forName(TelMag.getClass().getName());
@@ -296,9 +304,9 @@ public class CallReceiver extends BroadcastReceiver {
             m.setAccessible(true);
             ITelephony telephonyService = (ITelephony) m.invoke(TelMag);
             telephonyService.endCall();
-
-            smsManager.sendTextMessage(incommingnumber,null,mode.getSms(),null,null);
-
+            if(smsonoff==1) {
+                smsManager.sendTextMessage(incommingnumber, null, mode.getSms(), null, null);
+            }
             Log.i(Tag,"end call");
         } catch (Exception e) {
             e.printStackTrace();
