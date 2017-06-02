@@ -8,7 +8,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.BitmapShader;
 import android.graphics.Canvas;
 import android.graphics.ColorFilter;
@@ -21,7 +20,6 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -50,7 +48,7 @@ public class ModeSetActivity extends AppCompatActivity implements View.OnClickLi
     private String Tag="test ModeSetActive";
     private DBManager dbManager;
     private Mode mode;
-    private String name;
+    private String name, sms_string;
 
     static final int REQUEST_IMAGE_CAPTURE = 1;
     static final int REQUEST_TAKE_PHOTO = 2;
@@ -70,8 +68,8 @@ public class ModeSetActivity extends AppCompatActivity implements View.OnClickLi
 
 
     private TextView startxt,contacttxt,unknowntxt;
-    private EditText modename;
-    private View iconview;
+    private EditText modename, sms_detail;
+    private View iconview, smsview;
     private ImageButton icon;
     private Uri mImageCaptureUri;
     private ImageView imageView;
@@ -106,6 +104,9 @@ public class ModeSetActivity extends AppCompatActivity implements View.OnClickLi
         ImageButton unknown = (ImageButton) this.findViewById(R.id.unknown);
         unknown.setOnClickListener((View.OnClickListener) this);
 
+        ImageButton sms = (ImageButton) this.findViewById(R.id.sms);
+        sms.setOnClickListener((View.OnClickListener) this);
+
         Button set = (Button) this.findViewById(R.id.set);
         set.setOnClickListener((View.OnClickListener) this);
 
@@ -131,6 +132,7 @@ public class ModeSetActivity extends AppCompatActivity implements View.OnClickLi
             contacttxt.setText(RingInformation(mode.getContact()));
             unknowntxt.setText(RingInformation(mode.getUnknown()));
             icon.setImageResource(mode.getDraw());
+            sms_string = mode.getSms();
         }
         else {
             mode = new Mode();
@@ -139,6 +141,8 @@ public class ModeSetActivity extends AppCompatActivity implements View.OnClickLi
             contacttxt.setText("수신음 선택");
             unknowntxt.setText("수신음 선택");
             icon.setImageResource(R.drawable.icon_empty);
+            sms_string = "지금은 전화를 받을 수 없습니다.";
+            mode.setSms(sms_string);
             delete.setText("취소");
         }
 
@@ -275,7 +279,9 @@ public class ModeSetActivity extends AppCompatActivity implements View.OnClickLi
                 break;
             case R.id.set:
                 mode.setName(modename.getText().toString());
-                if (mode.getName() != null && mode.getStar() > 0 && mode.getContact() > 0 && mode.getUnknown() > 0 && mode.getDraw() > 0) {
+
+                if (!mode.getName().isEmpty() && mode.getStar() > 0 && mode.getContact() > 0 && mode.getUnknown() > 0 && mode.getDraw() > 0 && !mode.getSms().isEmpty()) {
+
                     if (name == null)
                         dbManager.insertMode(mode);
                      else if (name.equals(preferences.getString("name", "null"))) {
@@ -289,6 +295,7 @@ public class ModeSetActivity extends AppCompatActivity implements View.OnClickLi
                         editor.putInt("unknown", mode.getUnknown());
                         editor.putInt("time", mode.getTime());
                         editor.putInt("count", mode.getCount());
+                        editor.putString("sms", mode.getSms());
                         editor.commit();
 
                         Log.i(Tag, "Update Now Mode");
@@ -335,21 +342,21 @@ public class ModeSetActivity extends AppCompatActivity implements View.OnClickLi
                 break;
             case R.id.mode_icon:
                 AlertDialog.Builder builder = new AlertDialog.Builder(ModeSetActivity.this);
-                LayoutInflater inflater = getLayoutInflater();
-                iconview = inflater.from(this).inflate(R.layout.mode_icon_select,null);
-                builder.setNegativeButton("확인", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        RadioGroup radioGroup= (RadioGroup)iconview.findViewById(R.id.icon_group);
-                        RadioButton radioButton = (RadioButton)radioGroup.findViewById(radioGroup.getCheckedRadioButtonId());
-                        mode.setDraw(IconImage(Integer.parseInt(radioButton.getTag().toString())));
-                        icon.setImageResource(mode.getDraw());
-                        dialog.dismiss();
-                    }
-                }).setPositiveButton("취소", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
+                        LayoutInflater inflater = getLayoutInflater();
+                        iconview = inflater.from(this).inflate(R.layout.mode_icon_select,null);
+                        builder.setNegativeButton("확인", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                RadioGroup radioGroup= (RadioGroup)iconview.findViewById(R.id.icon_group);
+                                RadioButton radioButton = (RadioButton)radioGroup.findViewById(radioGroup.getCheckedRadioButtonId());
+                                mode.setDraw(IconImage(Integer.parseInt(radioButton.getTag().toString())));
+                                icon.setImageResource(mode.getDraw());
+                                dialog.dismiss();
+                            }
+                        }).setPositiveButton("취소", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
                     }
                 }).setNeutralButton("사진첩에서 선택", new DialogInterface.OnClickListener(){
                     @Override
@@ -379,6 +386,30 @@ public class ModeSetActivity extends AppCompatActivity implements View.OnClickLi
 
                 builder.setView(iconview);
                 builder.show();
+                break;
+            case R.id.sms:
+                AlertDialog.Builder smsbuilder = new AlertDialog.Builder(ModeSetActivity.this);
+                LayoutInflater smsinflater = getLayoutInflater();
+                smsview = smsinflater.from(this).inflate(R.layout.mode_sms,null);
+
+                sms_detail = (EditText)smsview.findViewById(R.id.sms_detail);
+                sms_detail.setText(mode.getSms());
+
+                smsbuilder.setNegativeButton("확인", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        sms_string =  sms_detail.getText().toString();
+                        mode.setSms(sms_string);
+                        dialog.dismiss();
+                    }
+                }).setPositiveButton("취소", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                smsbuilder.setView(smsview);
+                smsbuilder.show();
                 break;
             default:
                 break;

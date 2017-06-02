@@ -23,7 +23,7 @@ public class DBManager extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String table = "CREATE TABLE MODE"+ "(NAME TEXT PRIMARY KEY NOT NULL,"+"STAR INTEGER NOT NULL,"+"CONTACT INTEGER NOT NULL,"+"UNKNOWN INTEGER NOT NULL,"+" TIME INTEGER NOT NULL,"+" COUNT INTEGER NOT NULL, DRAW INTEGER NOT NULL);";
+        String table = "CREATE TABLE MODE"+ "(NAME TEXT PRIMARY KEY NOT NULL,"+"STAR INTEGER NOT NULL,"+"CONTACT INTEGER NOT NULL,"+"UNKNOWN INTEGER NOT NULL,"+" TIME INTEGER NOT NULL,"+" COUNT INTEGER NOT NULL, DRAW INTEGER NOT NULL, SMS TEXT NOT NULL);";
         String table2 = "CREATE TABLE SCHEDULE(_id INTEGER PRIMARY KEY AUTOINCREMENT, START TEXT, END TEXT, " +
               "SUN INTEGER, MON INTEGER, TUE INTEGER,WED INTEGER, THU INTEGER, FRI INTEGER, SAT INTEGER, MODENAME TEXT, PREMODENAME TEXT, ONOFF INTEGER);";
         db.execSQL(table);
@@ -50,8 +50,8 @@ public class DBManager extends SQLiteOpenHelper {
 
     public void insertMode(Mode mode){
         SQLiteDatabase db = getWritableDatabase();
-        String insertmode = "INSERT INTO MODE("+"NAME, STAR, CONTACT, UNKNOWN, TIME, COUNT, DRAW)"+" VALUES(?, ?, ?, ?, ?, ?, ?);";
-        db.execSQL(insertmode, new Object[]{mode.getName(), mode.getStar(), mode.getContact(), mode.getUnknown(), mode.getTime(), mode.getCount(), mode.getDraw()});
+        String insertmode = "INSERT INTO MODE("+"NAME, STAR, CONTACT, UNKNOWN, TIME, COUNT, DRAW, SMS)"+" VALUES(?, ?, ?, ?, ?, ?, ?, ?);";
+        db.execSQL(insertmode, new Object[]{mode.getName(), mode.getStar(), mode.getContact(), mode.getUnknown(), mode.getTime(), mode.getCount(), mode.getDraw(), mode.getSms()});
         Toast.makeText(dbcontext, "insert", Toast.LENGTH_LONG).show();
         Log.i("test DB", "insert : " + mode.getName()+", "+mode.getStar()+", "+ mode.getContact()+", "+ mode.getUnknown()+", "+ mode.getTime()+", "+ mode.getCount());
     }
@@ -65,8 +65,8 @@ public class DBManager extends SQLiteOpenHelper {
 
     public void updateMode(String originalname, Mode mode){
         SQLiteDatabase db = getWritableDatabase();
-        String updatemode = "UPDATE MODE SET "+"NAME = ?, STAR =?, CONTACT =?, UNKNOWN =?, TIME =?, COUNT =?, DRAW =?"+" WHERE NAME=?;";
-        db.execSQL(updatemode, new Object[]{mode.getName().toString(), mode.getStar(), mode.getContact(), mode.getUnknown(), mode.getTime(), mode.getCount(), mode.getDraw(), originalname});
+        String updatemode = "UPDATE MODE SET "+"NAME = ?, STAR =?, CONTACT =?, UNKNOWN =?, TIME =?, COUNT =?, DRAW =?, SMS =?"+" WHERE NAME=?;";
+        db.execSQL(updatemode, new Object[]{mode.getName().toString(), mode.getStar(), mode.getContact(), mode.getUnknown(), mode.getTime(), mode.getCount(), mode.getDraw(), mode.getSms(), originalname});
 
         Toast.makeText(dbcontext, "update", Toast.LENGTH_LONG).show();
         Log.i("test DB", "update : " + mode.getName()+", "+mode.getStar()+", "+ mode.getContact()+", "+ mode.getUnknown()+", "+ mode.getTime()+", "+ mode.getCount());
@@ -134,6 +134,7 @@ public class DBManager extends SQLiteOpenHelper {
                 mode.setTime(cursor.getInt(4));
                 mode.setCount(cursor.getInt(5));
                 mode.setDraw(cursor.getInt(6));
+                mode.setSms(cursor.getString(7));
 
                 modes.add(mode);
             }
@@ -200,6 +201,7 @@ public class DBManager extends SQLiteOpenHelper {
                     mode.setTime(cursor.getInt(4));
                     mode.setCount(cursor.getInt(5));
                     mode.setDraw(cursor.getInt(6));
+                    mode.setSms(cursor.getString(7));
                     return mode;
                 }
             }

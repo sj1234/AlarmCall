@@ -19,6 +19,7 @@ public class AlarmReceiver extends BroadcastReceiver{
     private AlarmManager am;
 
     public void onReceive(Context context, Intent intent) {
+        int  draw;
 
         // DB생성
         if (dbManager == null) {
@@ -114,7 +115,7 @@ public class AlarmReceiver extends BroadcastReceiver{
             Log.i(Tag, "changing to " + schedule.getModename());
             NotificationManager notificationmanager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
             Notification.Builder builder = new Notification.Builder(context);
-            builder.setSmallIcon(android.R.drawable.stat_notify_chat).setTicker("HETT").setWhen(System.currentTimeMillis())
+            builder.setSmallIcon(preferences.getInt("draw", R.drawable.icon_off)).setTicker("HETT").setWhen(System.currentTimeMillis())
                     .setContentTitle("Schedule starts").setContentText("change mode")
                     .setDefaults(Notification.DEFAULT_SOUND | Notification.DEFAULT_VIBRATE).setContentIntent(p).setAutoCancel(true);
 
@@ -155,12 +156,15 @@ public class AlarmReceiver extends BroadcastReceiver{
                 if(schedule.getPremodename().equals("null")){
                     editor.putString("set", "off");
                     editor.commit();
+                    draw=R.drawable.icon_off;
                 }
                 else{
                     Mode mode = dbManager.getMode(schedule.getPremodename());
 
-                    if(mode.getName()==null) // premode 가 삭제된 경우 off로
+                    if(mode.getName()==null) { // premode 가 삭제된 경우 off로
                         editor.putString("set", "off");
+                        draw=R.drawable.icon_off;
+                    }
                     else {
                         editor.putString("set", "on");
                         editor.putString("name", mode.getName());
@@ -170,6 +174,8 @@ public class AlarmReceiver extends BroadcastReceiver{
                         editor.putInt("time", mode.getTime());
                         editor.putInt("count", mode.getCount());
                         editor.putInt("draw", mode.getDraw());
+
+                        draw= mode.getDraw();
                     }
                     editor.commit();
                 }
@@ -193,7 +199,7 @@ public class AlarmReceiver extends BroadcastReceiver{
                 Log.i(Tag, "back to " + schedule.getPremodename());
                 NotificationManager notificationmanager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
                 Notification.Builder builder = new Notification.Builder(context);
-                builder.setSmallIcon(android.R.drawable.stat_notify_chat).setTicker("HETT").setWhen(System.currentTimeMillis())
+                builder.setSmallIcon(draw).setTicker("HETT").setWhen(System.currentTimeMillis())
                         .setContentTitle("Schedule ends").setContentText("back to original mode")
                         .setDefaults(Notification.DEFAULT_SOUND | Notification.DEFAULT_VIBRATE).setContentIntent(p).setAutoCancel(true);
 

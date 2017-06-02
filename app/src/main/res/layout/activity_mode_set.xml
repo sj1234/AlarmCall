@@ -10,14 +10,14 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="2"
-        android:orientation="horizontal"
-        android:layout_gravity="center">
+        android:layout_gravity="center"
+        android:layout_weight="3"
+        android:orientation="horizontal">
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="2"/>
+            android:layout_weight="2" />
 
         <ImageButton
             android:id="@+id/mode_icon"
@@ -26,7 +26,7 @@
             android:layout_gravity="center"
             android:layout_weight="1"
             android:background="#00000000"
-            android:scaleType="fitCenter"/>
+            android:scaleType="fitCenter" />
 
         <EditText
             android:id="@+id/modename"
@@ -36,13 +36,13 @@
             android:layout_marginBottom="8dp"
             android:layout_marginLeft="8dp"
             android:layout_weight="1"
-            android:maxLength="10"
-            android:background="@null"/>
+            android:background="@null"
+            android:maxLength="10" />
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="2"/>
+            android:layout_weight="2" />
 
     </LinearLayout>
 
@@ -249,7 +249,6 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginBottom="8dp"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
             android:layout_weight="1">
@@ -278,6 +277,41 @@
                 android:layout_weight="5"
                 android:entries="@array/count"
                 android:textColor="@color/textcolor" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_weight="1">
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_gravity="center"
+                android:layout_marginRight="8dp"
+                android:layout_weight="1"
+                android:src="@drawable/unknown" />
+
+            <TextView
+                android:layout_width="30dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="8"
+                android:text="차단 번호 문자 내용 설정"
+                android:textColor="@color/textcolor"/>
+
+            <ImageButton
+                android:id="@+id/sms"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:background="#00000000"
+                android:scaleType="fitCenter"
+                android:src="@drawable/select" />
 
         </LinearLayout>
 
