@@ -16,6 +16,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -26,7 +27,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-public class ScheduleSetActivity extends AppCompatActivity {
+public class ScheduleSetActivity extends AppCompatActivity implements View.OnClickListener{
 
     private ToggleButton toggleSun,toggleMon,toggleTue,toggleWed,toggleThu,toggleFri,toggleSat;
     private DBManager dbManager;
@@ -64,7 +65,13 @@ public class ScheduleSetActivity extends AppCompatActivity {
 
 
         starttext = (TextView) findViewById(R.id.amStart);
+        starttext.setOnClickListener((View.OnClickListener) this);
         finishtext = (TextView) findViewById(R.id.amFinish);
+        finishtext.setOnClickListener((View.OnClickListener) this);
+        ImageButton startbtn =  (ImageButton)findViewById(R.id.timeSet);
+        startbtn.setOnClickListener((View.OnClickListener) this);
+        ImageButton finishbtn =  (ImageButton)findViewById(R.id.timeReset);
+        finishbtn.setOnClickListener((View.OnClickListener) this);
 
         ArrayList<String> arraylist = dbManager.getModesName();
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, arraylist);
@@ -243,8 +250,10 @@ public class ScheduleSetActivity extends AppCompatActivity {
         });
     }
 
-    public void onButton(final View v) {
+    @Override
+    public void onClick(View v){
         switch (v.getId()) {
+            case R.id.amStart:
             case R.id.timeSet :
                 Calendar c = Calendar.getInstance();
                 TimePickerDialog timePickerDialog = new TimePickerDialog(
@@ -253,6 +262,7 @@ public class ScheduleSetActivity extends AppCompatActivity {
                 timePickerDialog.setTitle("START TIME");
                 timePickerDialog.show();
                 break;
+            case R.id.amFinish:
             case R.id.timeReset :
                 Calendar c2 = Calendar.getInstance();
                 TimePickerDialog timePickerDialog2 = new TimePickerDialog(
