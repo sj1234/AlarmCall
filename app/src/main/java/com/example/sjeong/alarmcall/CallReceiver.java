@@ -13,9 +13,11 @@ import android.provider.CallLog;
 import android.provider.ContactsContract;
 import android.support.v4.app.ActivityCompat;
 import android.telephony.PhoneStateListener;
+import android.telephony.SmsManager;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.widget.Toast;
+import android.support.v7.app.AppCompatActivity;
 
 import com.android.internal.telephony.ITelephony;
 
@@ -23,6 +25,8 @@ import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+
+import static com.example.sjeong.alarmcall.R.id.modename;
 
 public class CallReceiver extends BroadcastReceiver {
 
@@ -37,14 +41,34 @@ public class CallReceiver extends BroadcastReceiver {
     private SharedPreferences preferences;
     private int latercallonoff;
     private String Phonename;
+    private DBManager dbManager;
+    private String name, sms_string;
+    private Context context;
+    private Mode mode;
+
+
+
+
+
+    SmsManager smsManager = SmsManager.getDefault();
 
 
     @Override
     public void onReceive(Context context, Intent intent) {
+
+        if (dbManager == null) {
+            dbManager = new DBManager(context, "AlarmCall", null, 1);
+            dbManager.ReadDB();
+        }
+
+
+
+
         // TODO: This method is called when the BroadcastReceiver is receiving
         // an Intent broadcast.
 
         // 나중에 알림 정보
+
         preferences = context.getSharedPreferences("Later", Activity.MODE_PRIVATE);
         if(preferences.getString("onoff", "off").equals("off"))
             latercallonoff=0;
@@ -129,7 +153,7 @@ public class CallReceiver extends BroadcastReceiver {
         switch(contactNumber){
             case 1:
                 if(star==4)
-                    EndCall();
+                    EndCall(incomingNumber);
                 else {
                     handleRing.changeRing(star);
                     if(latercallonoff==1){PopupServiceOn(incomingNumber);}
@@ -137,7 +161,7 @@ public class CallReceiver extends BroadcastReceiver {
                 break;
             case 2:
                 if(contact==4)
-                    EndCall();
+                    EndCall(incomingNumber);
                 else{
                     handleRing.changeRing(contact);
                     if(latercallonoff==1){PopupServiceOn(incomingNumber);}
@@ -145,7 +169,7 @@ public class CallReceiver extends BroadcastReceiver {
                 break;
             case 3:
                 if(unknown==4)
-                    EndCall();
+                    EndCall(incomingNumber);
                 else{
                     handleRing.changeRing(unknown);
                     if(latercallonoff==1){PopupServiceOn(incomingNumber);}
@@ -262,13 +286,18 @@ public class CallReceiver extends BroadcastReceiver {
     }
 
     //통화종료
-    private void EndCall(){
+    private void EndCall(String incommingnumber){
+
+        mode=dbManager.getMode("모드1");
+
         try {
             Class c = Class.forName(TelMag.getClass().getName());
             Method m = c.getDeclaredMethod("getITelephony");
             m.setAccessible(true);
             ITelephony telephonyService = (ITelephony) m.invoke(TelMag);
             telephonyService.endCall();
+
+            smsManager.sendTextMessage(incommingnumber,null,mode.getSms(),null,null);
 
             Log.i(Tag,"end call");
         } catch (Exception e) {

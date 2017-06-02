@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+
 import android.view.View;
 import android.view.Window;
 import android.widget.ImageButton;
@@ -22,12 +23,12 @@ public class HowToUseActivity extends AppCompatActivity implements View.OnClickL
 
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_how_to_use);
+
 
         //Display display = ((WindowManager) getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
         //int width = (int) (display.getWidth() * 0.89);
@@ -72,6 +73,7 @@ public class HowToUseActivity extends AppCompatActivity implements View.OnClickL
         switch (v.getId()) {
             case R.id.set_text_mode:
             case R.id.set_mode:
+
                 AlertDialog.Builder alertDialogBuilder1 = new AlertDialog.Builder(
                         context);
                 // 제목셋팅

@@ -58,15 +58,6 @@ public class ModeSetActivity extends AppCompatActivity implements View.OnClickLi
     Uri photoURI, albumURI = null;
     Boolean album = false;
 
-
-
-
-
-
-
-
-
-
     private TextView startxt,contacttxt,unknowntxt;
     private EditText modename, sms_detail;
     private View iconview, smsview;
