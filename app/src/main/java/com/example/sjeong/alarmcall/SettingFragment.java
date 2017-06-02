@@ -128,7 +128,8 @@ public class SettingFragment extends PreferenceFragment {
                 return false;
             }
         });
-        
+
+
         pPushsms.setChecked( preferences1.getString("onoff", "off").equals("on"));
         pPushsms.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override

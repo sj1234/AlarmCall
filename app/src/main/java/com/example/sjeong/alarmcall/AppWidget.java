@@ -108,6 +108,14 @@ public class AppWidget extends AppWidgetProvider {
                     latereditor.commit();
                 }
 
+                // 문자 해제
+                laterpreferences= context.getSharedPreferences("Sms", Activity.MODE_PRIVATE);
+                if(laterpreferences.getString("onoff", "off").equals("on")){
+                    SharedPreferences.Editor latereditor = laterpreferences.edit();
+                    latereditor.putString("onoff", "off");
+                    latereditor.commit();
+                }
+
                 // 스케줄 실행중인 경우 ( 스케줄 종료 ) , 이전 스케줄이 반복이 없을 경우 리스트 색 변화
                 SharedPreferences preferencesschedule = context.getSharedPreferences("Schedule", Activity.MODE_PRIVATE);
                 if(preferencesschedule.getInt("id", -1) > -1) {

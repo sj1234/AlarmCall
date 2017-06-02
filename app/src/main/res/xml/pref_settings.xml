@@ -13,19 +13,21 @@
     <SwitchPreference
 
         android:defaultValue="false"
+        android:key="push_sms"
+        android:summary="차단한 번호에 대해 SMS를 발송합니다."
+        android:switchTextOff="OFF"
+        android:switchTextOn="ON"
+        android:title="PUSH SMS" />
+
+    <SwitchPreference
+
+        android:defaultValue="false"
         android:key="push_later"
         android:summary="나중에 알립니다"
         android:switchTextOff="OFF"
         android:switchTextOn="ON"
         android:title="PUSH LATER" />
-    <SwitchPreference
 
-        android:defaultValue="false"
-        android:key="push_sms"
-        android:summary="차단 SMS를 발송합니다."
-        android:switchTextOff="OFF"
-        android:switchTextOn="ON"
-        android:title="PUSH SMS" />
     <Preference
         android:key="push_setting"
         android:summary="나중에 알림시간을 정합니다"

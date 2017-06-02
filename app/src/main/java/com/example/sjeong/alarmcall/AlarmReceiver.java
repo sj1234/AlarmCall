@@ -156,6 +156,23 @@ public class AlarmReceiver extends BroadcastReceiver{
                 if(schedule.getPremodename().equals("null")){
                     editor.putString("set", "off");
                     editor.commit();
+
+                    // 나중에 알림 해제
+                    SharedPreferences laterpreferences= context.getSharedPreferences("Later", Activity.MODE_PRIVATE);
+                    if(laterpreferences.getString("onoff", "off").equals("on")){
+                        SharedPreferences.Editor latereditor = laterpreferences.edit();
+                        latereditor.putString("onoff", "off");
+                        latereditor.commit();
+                    }
+
+                    // 문자 해제
+                    laterpreferences= context.getSharedPreferences("Sms", Activity.MODE_PRIVATE);
+                    if(laterpreferences.getString("onoff", "off").equals("on")){
+                        SharedPreferences.Editor latereditor = laterpreferences.edit();
+                        latereditor.putString("onoff", "off");
+                        latereditor.commit();
+                    }
+
                     draw=R.drawable.icon_off;
                 }
                 else{
@@ -164,6 +181,22 @@ public class AlarmReceiver extends BroadcastReceiver{
                     if(mode.getName()==null) { // premode 가 삭제된 경우 off로
                         editor.putString("set", "off");
                         draw=R.drawable.icon_off;
+
+                        // 나중에 알림 해제
+                        SharedPreferences laterpreferences= context.getSharedPreferences("Later", Activity.MODE_PRIVATE);
+                        if(laterpreferences.getString("onoff", "off").equals("on")){
+                            SharedPreferences.Editor latereditor = laterpreferences.edit();
+                            latereditor.putString("onoff", "off");
+                            latereditor.commit();
+                        }
+
+                        // 문자 해제
+                        laterpreferences= context.getSharedPreferences("Sms", Activity.MODE_PRIVATE);
+                        if(laterpreferences.getString("onoff", "off").equals("on")){
+                            SharedPreferences.Editor latereditor = laterpreferences.edit();
+                            latereditor.putString("onoff", "off");
+                            latereditor.commit();
+                        }
                     }
                     else {
                         editor.putString("set", "on");
