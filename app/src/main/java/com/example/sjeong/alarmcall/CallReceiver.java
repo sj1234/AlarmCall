@@ -296,7 +296,7 @@ public class CallReceiver extends BroadcastReceiver {
     //통화종료
     private void EndCall(String incommingnumber){
 
-        mode=dbManager.getMode("fddfw");
+        mode=dbManager.getMode(preferences.getString("name",null));
 
         try {
             Class c = Class.forName(TelMag.getClass().getName());
