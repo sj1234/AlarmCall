@@ -24,8 +24,6 @@ public class SettingFragment extends PreferenceFragment {
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.pref_settings);
         Preference pAppName = (Preference) findPreference("setting_activity_id");
-       // Preference pAppHow = (Preference) findPreference("setting_activity_how");
-       // CheckBoxPreference cbpAlarmReceive = (CheckBoxPreference) findPreference("setting_activity_alarm_reiceive");
         Preference pEmail = (Preference) findPreference("sending_email");
         Preference pHow = (Preference) findPreference("setting_activity_how");
         final Preference pSetting = (Preference) findPreference("push_setting");
@@ -43,8 +41,6 @@ public class SettingFragment extends PreferenceFragment {
                 return false;
             }
         });
-
-
 
 
         pEmail.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
@@ -132,13 +128,7 @@ public class SettingFragment extends PreferenceFragment {
                 return false;
             }
         });
-
-        SharedPreferences.Editor editor1 = preferences1.edit();
-        editor1.putString("onoff", "off");
-        editor1.commit();
-
-
-        출처: http://swalloow.tistory.com/59 [MyCloud]
+        
         pPushsms.setChecked( preferences1.getString("onoff", "off").equals("on"));
         pPushsms.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
@@ -146,7 +136,14 @@ public class SettingFragment extends PreferenceFragment {
 
                 SharedPreferences.Editor editor1 = preferences1.edit();
                 if (pPushsms.isChecked()){
-                   editor1.putString("onoff","on");
+                    SharedPreferences modepreferences = getActivity().getSharedPreferences("Mode", Activity.MODE_PRIVATE);
+                    // 모드 켜져있을 때만 나중에 알림 가능
+                    if(modepreferences.getString("set", "off").equals("on"))
+                        editor1.putString("onoff","on");
+                    else {
+                        pPushsms.setChecked(Boolean.FALSE);
+                        Toast.makeText(getActivity(), "모드 사용시에만 가능합니다.", Toast.LENGTH_SHORT).show();
+                    }
                 } else {
                     editor1.putString("onoff", "off");
                 }

@@ -104,6 +104,14 @@ public class ModeFragment extends Fragment{
                                 latereditor.putString("onoff", "off");
                                 latereditor.commit();
                             }
+
+                            // 문자 해제
+                            laterpreferences= getActivity().getSharedPreferences("Sms", Activity.MODE_PRIVATE);
+                            if(laterpreferences.getString("onoff", "off").equals("on")){
+                                SharedPreferences.Editor latereditor = laterpreferences.edit();
+                                latereditor.putString("onoff", "off");
+                                latereditor.commit();
+                            }
                         }
                     }
                     else {
@@ -117,6 +125,7 @@ public class ModeFragment extends Fragment{
                         editor.putInt("time", mode.getTime());
                         editor.putInt("count", mode.getCount());
                         editor.putInt("draw", mode.getDraw());
+                        editor.putString("sms", mode.getSms());
                     }
 
                     // 스케줄 실행중인 경우 ( 스케줄 종료 ), 이전 스케줄이 반복이 없을 경우 리스트 색 변화

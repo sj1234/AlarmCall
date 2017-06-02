@@ -17,7 +17,6 @@ import android.telephony.SmsManager;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.widget.Toast;
-import android.support.v7.app.AppCompatActivity;
 
 import com.android.internal.telephony.ITelephony;
 
@@ -25,8 +24,6 @@ import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-
-import static com.example.sjeong.alarmcall.R.id.modename;
 
 public class CallReceiver extends BroadcastReceiver {
 
@@ -39,20 +36,9 @@ public class CallReceiver extends BroadcastReceiver {
     private PhoneStateListener phonelistener;
     private HandleRing handleRing;
     private SharedPreferences preferences;
-    private SharedPreferences preferences1;
     private int latercallonoff;
-    private int smsonoff;
     private String Phonename;
     private DBManager dbManager;
-    private String name, sms_string;
-    private Context context;
-    private Mode mode;
-
-
-
-
-
-    SmsManager smsManager = SmsManager.getDefault();
 
 
     @Override
@@ -63,25 +49,15 @@ public class CallReceiver extends BroadcastReceiver {
             dbManager.ReadDB();
         }
 
-
-
-
         // TODO: This method is called when the BroadcastReceiver is receiving
         // an Intent broadcast.
 
         // 나중에 알림 정보
-
         preferences = context.getSharedPreferences("Later", Activity.MODE_PRIVATE);
         if(preferences.getString("onoff", "off").equals("off"))
             latercallonoff=0;
         else
             latercallonoff=1;
-
-        preferences1 = context.getSharedPreferences("Sms", Activity.MODE_PRIVATE);
-        if(preferences1.getString("onoff", "off").equals("off"))
-            smsonoff=0;
-        else
-            smsonoff=1;
 
         // 현재모드 받아오기
         preferences = context.getSharedPreferences("Mode", Activity.MODE_PRIVATE);
@@ -296,7 +272,7 @@ public class CallReceiver extends BroadcastReceiver {
     //통화종료
     private void EndCall(String incommingnumber){
 
-        mode=dbManager.getMode(preferences.getString("name",null));
+        SmsManager smsManager = SmsManager.getDefault();
 
         try {
             Class c = Class.forName(TelMag.getClass().getName());
@@ -304,9 +280,12 @@ public class CallReceiver extends BroadcastReceiver {
             m.setAccessible(true);
             ITelephony telephonyService = (ITelephony) m.invoke(TelMag);
             telephonyService.endCall();
-            if(smsonoff==1) {
-                smsManager.sendTextMessage(incommingnumber, null, mode.getSms(), null, null);
+
+            SharedPreferences smspreferences = callcontext.getSharedPreferences("Sms", Activity.MODE_PRIVATE);
+            if(smspreferences.getString("onoff", "off").equals("on")) {
+                smsManager.sendTextMessage(incommingnumber, null, preferences.getString("sms",""), null, null);
             }
+
             Log.i(Tag,"end call");
         } catch (Exception e) {
             e.printStackTrace();
