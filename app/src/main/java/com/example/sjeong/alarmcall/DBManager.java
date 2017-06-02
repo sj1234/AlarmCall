@@ -5,7 +5,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -28,8 +27,6 @@ public class DBManager extends SQLiteOpenHelper {
               "SUN INTEGER, MON INTEGER, TUE INTEGER,WED INTEGER, THU INTEGER, FRI INTEGER, SAT INTEGER, MODENAME TEXT, PREMODENAME TEXT, ONOFF INTEGER);";
         db.execSQL(table);
         db.execSQL(table2);
-
-        Toast.makeText(dbcontext, "create db table", Toast.LENGTH_LONG).show();
         Log.i("test DB", "create db table");
     }
 
@@ -52,7 +49,6 @@ public class DBManager extends SQLiteOpenHelper {
         SQLiteDatabase db = getWritableDatabase();
         String insertmode = "INSERT INTO MODE("+"NAME, STAR, CONTACT, UNKNOWN, TIME, COUNT, DRAW, SMS)"+" VALUES(?, ?, ?, ?, ?, ?, ?, ?);";
         db.execSQL(insertmode, new Object[]{mode.getName(), mode.getStar(), mode.getContact(), mode.getUnknown(), mode.getTime(), mode.getCount(), mode.getDraw(), mode.getSms()});
-        Toast.makeText(dbcontext, "insert", Toast.LENGTH_LONG).show();
         Log.i("test DB", "insert : " + mode.getName()+", "+mode.getStar()+", "+ mode.getContact()+", "+ mode.getUnknown()+", "+ mode.getTime()+", "+ mode.getCount());
     }
 
@@ -67,8 +63,6 @@ public class DBManager extends SQLiteOpenHelper {
         SQLiteDatabase db = getWritableDatabase();
         String updatemode = "UPDATE MODE SET "+"NAME = ?, STAR =?, CONTACT =?, UNKNOWN =?, TIME =?, COUNT =?, DRAW =?, SMS =?"+" WHERE NAME=?;";
         db.execSQL(updatemode, new Object[]{mode.getName().toString(), mode.getStar(), mode.getContact(), mode.getUnknown(), mode.getTime(), mode.getCount(), mode.getDraw(), mode.getSms(), originalname});
-
-        Toast.makeText(dbcontext, "update", Toast.LENGTH_LONG).show();
         Log.i("test DB", "update : " + mode.getName()+", "+mode.getStar()+", "+ mode.getContact()+", "+ mode.getUnknown()+", "+ mode.getTime()+", "+ mode.getCount());
     }
 
@@ -84,11 +78,30 @@ public class DBManager extends SQLiteOpenHelper {
         String deletemode = "DELETE FROM MODE WHERE NAME = ?;";
         String deleteschedule = "DELETE FROM SCHEDULE WHERE MODENAME = ?;";
 
-        // 스케줄이 현재 실행중인 경우 알람 해제하기
-
         db.execSQL(deletemode, new Object[]{modename});
         db.execSQL(deleteschedule, new Object[]{modename});
         Log.i("test DB", "delete mode"+modename);
+    }
+
+    public ArrayList<Schedule> deleteMode_scheduleOff(String modename){
+        String string = "SELECT * FROM SCHEDULE WHERE MODENAME = ?;";
+        SQLiteDatabase db = getReadableDatabase();
+
+        ArrayList<Schedule> schedules = new ArrayList<Schedule>();
+
+        Cursor cursor = db.rawQuery(string, new String[]{modename});
+        if(cursor.moveToFirst()) {
+            do {
+                Schedule schedule = new Schedule();
+
+                schedule.setId(cursor.getInt(0));
+                schedule.setOnoff(cursor.getInt(12));
+
+                schedules.add(schedule);
+            }
+            while (cursor.moveToNext());
+        }
+        return schedules;
     }
 
     public void deleteSchedule(int id){

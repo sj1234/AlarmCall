@@ -1,7 +1,9 @@
 package com.example.sjeong.alarmcall;
 
 import android.app.Activity;
+import android.app.AlarmManager;
 import android.app.AlertDialog;
+import android.app.PendingIntent;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -40,15 +42,19 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.ArrayList;
 
 public class ModeSetActivity extends AppCompatActivity implements View.OnClickListener{
-
 
     private Context context;
     private String Tag="test ModeSetActive";
     private DBManager dbManager;
     private Mode mode;
     private String name, sms_string;
+    private TextView startxt,contacttxt,unknowntxt;
+    private EditText modename, sms_detail;
+    private View iconview, smsview;
+    private ImageButton icon;
 
     static final int REQUEST_IMAGE_CAPTURE = 1;
     static final int REQUEST_TAKE_PHOTO = 2;
@@ -57,11 +63,6 @@ public class ModeSetActivity extends AppCompatActivity implements View.OnClickLi
     String mCurrentPhotoPath;
     Uri photoURI, albumURI = null;
     Boolean album = false;
-
-    private TextView startxt,contacttxt,unknowntxt;
-    private EditText modename, sms_detail;
-    private View iconview, smsview;
-    private ImageButton icon;
     private Uri mImageCaptureUri;
     private ImageView imageView;
     private String absoultePath;
@@ -88,19 +89,14 @@ public class ModeSetActivity extends AppCompatActivity implements View.OnClickLi
 
         ImageButton star = (ImageButton) this.findViewById(R.id.star);
         star.setOnClickListener((View.OnClickListener) this);
-
         ImageButton contact = (ImageButton) this.findViewById(R.id.contact);
         contact.setOnClickListener((View.OnClickListener) this);
-
         ImageButton unknown = (ImageButton) this.findViewById(R.id.unknown);
         unknown.setOnClickListener((View.OnClickListener) this);
-
         ImageButton sms = (ImageButton) this.findViewById(R.id.sms);
         sms.setOnClickListener((View.OnClickListener) this);
-
         Button set = (Button) this.findViewById(R.id.set);
         set.setOnClickListener((View.OnClickListener) this);
-
         Button delete = (Button) this.findViewById(R.id.delete);
         delete.setOnClickListener((View.OnClickListener) this);
 
@@ -111,8 +107,6 @@ public class ModeSetActivity extends AppCompatActivity implements View.OnClickLi
         contacttxt.setOnClickListener(this);
         unknowntxt = (TextView) findViewById(R.id.unknowntxt);
         unknowntxt.setOnClickListener(this);
-        TextView timetxt = (TextView) findViewById(R.id.timetxt);
-        TextView counttxt = (TextView) findViewById(R.id.counttxt);
 
         mode = new Mode();
 
@@ -137,25 +131,20 @@ public class ModeSetActivity extends AppCompatActivity implements View.OnClickLi
             delete.setText("취소");
         }
 
-
-       final Spinner s1 = (Spinner)findViewById(R.id.timespinner);
+       Spinner s1 = (Spinner)findViewById(R.id.timespinner);
 
         s1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view,
                                        int position, long id) {
                 mode.setTime(Integer.parseInt(""+parent.getItemAtPosition(position)));
-
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> parent) {}
         });
-
         s1.setSelection(mode.getTime()-1);
 
         Spinner s2 = (Spinner)findViewById(R.id.countspinner);
-
 
         s2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -167,7 +156,6 @@ public class ModeSetActivity extends AppCompatActivity implements View.OnClickLi
             public void onNothingSelected(AdapterView<?> parent) {}
         });
         s2.setSelection(mode.getCount()-1);
-
     }
 
     @Override
@@ -311,6 +299,7 @@ public class ModeSetActivity extends AppCompatActivity implements View.OnClickLi
 
                                     if (preferences.getString("name", "null").equals(name)) {
                                         if (preferences.getString("set", "off").equals("off")) {
+                                            deletemode_scheduleoff(name);
                                             dbManager.deleteMode(name);
                                             SharedPreferences.Editor editor = preferences.edit();
                                             editor.putString("name", "null");
@@ -321,6 +310,7 @@ public class ModeSetActivity extends AppCompatActivity implements View.OnClickLi
                                         } else
                                             Toast.makeText(context, "현재 모드라 삭제 불가능 합니다.", Toast.LENGTH_SHORT).show();
                                     } else {
+                                        deletemode_scheduleoff(name);
                                         dbManager.deleteMode(name);
                                         Toast.makeText(context, "모드를 삭제하였습니다.", Toast.LENGTH_SHORT).show();
                                         finish();
@@ -370,11 +360,8 @@ public class ModeSetActivity extends AppCompatActivity implements View.OnClickLi
                         } catch (ActivityNotFoundException e) {
                             // Do nothing for now
                         }
-
-
                     }
                 });
-
                 builder.setView(iconview);
                 builder.show();
                 break;
@@ -408,6 +395,30 @@ public class ModeSetActivity extends AppCompatActivity implements View.OnClickLi
         }
     }
 
+    private void deletemode_scheduleoff(String modename){
+        ArrayList<Schedule> arraySchedule = dbManager.deleteMode_scheduleOff(modename);
+
+        for(Schedule schedule:arraySchedule){
+            Log.i(Tag,schedule.getId()+"/ "+schedule.getOnoff());
+            if(schedule.getOnoff()==1){
+                int id = schedule.getId();
+                Intent intent = new Intent(context,AlarmReceiver.class);
+                AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+
+                PendingIntent amIntent = PendingIntent.getBroadcast(context, id*2, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                PendingIntent amIntent2 = PendingIntent.getBroadcast(context, (id*2)+1, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                am.cancel(amIntent);
+                am.cancel(amIntent2);
+
+                SharedPreferences preferences= context.getSharedPreferences("Schedule", Activity.MODE_PRIVATE);
+                if(preferences.getInt("id", -1)==id){
+                    SharedPreferences.Editor editor = preferences.edit();
+                    editor.putInt("id", -1);
+                    editor.commit();
+                }
+            }
+        }
+    }
 
     @Override
     protected void onActivityResult(int requestCode,
