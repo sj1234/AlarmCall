@@ -27,9 +27,7 @@ import java.util.Date;
 
 public class CallReceiver extends BroadcastReceiver {
 
-
     private String Tag = "test MyReciver";
-
     public static TelephonyManager TelMag;
     private static String callstate;
     private Context callcontext;
@@ -69,7 +67,6 @@ public class CallReceiver extends BroadcastReceiver {
 
         callcontext = context;
         Log.i(Tag, "call receiver start");
-        Toast.makeText(context, "receiver start", Toast.LENGTH_SHORT).show();
 
         // 브로드 캐스트 같은 상황에 여러 번 수신되는 경우
         String state = intent.getStringExtra(TelephonyManager.EXTRA_STATE);
@@ -91,7 +88,6 @@ public class CallReceiver extends BroadcastReceiver {
                 switch (state) {
                     case TelephonyManager.CALL_STATE_RINGING: // 전화 수신
                         Log.i(Tag, "call CALL_STATE_RINGING");
-
                         // 1이면 즐겨찾기 2이면 즐겨찾기 외에 저장된 번호 3이면 모르는 번호
                         int contactNumber = getContacts(incomingNumber);
                         // 부재중전화 횟수
@@ -114,7 +110,6 @@ public class CallReceiver extends BroadcastReceiver {
                 TelMag.listen(phonelistener, PhoneStateListener.LISTEN_NONE);
             }
         };
-
         TelMag.listen(phonelistener, PhoneStateListener.LISTEN_CALL_STATE);
     }
 
@@ -133,27 +128,32 @@ public class CallReceiver extends BroadcastReceiver {
             return;
         }
 
-        Toast.makeText(callcontext, contactNumber+", "+ calllogCount+", "+unknown, Toast.LENGTH_SHORT).show();
         switch(contactNumber){
             case 1:
-                if(star==4)
+                if(star==4) {
+                    handleRing.changeRing(5);
                     EndCall(incomingNumber);
+                }
                 else {
                     handleRing.changeRing(star);
                     if(latercallonoff==1){PopupServiceOn(incomingNumber);}
                 }
                 break;
             case 2:
-                if(contact==4)
+                if(contact==4){
+                    handleRing.changeRing(5);
                     EndCall(incomingNumber);
+                }
                 else{
                     handleRing.changeRing(contact);
                     if(latercallonoff==1){PopupServiceOn(incomingNumber);}
                 }
                 break;
             case 3:
-                if(unknown==4)
+                if(unknown==4){
+                    handleRing.changeRing(5);
                     EndCall(incomingNumber);
+                }
                 else{
                     handleRing.changeRing(unknown);
                     if(latercallonoff==1){PopupServiceOn(incomingNumber);}
