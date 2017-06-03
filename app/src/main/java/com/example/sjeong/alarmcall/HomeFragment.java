@@ -4,12 +4,16 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import java.io.File;
 
 public class HomeFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
@@ -92,8 +96,17 @@ public class HomeFragment extends Fragment {
             nowcontact.setText("  "+RingInformation(contact));
             nowunknown.setText("  "+RingInformation(unknown));
             nowtimecount.setText("  "+time+"분안에 "+count+"회 이상");
-            nowicon.setImageResource(preferences.getInt("draw",R.drawable.icon_empty));
-
+            if(preferences.getInt("draw",R.drawable.icon_empty)==0)
+            {
+                File imgFile = new  File(preferences.getString("picture",""));
+                if(imgFile.exists()){
+                    Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+                    RoundedAvatarDrawable tmpRoundedAvatarDrawable = new RoundedAvatarDrawable(myBitmap);
+                    nowicon.setImageDrawable(tmpRoundedAvatarDrawable);
+                }
+            }
+            else
+                nowicon.setImageResource(preferences.getInt("draw",R.drawable.icon_empty));
         }
     }
 
