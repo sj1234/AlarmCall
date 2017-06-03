@@ -1,5 +1,6 @@
 package com.example.sjeong.alarmcall;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.AlertDialog;
@@ -20,6 +21,7 @@ import android.graphics.RectF;
 import android.graphics.Shader;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
@@ -69,9 +71,30 @@ public class ModeSetActivity extends AppCompatActivity implements View.OnClickLi
     private static final int PICK_FROM_CAMERA = 0;
     private static final int PICK_FROM_ALBUM = 1;
     private static final int CROP_FROM_iMAGE = 2;
+
+    protected boolean shouldAskPermissions() {
+        return (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP_MR1);
+    }
+
+    @TargetApi(23)
+    protected void askPermissions() {
+        String[] permissions = {
+                "android.permission.READ_EXTERNAL_STORAGE",
+                "android.permission.WRITE_EXTERNAL_STORAGE"
+        };
+        int requestCode = 200;
+        requestPermissions(permissions, requestCode);
+    }
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (shouldAskPermissions()) {
+            askPermissions();
+        }
+
         setContentView(R.layout.activity_mode_set);
         context = this;
 
@@ -428,8 +451,10 @@ public class ModeSetActivity extends AppCompatActivity implements View.OnClickLi
 
         if (requestCode == 2) {
             Bundle extras2 = data.getExtras();
-            String filePath = Environment.getExternalStorageDirectory().getAbsolutePath()+
-                    +System.currentTimeMillis()+".png";
+
+//            String filePath = "/mnt/sdcard/Pictures"+System.currentTimeMillis()+".jpg";
+
+            String filePath = Environment.getExternalStorageDirectory().getAbsolutePath()+System.currentTimeMillis()+".jpg";
 /*
             File albumfile = null;
             try {
@@ -442,10 +467,12 @@ public class ModeSetActivity extends AppCompatActivity implements View.OnClickLi
             photoURI =  data.getData();
             cropImage();
  */
+
+
             if (extras2 != null) {
                 Bitmap photo = extras2.getParcelable("data");
   //              storeCropImage(photo, filePath); // CROP된 이미지를 외부저장소, 앨범에 저장한다.
-  //              SaveBitmapToFileCache(photo,filePath);
+                SaveBitmapToFileCache(photo,filePath);
                 RoundedAvatarDrawable tmpRoundedAvatarDrawable = new RoundedAvatarDrawable(photo);
                 icon.setImageDrawable(tmpRoundedAvatarDrawable);
                 absoultePath = filePath;
@@ -531,6 +558,7 @@ return file;
     private void SaveBitmapToFileCache(Bitmap bitmap, String strFilePath) {
 
         File fileCacheItem = new File(strFilePath);
+
         OutputStream out = null;
 
         try
@@ -538,7 +566,8 @@ return file;
             fileCacheItem.createNewFile();
             out = new FileOutputStream(fileCacheItem);
 
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
+            Toast.makeText(this,strFilePath+"ㅋㅋㅋ",Toast.LENGTH_SHORT).show();
         }
         catch (Exception e)
         {
@@ -555,6 +584,8 @@ return file;
                 e.printStackTrace();
             }
         }
+
+
     }
 
 
