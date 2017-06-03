@@ -145,6 +145,7 @@ public class ModeSetActivity extends AppCompatActivity implements View.OnClickLi
             contacttxt.setText("수신음 선택");
             unknowntxt.setText("수신음 선택");
             icon.setImageResource(R.drawable.icon_empty);
+            mode.setDraw(R.drawable.icon_empty);
             sms_string = "지금은 전화를 받을 수 없습니다.";
             mode.setSms(sms_string);
             delete.setText("취소");
@@ -278,7 +279,7 @@ public class ModeSetActivity extends AppCompatActivity implements View.OnClickLi
             case R.id.set:
                 mode.setName(modename.getText().toString());
 
-                if (!mode.getName().isEmpty() && mode.getStar() > 0 && mode.getContact() > 0 && mode.getUnknown() > 0 && mode.getDraw() >= 0 && !mode.getSms().isEmpty()) {
+                if (!mode.getName().isEmpty() && mode.getStar() > 0 && mode.getContact() > 0 && mode.getUnknown() > 0 && mode.getDraw() >= 0 && !mode.getSms().isEmpty() && mode.getDraw()!=R.drawable.icon_empty  ) {
 
                     if (name == null)
                         dbManager.insertMode(mode);
