@@ -472,7 +472,7 @@ public class ModeSetActivity extends AppCompatActivity implements View.OnClickLi
             if (extras2 != null) {
                 Bitmap photo = extras2.getParcelable("data");
   //              storeCropImage(photo, filePath); // CROP된 이미지를 외부저장소, 앨범에 저장한다.
-                SaveBitmapToFileCache(photo,filePath);
+  //              SaveBitmapToFileCache(photo,filePath);
                 RoundedAvatarDrawable tmpRoundedAvatarDrawable = new RoundedAvatarDrawable(photo);
                 icon.setImageDrawable(tmpRoundedAvatarDrawable);
                 absoultePath = filePath;
