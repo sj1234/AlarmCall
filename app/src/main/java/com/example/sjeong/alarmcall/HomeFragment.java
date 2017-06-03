@@ -96,7 +96,6 @@ public class HomeFragment extends Fragment {
             nowcontact.setText("  "+RingInformation(contact));
             nowunknown.setText("  "+RingInformation(unknown));
             nowtimecount.setText("  "+time+"분안에 "+count+"회 이상");
-            nowicon.setImageResource(preferences.getInt("draw",R.drawable.icon_empty));
 
             if(preferences.getInt("draw",R.drawable.icon_empty)==0)
             {
