@@ -33,7 +33,6 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
@@ -43,8 +42,6 @@ import android.widget.Toast;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
 import java.util.ArrayList;
 
 public class ModeSetActivity extends AppCompatActivity implements View.OnClickListener{
@@ -297,6 +294,7 @@ public class ModeSetActivity extends AppCompatActivity implements View.OnClickLi
                         editor.putInt("time", mode.getTime());
                         editor.putInt("count", mode.getCount());
                         editor.putString("sms", mode.getSms());
+                        editor.putString("picture", mode.getPicture());
 
                         editor.commit();
 

@@ -8,9 +8,13 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.Toast;
+
+import java.io.File;
 
 /**
  * Implementation of App Widget functionality.
@@ -49,7 +53,19 @@ public class AppWidget extends AppWidgetProvider {
                 views.setTextViewText(R.id.widgetname, "Mode OFF");
             }
             else{
-                views.setImageViewResource(R.id.buttonWidget, preferences.getInt("draw", R.drawable.icon_off));
+
+                if(preferences.getInt("draw",R.drawable.icon_empty)==0)
+                {
+                    File imgFile = new  File( preferences.getString("picture", ""));
+                    if(imgFile.exists()) {
+                        Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+                        RoundedAvatarDrawable tmpRoundedAvatarDrawable = new RoundedAvatarDrawable(myBitmap);
+                        views.setImageViewBitmap(R.id.buttonWidget, myBitmap);
+                    }
+                }
+                else
+                    views.setImageViewResource(R.id.buttonWidget, preferences.getInt("draw", R.drawable.icon_off));
+
                 views.setTextViewText(R.id.widgetname, preferences.getString("name", "null") );
             }
             // Instruct the widget manager to update the widget
