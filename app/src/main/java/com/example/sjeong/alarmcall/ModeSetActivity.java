@@ -33,7 +33,6 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
@@ -43,8 +42,6 @@ import android.widget.Toast;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
 import java.util.ArrayList;
 
 public class ModeSetActivity extends AppCompatActivity implements View.OnClickListener{
@@ -148,6 +145,7 @@ public class ModeSetActivity extends AppCompatActivity implements View.OnClickLi
             contacttxt.setText("수신음 선택");
             unknowntxt.setText("수신음 선택");
             icon.setImageResource(R.drawable.icon_empty);
+            mode.setDraw(R.drawable.icon_empty);
             sms_string = "지금은 전화를 받을 수 없습니다.";
             mode.setSms(sms_string);
             delete.setText("취소");
@@ -281,7 +279,7 @@ public class ModeSetActivity extends AppCompatActivity implements View.OnClickLi
             case R.id.set:
                 mode.setName(modename.getText().toString());
 
-                if (!mode.getName().isEmpty() && mode.getStar() > 0 && mode.getContact() > 0 && mode.getUnknown() > 0 && mode.getDraw() >= 0 && !mode.getSms().isEmpty()) {
+                if (!mode.getName().isEmpty() && mode.getStar() > 0 && mode.getContact() > 0 && mode.getUnknown() > 0 && mode.getDraw() >= 0 && !mode.getSms().isEmpty() && mode.getDraw()!=R.drawable.icon_empty  ) {
 
                     if (name == null)
                         dbManager.insertMode(mode);
@@ -297,6 +295,8 @@ public class ModeSetActivity extends AppCompatActivity implements View.OnClickLi
                         editor.putInt("time", mode.getTime());
                         editor.putInt("count", mode.getCount());
                         editor.putString("sms", mode.getSms());
+                        editor.putInt("draw", mode.getDraw());
+                        editor.putString("picture", mode.getPicture());
 
                         editor.commit();
 
@@ -354,21 +354,9 @@ public class ModeSetActivity extends AppCompatActivity implements View.OnClickLi
                                 RadioGroup radioGroup= (RadioGroup)iconview.findViewById(R.id.icon_group);
                                 RadioButton radioButton = (RadioButton)radioGroup.findViewById(radioGroup.getCheckedRadioButtonId());
 
-                                if(Integer.parseInt(radioButton.getTag().toString())==6)
-                                {
-                                    mode.setDraw(0); // 0은 아무 의미 없음 단지 0으로 tag가 6일때를 고름
-                                    File imgFile = new  File(mode.getPicture());
-                                    if(imgFile.exists()){
-                                        Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
-                                        RoundedAvatarDrawable tmpRoundedAvatarDrawable = new RoundedAvatarDrawable(myBitmap);
-                                        icon.setImageDrawable(tmpRoundedAvatarDrawable);
-                                    }
-                                }
-                                else
-                                {
-                                    mode.setDraw(IconImage(Integer.parseInt(radioButton.getTag().toString())));
-                                    icon.setImageResource(mode.getDraw());
-                                }
+                                mode.setDraw(IconImage(Integer.parseInt(radioButton.getTag().toString())));
+                                icon.setImageResource(mode.getDraw());
+
                                 dialog.dismiss();
                             }
                         }).setPositiveButton("취소", new DialogInterface.OnClickListener() {
@@ -458,17 +446,10 @@ public class ModeSetActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     @Override
-    protected void onActivityResult(int requestCode,
-                                    int resultCode,
-                                    Intent data) {
-
-
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == 2) {
             Bundle extras2 = data.getExtras();
-
-
             String filePath = Environment.getExternalStorageDirectory().getAbsolutePath()+"/AlarmCall/"+System.currentTimeMillis()+".jpg";
-
 
             if (extras2 != null) {
                 Bitmap photo = extras2.getParcelable("data");
@@ -476,7 +457,6 @@ public class ModeSetActivity extends AppCompatActivity implements View.OnClickLi
                 RoundedAvatarDrawable tmpRoundedAvatarDrawable = new RoundedAvatarDrawable(photo);
                 icon.setImageDrawable(tmpRoundedAvatarDrawable);
             }
-
         }
     }
 
@@ -521,10 +501,8 @@ public class ModeSetActivity extends AppCompatActivity implements View.OnClickLi
                 return R.drawable.icon_sleep;
             case 5:
                 return R.drawable.icon_tea;
-            case 6:
-                return 0;
             default:
-                return R.drawable.icon_sleep;
+                return R.drawable.icon_empty;
         }
     }
 
@@ -573,7 +551,6 @@ public class ModeSetActivity extends AppCompatActivity implements View.OnClickLi
     @Override
     protected void onBoundsChange(Rect bounds) {
         super.onBoundsChange(bounds);
-
         mRectF.set(bounds);
     }
 

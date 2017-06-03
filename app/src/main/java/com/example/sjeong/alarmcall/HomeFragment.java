@@ -25,6 +25,7 @@ public class HomeFragment extends Fragment {
     private TextView nowunknown;
     private TextView nowtimecount;
     private ImageView nowicon;
+    private TextView nowsms;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -42,6 +43,7 @@ public class HomeFragment extends Fragment {
         nowunknown = (TextView)view.findViewById(R.id.nowunknown);
         nowtimecount = (TextView)view.findViewById(R.id.nowtimecount);
         nowicon = (ImageView)view.findViewById(R.id.nowicon);
+        nowsms = (TextView)view.findViewById(R.id.nowsms);
 
         // return inflater.inflate(R.layout.fragment_home, container, false);
         //return super.onCreateView(inflater, container, savedInstanceState);
@@ -66,10 +68,8 @@ public class HomeFragment extends Fragment {
     }
 
     public void NowMode(){
-
-        String name;
+        String name, sms;
         int star, contact, unknown, time, count;
-
         // Preferences 생성
         SharedPreferences preferences = getActivity().getSharedPreferences("Mode", Activity.MODE_PRIVATE);
 
@@ -80,6 +80,7 @@ public class HomeFragment extends Fragment {
             nowunknown.setText("");
             nowtimecount.setText("");
             nowicon.setImageResource(R.drawable.icon_off);
+            nowsms.setText("");
             return ;
         }
         else{
@@ -90,16 +91,19 @@ public class HomeFragment extends Fragment {
             unknown = preferences.getInt("unknown", 4);
             time = preferences.getInt("time", 0);
             count = preferences.getInt("count", 0);
+            sms = preferences.getString("sms", "");
 
             nowname.setText(name);
             nowstar.setText("  "+RingInformation(star));
             nowcontact.setText("  "+RingInformation(contact));
             nowunknown.setText("  "+RingInformation(unknown));
             nowtimecount.setText("  "+time+"분안에 "+count+"회 이상");
+            nowsms.setText(sms);
+
             if(preferences.getInt("draw",R.drawable.icon_empty)==0)
             {
-                File imgFile = new  File(preferences.getString("picture",""));
-                if(imgFile.exists()){
+                File imgFile = new  File( preferences.getString("picture", ""));
+                if(imgFile.exists()) {
                     Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
                     RoundedAvatarDrawable tmpRoundedAvatarDrawable = new RoundedAvatarDrawable(myBitmap);
                     nowicon.setImageDrawable(tmpRoundedAvatarDrawable);
@@ -107,6 +111,7 @@ public class HomeFragment extends Fragment {
             }
             else
                 nowicon.setImageResource(preferences.getInt("draw",R.drawable.icon_empty));
+
         }
     }
 

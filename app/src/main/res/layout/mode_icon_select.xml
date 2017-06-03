@@ -69,16 +69,6 @@
             android:scaleType="fitCenter"
             android:src="@drawable/icon_tea" />
 
-        <ImageView
-            android:id="@+id/iv_capture"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
-            android:layout_weight="1"
-            android:background="#00000000"
-            android:scaleType="fitCenter" />
-
     </LinearLayout>
 
     <RadioGroup
@@ -139,16 +129,6 @@
             android:layout_weight="0.16"
             android:buttonTint="#1b736d"
             android:tag="5" />
-
-        <RadioButton
-            android:id="@+id/icon_empty"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
-            android:buttonTint="#1b736d"
-            android:tag="6" />
-
 
     </RadioGroup>
 
