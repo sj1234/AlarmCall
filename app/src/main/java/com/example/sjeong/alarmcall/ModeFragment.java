@@ -126,6 +126,7 @@ public class ModeFragment extends Fragment{
                         editor.putInt("count", mode.getCount());
                         editor.putInt("draw", mode.getDraw());
                         editor.putString("sms", mode.getSms());
+                        editor.putString("picture", mode.getPicture());
                     }
 
                     // 스케줄 실행중인 경우 ( 스케줄 종료 ), 이전 스케줄이 반복이 없을 경우 리스트 색 변화

@@ -3,6 +3,8 @@ package com.example.sjeong.alarmcall;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +13,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.io.File;
 import java.util.ArrayList;
 
 /**
@@ -67,7 +70,18 @@ public class ListAdapter extends BaseAdapter {
             if(preferences.getString("set","off").equals("on") && preferences.getString("name"," ").equals(arraylist.get(position).getName().toString())) {
                 convertView.setBackgroundResource(R.drawable.selectlistbackground);
                 buttonselect.setImageResource(R.drawable.mode_start);
-                iconview.setImageResource(arraylist.get(position).getDraw());
+
+                if(arraylist.get(position).getDraw()==0)
+                {
+                    File imgFile = new  File(arraylist.get(position).getPicture());
+                    if(imgFile.exists()) {
+                        Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+                        RoundedAvatarDrawable tmpRoundedAvatarDrawable = new RoundedAvatarDrawable(myBitmap);
+                        iconview.setImageDrawable(tmpRoundedAvatarDrawable);
+                    }
+                }
+                else
+                    iconview.setImageResource(arraylist.get(position).getDraw());
                 textView.setText(arraylist.get(position).getName().toString());
                 textdetailView.setText(RingInformation(arraylist.get(position).getStar())+" / "+RingInformation(arraylist.get(position).getContact()) +" / "+RingInformation(arraylist.get(position).getUnknown())+" / "+ arraylist.get(position).getTime() +"분 "+arraylist.get(position).getCount()+"번");
 
@@ -75,7 +89,16 @@ public class ListAdapter extends BaseAdapter {
             else {
                 convertView.setBackgroundResource(R.drawable.listbackground);
                 buttonselect.setImageResource(R.drawable.mode_end);
-                iconview.setImageResource(arraylist.get(position).getDraw());
+                    if(arraylist.get(position).getDraw()==0) {
+                        File imgFile = new File(arraylist.get(position).getPicture());
+                        if (imgFile.exists()) {
+                            Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+                            RoundedAvatarDrawable tmpRoundedAvatarDrawable = new RoundedAvatarDrawable(myBitmap);
+                            iconview.setImageDrawable(tmpRoundedAvatarDrawable);
+                        }
+                    }
+                    else
+                        iconview.setImageResource(arraylist.get(position).getDraw());
                 textView.setText(arraylist.get(position).getName().toString());
                 textdetailView.setText(RingInformation(arraylist.get(position).getStar())+" / "+RingInformation(arraylist.get(position).getContact()) +" / "+RingInformation(arraylist.get(position).getUnknown())+" / "+ arraylist.get(position).getTime() +"분 "+arraylist.get(position).getCount()+"번");
 

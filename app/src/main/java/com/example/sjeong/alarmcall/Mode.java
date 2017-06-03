@@ -14,6 +14,7 @@ public class Mode {
     private int count;
     private int draw;
     private String sms;
+    private String picture;
 
     public String getName(){return name;}
 
@@ -31,7 +32,11 @@ public class Mode {
 
     public String getSms() {return sms;}
 
+    public String getPicture() {return picture;}
+
     public void setSms(String sms) {this.sms = sms;}
+
+    public void setPicture(String picture) {this.picture = picture;}
 
     public void setDraw(int draw) {this.draw = draw;}
 

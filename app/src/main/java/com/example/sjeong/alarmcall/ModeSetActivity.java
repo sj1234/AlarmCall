@@ -11,6 +11,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.BitmapShader;
 import android.graphics.Canvas;
 import android.graphics.ColorFilter;
@@ -52,25 +53,12 @@ public class ModeSetActivity extends AppCompatActivity implements View.OnClickLi
     private String Tag="test ModeSetActive";
     private DBManager dbManager;
     private Mode mode;
-    private String name, sms_string;
+    private String name, sms_string, picture_string;
     private TextView startxt,contacttxt,unknowntxt;
     private EditText modename, sms_detail;
     private View iconview, smsview;
     private ImageButton icon;
 
-    static final int REQUEST_IMAGE_CAPTURE = 1;
-    static final int REQUEST_TAKE_PHOTO = 2;
-    static final int REQUEST_IMAGE_CROP = 3;
-    ImageView iv_capture;
-    String mCurrentPhotoPath;
-    Uri photoURI, albumURI = null;
-    Boolean album = false;
-    private Uri mImageCaptureUri;
-    private ImageView imageView;
-    private String absoultePath;
-    private static final int PICK_FROM_CAMERA = 0;
-    private static final int PICK_FROM_ALBUM = 1;
-    private static final int CROP_FROM_iMAGE = 2;
 
     protected boolean shouldAskPermissions() {
         return (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP_MR1);
@@ -139,8 +127,19 @@ public class ModeSetActivity extends AppCompatActivity implements View.OnClickLi
             startxt.setText( RingInformation(mode.getStar()));
             contacttxt.setText(RingInformation(mode.getContact()));
             unknowntxt.setText(RingInformation(mode.getUnknown()));
-            icon.setImageResource(mode.getDraw());
+            if(mode.getDraw()==0)
+            {
+                File imgFile = new  File(mode.getPicture());
+                if(imgFile.exists()){
+                    Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+                    RoundedAvatarDrawable tmpRoundedAvatarDrawable = new RoundedAvatarDrawable(myBitmap);
+                    icon.setImageDrawable(tmpRoundedAvatarDrawable);
+                }
+            }
+            else
+                icon.setImageResource(mode.getDraw());
             sms_string = mode.getSms();
+            picture_string = mode.getPicture();
         }
         else {
             mode = new Mode();
@@ -282,7 +281,7 @@ public class ModeSetActivity extends AppCompatActivity implements View.OnClickLi
             case R.id.set:
                 mode.setName(modename.getText().toString());
 
-                if (!mode.getName().isEmpty() && mode.getStar() > 0 && mode.getContact() > 0 && mode.getUnknown() > 0 && mode.getDraw() > 0 && !mode.getSms().isEmpty()) {
+                if (!mode.getName().isEmpty() && mode.getStar() > 0 && mode.getContact() > 0 && mode.getUnknown() > 0 && mode.getDraw() >= 0 && !mode.getSms().isEmpty()) {
 
                     if (name == null)
                         dbManager.insertMode(mode);
@@ -298,6 +297,7 @@ public class ModeSetActivity extends AppCompatActivity implements View.OnClickLi
                         editor.putInt("time", mode.getTime());
                         editor.putInt("count", mode.getCount());
                         editor.putString("sms", mode.getSms());
+
                         editor.commit();
 
                         Log.i(Tag, "Update Now Mode");
@@ -353,8 +353,22 @@ public class ModeSetActivity extends AppCompatActivity implements View.OnClickLi
                             public void onClick(DialogInterface dialog, int which) {
                                 RadioGroup radioGroup= (RadioGroup)iconview.findViewById(R.id.icon_group);
                                 RadioButton radioButton = (RadioButton)radioGroup.findViewById(radioGroup.getCheckedRadioButtonId());
-                                mode.setDraw(IconImage(Integer.parseInt(radioButton.getTag().toString())));
-                                icon.setImageResource(mode.getDraw());
+
+                                if(Integer.parseInt(radioButton.getTag().toString())==6)
+                                {
+                                    mode.setDraw(0); // 0은 아무 의미 없음 단지 0으로 tag가 6일때를 고름
+                                    File imgFile = new  File(mode.getPicture());
+                                    if(imgFile.exists()){
+                                        Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+                                        RoundedAvatarDrawable tmpRoundedAvatarDrawable = new RoundedAvatarDrawable(myBitmap);
+                                        icon.setImageDrawable(tmpRoundedAvatarDrawable);
+                                    }
+                                }
+                                else
+                                {
+                                    mode.setDraw(IconImage(Integer.parseInt(radioButton.getTag().toString())));
+                                    icon.setImageResource(mode.getDraw());
+                                }
                                 dialog.dismiss();
                             }
                         }).setPositiveButton("취소", new DialogInterface.OnClickListener() {
@@ -453,7 +467,7 @@ public class ModeSetActivity extends AppCompatActivity implements View.OnClickLi
             Bundle extras2 = data.getExtras();
 
 
-            String filePath = Environment.getExternalStorageDirectory().getAbsolutePath()+"/AlarmCall"+System.currentTimeMillis()+".jpg";
+            String filePath = Environment.getExternalStorageDirectory().getAbsolutePath()+"/AlarmCall/"+System.currentTimeMillis()+".jpg";
 
 
             if (extras2 != null) {
@@ -461,14 +475,13 @@ public class ModeSetActivity extends AppCompatActivity implements View.OnClickLi
                 storeCropImage(photo, filePath); // CROP된 이미지를 외부저장소, 앨범에 저장한다.
                 RoundedAvatarDrawable tmpRoundedAvatarDrawable = new RoundedAvatarDrawable(photo);
                 icon.setImageDrawable(tmpRoundedAvatarDrawable);
-                absoultePath = filePath;
             }
 
         }
     }
 
     private void storeCropImage(Bitmap bitmap, String filePath) {
-        String dirPath = Environment.getExternalStorageDirectory().getAbsolutePath()+"/AlarmCall";
+        String dirPath = Environment.getExternalStorageDirectory().getAbsolutePath()+"/AlarmCall/";
         File directory = new File(dirPath);
         if(!directory.exists()) // 폴더가 없다면 (새로 이미지를 저장할 경우에 속한다.)
             directory.mkdir();
@@ -479,6 +492,8 @@ public class ModeSetActivity extends AppCompatActivity implements View.OnClickLi
             copyFile.createNewFile();
             out = new BufferedOutputStream(new FileOutputStream(copyFile));
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
+            mode.setPicture(filePath);
+            mode.setDraw(0);
             // 임시 토스트
             Toast.makeText(getApplicationContext(), " 저장했습니다.", Toast.LENGTH_SHORT).show();
             sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE,
@@ -506,6 +521,8 @@ public class ModeSetActivity extends AppCompatActivity implements View.OnClickLi
                 return R.drawable.icon_sleep;
             case 5:
                 return R.drawable.icon_tea;
+            case 6:
+                return 0;
             default:
                 return R.drawable.icon_sleep;
         }
