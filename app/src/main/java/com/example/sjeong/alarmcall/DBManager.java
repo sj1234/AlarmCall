@@ -161,7 +161,7 @@ public class DBManager extends SQLiteOpenHelper {
     }
 
     public ArrayList<Schedule> getSchedules(){
-        String string = "SELECT * FROM SCHEDULE;";
+        String string = "SELECT * FROM SCHEDULE ORDER BY START;";
         SQLiteDatabase db = getReadableDatabase();
 
         ArrayList<Schedule> schedules = new ArrayList<Schedule>();

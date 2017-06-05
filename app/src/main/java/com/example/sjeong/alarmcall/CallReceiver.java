@@ -16,7 +16,6 @@ import android.telephony.PhoneStateListener;
 import android.telephony.SmsManager;
 import android.telephony.TelephonyManager;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.android.internal.telephony.ITelephony;
 
@@ -46,9 +45,6 @@ public class CallReceiver extends BroadcastReceiver {
             dbManager = new DBManager(context, "AlarmCall", null, 1);
             dbManager.ReadDB();
         }
-
-        // TODO: This method is called when the BroadcastReceiver is receiving
-        // an Intent broadcast.
 
         // 나중에 알림 정보
         preferences = context.getSharedPreferences("Later", Activity.MODE_PRIVATE);
@@ -186,12 +182,10 @@ public class CallReceiver extends BroadcastReceiver {
                 number = number.replace("-", "");
                 if (phoneNumber.equals(number)) {
                     if (star.equals("1")) {
-                        Log.i(Tag, "star Number " + star + " / " + phoneNumber);
                         Phonename =  cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
                         return 1;
                     } // 즐겨찾기
                     else {
-                        Toast.makeText(callcontext, "있는번호", Toast.LENGTH_SHORT).show();
                         Log.i(Tag, "know Number " + phoneNumber);
                         Phonename =  cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
                         return 2;
@@ -200,7 +194,6 @@ public class CallReceiver extends BroadcastReceiver {
             } while (cursor.moveToNext());
 
             // 없는 번호
-            Toast.makeText(callcontext, "없는번호", Toast.LENGTH_SHORT).show();
             Log.i(Tag, "unknow Number");
             return 3;
         } else
@@ -302,8 +295,7 @@ public class CallReceiver extends BroadcastReceiver {
 
     private void PopupServiceOff(){
         Intent intent = new Intent(callcontext, CallService.class);
-        intent.putExtra("number", "off");
-        callcontext.startService(intent);
+        callcontext.stopService(intent);
     }
 }
 
