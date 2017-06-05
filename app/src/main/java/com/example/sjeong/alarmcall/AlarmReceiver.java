@@ -85,6 +85,8 @@ public class AlarmReceiver extends BroadcastReceiver{
             editor.putInt("time", mode.getTime());
             editor.putInt("count", mode.getCount());
             editor.putInt("draw", mode.getDraw());
+            editor.putString("sms", mode.getSms());
+            editor.putString("picture", mode.getPicture());
             editor.commit();
 
             // 이전 스케줄이 반복이 없을 경우 리스트 색 변화하도록
@@ -115,10 +117,16 @@ public class AlarmReceiver extends BroadcastReceiver{
             Log.i(Tag, "changing to " + schedule.getModename());
             NotificationManager notificationmanager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
             Notification.Builder builder = new Notification.Builder(context);
-            builder.setSmallIcon(preferences.getInt("draw", R.drawable.icon_off)).setTicker("HETT").setWhen(System.currentTimeMillis())
-                    .setContentTitle("Schedule starts").setContentText("change mode")
-                    .setDefaults(Notification.DEFAULT_SOUND | Notification.DEFAULT_VIBRATE).setContentIntent(p).setAutoCancel(true);
-
+            if(preferences.getInt("draw", R.drawable.icon_off)==0){
+                builder.setSmallIcon(R.mipmap.icon_launcher_round).setTicker("HETT").setWhen(System.currentTimeMillis())
+                        .setContentTitle("Schedule starts").setContentText("change mode")
+                        .setDefaults(Notification.DEFAULT_SOUND | Notification.DEFAULT_VIBRATE).setContentIntent(p).setAutoCancel(true);
+            }
+            else{
+                builder.setSmallIcon(preferences.getInt("draw", R.drawable.icon_off)).setTicker("HETT").setWhen(System.currentTimeMillis())
+                        .setContentTitle("Schedule starts").setContentText("change mode")
+                        .setDefaults(Notification.DEFAULT_SOUND | Notification.DEFAULT_VIBRATE).setContentIntent(p).setAutoCancel(true);
+            }
             notificationmanager.notify(1, builder.build());
         }
         else if(!setRec){ // false일 때 종료 스케줄
@@ -207,6 +215,8 @@ public class AlarmReceiver extends BroadcastReceiver{
                         editor.putInt("time", mode.getTime());
                         editor.putInt("count", mode.getCount());
                         editor.putInt("draw", mode.getDraw());
+                        editor.putString("sms", mode.getSms());
+                        editor.putString("picture", mode.getPicture());
 
                         draw= mode.getDraw();
                     }
@@ -232,9 +242,17 @@ public class AlarmReceiver extends BroadcastReceiver{
                 Log.i(Tag, "back to " + schedule.getPremodename());
                 NotificationManager notificationmanager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
                 Notification.Builder builder = new Notification.Builder(context);
-                builder.setSmallIcon(draw).setTicker("HETT").setWhen(System.currentTimeMillis())
-                        .setContentTitle("Schedule ends").setContentText("back to original mode")
-                        .setDefaults(Notification.DEFAULT_SOUND | Notification.DEFAULT_VIBRATE).setContentIntent(p).setAutoCancel(true);
+
+                if(draw==0){
+                    builder.setSmallIcon(R.mipmap.icon_launcher_round).setTicker("HETT").setWhen(System.currentTimeMillis())
+                            .setContentTitle("Schedule ends").setContentText("back to original mode")
+                            .setDefaults(Notification.DEFAULT_SOUND | Notification.DEFAULT_VIBRATE).setContentIntent(p).setAutoCancel(true);
+                }
+                else{
+                    builder.setSmallIcon(draw).setTicker("HETT").setWhen(System.currentTimeMillis())
+                            .setContentTitle("Schedule ends").setContentText("back to original mode")
+                            .setDefaults(Notification.DEFAULT_SOUND | Notification.DEFAULT_VIBRATE).setContentIntent(p).setAutoCancel(true);
+                }
 
                 notificationmanager.notify(1, builder.build());
                 Log.i(Tag, "End receiver finish");
