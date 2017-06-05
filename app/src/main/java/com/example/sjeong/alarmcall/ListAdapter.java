@@ -79,6 +79,8 @@ public class ListAdapter extends BaseAdapter {
                         RoundedAvatarDrawable tmpRoundedAvatarDrawable = new RoundedAvatarDrawable(myBitmap);
                         iconview.setImageDrawable(tmpRoundedAvatarDrawable);
                     }
+                    else
+                        iconview.setImageResource(R.drawable.icon_empty);
                 }
                 else
                     iconview.setImageResource(arraylist.get(position).getDraw());
@@ -96,6 +98,8 @@ public class ListAdapter extends BaseAdapter {
                             RoundedAvatarDrawable tmpRoundedAvatarDrawable = new RoundedAvatarDrawable(myBitmap);
                             iconview.setImageDrawable(tmpRoundedAvatarDrawable);
                         }
+                        else
+                            iconview.setImageResource(R.drawable.icon_empty);
                     }
                     else
                         iconview.setImageResource(arraylist.get(position).getDraw());
