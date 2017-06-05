@@ -62,7 +62,9 @@ public class DBManager extends SQLiteOpenHelper {
     public void updateMode(String originalname, Mode mode){
         SQLiteDatabase db = getWritableDatabase();
         String updatemode = "UPDATE MODE SET "+"NAME = ?, STAR =?, CONTACT =?, UNKNOWN =?, TIME =?, COUNT =?, DRAW =?, SMS =?, PICTURE =?"+" WHERE NAME=?;";
+        String updateschedule = "UPDATE SCHEDULE SET "+"MODENAME = ?"+" WHERE MODENAME=?;";
         db.execSQL(updatemode, new Object[]{mode.getName().toString(), mode.getStar(), mode.getContact(), mode.getUnknown(), mode.getTime(), mode.getCount(), mode.getDraw(), mode.getSms(), mode.getPicture(), originalname});
+        db.execSQL(updateschedule, new Object[]{mode.getName().toString(), originalname});
         Log.i("test DB", "update : " + mode.getName()+", "+mode.getStar()+", "+ mode.getContact()+", "+ mode.getUnknown()+", "+ mode.getTime()+", "+ mode.getCount());
     }
 
@@ -230,7 +232,7 @@ public class DBManager extends SQLiteOpenHelper {
     }
 
     public Schedule getSchedule(int position){
-        String string = "SELECT * FROM SCHEDULE;";
+        String string = "SELECT * FROM SCHEDULE ORDER BY START;";
         SQLiteDatabase db = getReadableDatabase();
 
         Cursor cursor = db.rawQuery(string, null);
