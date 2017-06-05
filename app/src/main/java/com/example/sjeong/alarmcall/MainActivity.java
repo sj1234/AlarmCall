@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
         transaction.commit();
     }
     @Override
-    protected void attachBaseContext(Context newBase) {
+        protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(TypekitContextWrapper.wrap(newBase));
     }
 }
