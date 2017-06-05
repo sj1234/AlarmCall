@@ -108,6 +108,8 @@ public class HomeFragment extends Fragment {
                     RoundedAvatarDrawable tmpRoundedAvatarDrawable = new RoundedAvatarDrawable(myBitmap);
                     nowicon.setImageDrawable(tmpRoundedAvatarDrawable);
                 }
+                else
+                    nowicon.setImageResource(R.drawable.icon_empty);
             }
             else
                 nowicon.setImageResource(preferences.getInt("draw",R.drawable.icon_empty));

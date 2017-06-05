@@ -65,41 +65,37 @@ public class CallService extends Service {
         number = intent.getStringExtra("number");
         name = intent.getStringExtra("name");
 
-        if( number.equals("off")){
-            removePopup();
-        }
-        else {
-            windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
-            LayoutInflater layoutInflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE); // 부분레이아웃
-            view = layoutInflater.inflate(R.layout.popup, null);
-            windowManager.addView(view, params);
+        windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
+        LayoutInflater layoutInflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE); // 부분레이아웃
+        view = layoutInflater.inflate(R.layout.popup, null);
+        windowManager.addView(view, params);
 
-            textcallnumber = (TextView) view.findViewById(R.id.call_number);
+        textcallnumber = (TextView) view.findViewById(R.id.call_number);
 
-            close = (ImageButton) view.findViewById(R.id.popup_close);
-            close.setOnClickListener(new View.OnClickListener() {
+        close = (ImageButton) view.findViewById(R.id.popup_close);
+        close.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     removePopup();
                 }
             });
+         if(name!=null)
+             textcallnumber.setText( name +" "+number);
+         else
+             textcallnumber.setText(number);
 
-            if(name!=null)
-                textcallnumber.setText( name +" "+number);
-            else
-                textcallnumber.setText(number);
 
+        Button later = (Button) view.findViewById(R.id.popup_later);
+        later.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LaterCallAlarm(number, name);
+                Log.i("test later","service to later");
+                EndCall();
+                removePopup();
+            }
+        });
 
-            Button later = (Button) view.findViewById(R.id.popup_later);
-            later.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    LaterCallAlarm(number, name);
-                    Log.i("test later","service to later");
-                    EndCall();
-                }
-            });
-        }
         return START_REDELIVER_INTENT;
     }
 

@@ -62,6 +62,8 @@ public class AppWidget extends AppWidgetProvider {
                         RoundedAvatarDrawable tmpRoundedAvatarDrawable = new RoundedAvatarDrawable(myBitmap);
                         views.setImageViewBitmap(R.id.buttonWidget, myBitmap);
                     }
+                    else
+                        views.setImageViewResource(R.id.buttonWidget, R.drawable.icon_empty);
                 }
                 else
                     views.setImageViewResource(R.id.buttonWidget, preferences.getInt("draw", R.drawable.icon_off));

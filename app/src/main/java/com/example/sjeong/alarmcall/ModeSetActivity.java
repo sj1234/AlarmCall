@@ -132,6 +132,8 @@ public class ModeSetActivity extends AppCompatActivity implements View.OnClickLi
                     RoundedAvatarDrawable tmpRoundedAvatarDrawable = new RoundedAvatarDrawable(myBitmap);
                     icon.setImageDrawable(tmpRoundedAvatarDrawable);
                 }
+                else
+                    icon.setImageResource(R.drawable.icon_empty);
             }
             else
                 icon.setImageResource(mode.getDraw());
