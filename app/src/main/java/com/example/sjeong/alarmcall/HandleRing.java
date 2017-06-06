@@ -24,28 +24,19 @@ public class HandleRing {
         editor = preferences.edit();
     }
 
-    public void getRing() {
-        editor.putInt("ring", myAudioManager.getRingerMode());
-        editor.commit();
-    }
-
-
     public void changeRing(int i) {
         // int i 가 1이면 벨소리, 2이면 진동, 3이면 무음, 4이면 이전상태로
         Log.i("test handleRing", "change ring");
         switch (i) {
             case 1:
-                getRing();
                 myAudioManager.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
                 Log.i(Tag, "ring");
                 break;
             case 2:
-                getRing();
                 myAudioManager.setRingerMode(AudioManager.RINGER_MODE_VIBRATE);
                 Log.i(Tag, "vibrate");
                 break;
             case 3:
-                getRing();
                 myAudioManager.setRingerMode(AudioManager.RINGER_MODE_SILENT);
                 Log.i(Tag, "silent");
                 break;
@@ -53,7 +44,8 @@ public class HandleRing {
                 myAudioManager.setRingerMode(preferences.getInt("ring", AudioManager.RINGER_MODE_NORMAL));
                 break;
             case 5:
-                getRing();
+                editor.putInt("ring", myAudioManager.getRingerMode());
+                editor.commit();
                 break;
             default:
                 Log.i(Tag, "no Ringtone");

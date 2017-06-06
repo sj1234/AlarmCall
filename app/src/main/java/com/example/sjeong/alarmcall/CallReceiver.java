@@ -84,6 +84,7 @@ public class CallReceiver extends BroadcastReceiver {
                 switch (state) {
                     case TelephonyManager.CALL_STATE_RINGING: // 전화 수신
                         Log.i(Tag, "call CALL_STATE_RINGING");
+                        handleRing.changeRing(5);
                         // 1이면 즐겨찾기 2이면 즐겨찾기 외에 저장된 번호 3이면 모르는 번호
                         int contactNumber = getContacts(incomingNumber);
                         // 부재중전화 횟수
@@ -126,30 +127,24 @@ public class CallReceiver extends BroadcastReceiver {
 
         switch(contactNumber){
             case 1:
-                if(star==4) {
-                    handleRing.changeRing(5);
+                if(star==4)
                     EndCall(incomingNumber);
-                }
                 else {
                     handleRing.changeRing(star);
                     if(latercallonoff==1){PopupServiceOn(incomingNumber);}
                 }
                 break;
             case 2:
-                if(contact==4){
-                    handleRing.changeRing(5);
+                if(contact==4)
                     EndCall(incomingNumber);
-                }
                 else{
                     handleRing.changeRing(contact);
                     if(latercallonoff==1){PopupServiceOn(incomingNumber);}
                 }
                 break;
             case 3:
-                if(unknown==4){
-                    handleRing.changeRing(5);
+                if(unknown==4)
                     EndCall(incomingNumber);
-                }
                 else{
                     handleRing.changeRing(unknown);
                     if(latercallonoff==1){PopupServiceOn(incomingNumber);}
@@ -197,9 +192,7 @@ public class CallReceiver extends BroadcastReceiver {
             Log.i(Tag, "unknow Number");
             return 3;
         } else
-
             return 3; // 주소록에 번호가 없는 경우
-
     }
 
     // 5분전에온 부재중 전화 횟수
