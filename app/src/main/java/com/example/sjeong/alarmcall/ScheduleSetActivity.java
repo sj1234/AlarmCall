@@ -287,7 +287,6 @@ public class ScheduleSetActivity extends AppCompatActivity implements View.OnCli
                 calSet.add(Calendar.DATE, 1);
             }
 
-            // 수정????   원래 schedule.setStart(calSet.toString());
             SimpleDateFormat dateformat = new SimpleDateFormat("HH:mm", java.util.Locale.getDefault());
             schedule.setStart(dateformat.format(calSet.getTime()));
 

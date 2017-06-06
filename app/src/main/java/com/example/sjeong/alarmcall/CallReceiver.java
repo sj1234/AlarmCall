@@ -35,16 +35,10 @@ public class CallReceiver extends BroadcastReceiver {
     private SharedPreferences preferences;
     private int latercallonoff;
     private String Phonename;
-    private DBManager dbManager;
 
 
     @Override
     public void onReceive(Context context, Intent intent) {
-
-        if (dbManager == null) {
-            dbManager = new DBManager(context, "AlarmCall", null, 1);
-            dbManager.ReadDB();
-        }
 
         // 나중에 알림 정보
         preferences = context.getSharedPreferences("Later", Activity.MODE_PRIVATE);
