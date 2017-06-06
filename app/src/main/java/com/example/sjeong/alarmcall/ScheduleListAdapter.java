@@ -21,7 +21,6 @@ public class ScheduleListAdapter extends BaseAdapter {
     private int layout;
     private ArrayList<Schedule> arraylist;
     private View.OnClickListener onClickListener;
-    private DBManager dbManager;
 
     public ScheduleListAdapter(Context context, int layout, ArrayList<Schedule> arraylist, View.OnClickListener onClickListener){
         this.context = context;

@@ -29,13 +29,6 @@ public class HowToUseActivity extends AppCompatActivity implements View.OnClickL
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_how_to_use);
 
-
-        //Display display = ((WindowManager) getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
-        //int width = (int) (display.getWidth() * 0.89);
-        //int height = (int) (display.getHeight() * 0.70);
-        //getWindow().getAttributes().width = width;
-        //getWindow().getAttributes().height = height;
-
         TextView text_mode = (TextView) this.findViewById(R.id.set_text_mode);
         text_mode.setOnClickListener((View.OnClickListener) this);
         TextView text_schedule = (TextView) this.findViewById(R.id.set_text_schedule);
@@ -51,14 +44,6 @@ public class HowToUseActivity extends AppCompatActivity implements View.OnClickL
         etc.setOnClickListener((View.OnClickListener) this);
         ImageButton exit = (ImageButton) this.findViewById(R.id.exit);
         exit.setOnClickListener((View.OnClickListener) this);
-
-       /* Typeface typeface = Typeface.createFromAsset(getAssets(), "bb.ttf");
-       TextView textView = (TextView) findViewById(R.id.textView);
-        textView.setTypeface(typeface);
-        TextView textView1 = (TextView) findViewById(R.id.textView1);
-        textView1.setTypeface(typeface);
-        TextView textView2 = (TextView) findViewById(R.id.textView2);
-        textView2.setTypeface(typeface);*/
 
     }
     @Override
