@@ -122,15 +122,13 @@ public class CallService extends Service {
         Intent alarmintent= new Intent(this, LaterCall.class);
         alarmintent.putExtra("phonenumber", number); // 전화번호 정보 전달
         alarmintent.putExtra("name", name); // 전화번호 정보 전달
-        PendingIntent pendingintent=PendingIntent.getBroadcast(this, 0, alarmintent, PendingIntent.FLAG_ONE_SHOT);
+        PendingIntent pendingintent=PendingIntent.getService(this, Integer.parseInt(number), alarmintent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         SharedPreferences preferences = getSharedPreferences("Later", Activity.MODE_PRIVATE);
         Calendar calendar = Calendar.getInstance(); // 현재시간
-
-        calendar.add(Calendar.MINUTE, preferences.getInt("time", 10));  // 현재시간 10분 후 (test는 15초 후로)
-        //RTC_WAKEUP : 지금 시간을 기준으로 알람이 동작, sleep모드여도 실행한다.
-        alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingintent);
-        Log.i("test LaterCall", "나중에 알림 시간 "+preferences.getInt("time", 10));
+        calendar.add(Calendar.MINUTE, preferences.getInt("time", 10));  // 현재시간 time후로 알람
+        alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingintent);
+        Log.i("test LaterCall", "나중에 알림 "+Integer.parseInt(number));
     }
 
     // 통화 차단

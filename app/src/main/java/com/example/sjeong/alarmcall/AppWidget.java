@@ -101,7 +101,6 @@ public class AppWidget extends AppWidgetProvider {
             SharedPreferences.Editor editor = preferences.edit();
 
             if(preferences.getString("set", "off").equals("off") && !preferences.getString("name", "null").equals("null")) {
-                Toast.makeText(context,"Mode On "+preferences.getString("name", "null"), Toast.LENGTH_LONG).show();
                 editor.putString("set", "on");
                 editor.commit();
 
@@ -114,7 +113,6 @@ public class AppWidget extends AppWidgetProvider {
                 }
             }
             else if(preferences.getString("set", "off").equals("on")){
-                Toast.makeText(context,"Mode Off", Toast.LENGTH_LONG).show();
                 editor.putString("set", "off");
                 editor.commit();
 

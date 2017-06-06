@@ -27,14 +27,20 @@ public class LaterCall extends BroadcastReceiver {
         number = number.replace("-", "");
         String name = intent.getStringExtra("name");
 
+        String info;
+        if(name.isEmpty())
+            info = "전화번호 : "+number;
+        else
+            info = name+ " : "+number;
+
         // 푸시 알람
         Uri uri = Uri.parse("tel:"+number);
         NotificationManager notificationmanager = (NotificationManager)context.getSystemService(context.NOTIFICATION_SERVICE);
-        PendingIntent pendingintent = PendingIntent.getActivity(context, Integer.parseInt(number), new Intent(Intent.ACTION_CALL, uri), PendingIntent.FLAG_ONE_SHOT);
+        PendingIntent pendingintent = PendingIntent.getBroadcast(context, 0, new Intent(Intent.ACTION_CALL, uri), PendingIntent.FLAG_UPDATE_CURRENT);
         Notification.Builder builder = new Notification.Builder(context);
 
         builder.setSmallIcon(R.drawable.call).setTicker("AlarmCall 나중에 알림").setWhen(System.currentTimeMillis())
-                .setContentTitle("AlarmCall 나중에 알림").setContentText("전화번호 : "+number)
+                .setContentTitle("AlarmCall 나중에 알림").setContentText(info)
                 .setDefaults(Notification.DEFAULT_SOUND | Notification.DEFAULT_VIBRATE).setContentIntent(pendingintent).setAutoCancel(true);
 
         builder.setPriority(Notification.PRIORITY_MAX);
