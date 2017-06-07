@@ -57,7 +57,7 @@ public class AppWidget extends AppWidgetProvider {
 
             if(preferences.getString("set","off").equals("off")) {
                 views.setImageViewResource(R.id.buttonWidget, R.drawable.icon_off);
-                views.setTextViewText(R.id.widgetname, "Mode OFF");
+                views.setTextViewText(R.id.widgetname, "OFF");
             }
             else{
 

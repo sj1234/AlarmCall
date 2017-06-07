@@ -13,11 +13,12 @@
         android:background="#00000000"
         android:padding="0dp"
         android:scaleType="fitCenter"
-        android:text="Button" />
+        android:text="Button"
+        android:layout_gravity="center"/>
 
     <TextView
         android:id="@+id/widgetname"
-        android:layout_width="50dp"
+        android:layout_width="match_parent"
         android:layout_height="20dp"
         android:layout_margin="1dp"
         android:gravity="center"
