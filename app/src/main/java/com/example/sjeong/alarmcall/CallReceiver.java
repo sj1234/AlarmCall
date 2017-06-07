@@ -12,6 +12,7 @@ import android.net.Uri;
 import android.provider.CallLog;
 import android.provider.ContactsContract;
 import android.support.v4.app.ActivityCompat;
+import android.telephony.PhoneNumberUtils;
 import android.telephony.PhoneStateListener;
 import android.telephony.SmsManager;
 import android.telephony.TelephonyManager;
@@ -98,7 +99,6 @@ public class CallReceiver extends BroadcastReceiver {
                     default:
                         break;
                 }
-                TelMag.listen(phonelistener, PhoneStateListener.LISTEN_NONE);
             }
         };
         TelMag.listen(phonelistener, PhoneStateListener.LISTEN_CALL_STATE);
@@ -153,43 +153,30 @@ public class CallReceiver extends BroadcastReceiver {
         Log.i(Tag, "call receiver contacts " + phoneNumber);
         Uri uri = ContactsContract.CommonDataKinds.Phone.CONTENT_URI;
 
-        String sortOrder = ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " COLLATE LOCALIZED ASC";
-        String[] selectionArgs = null;
         String[] projection = new String[]{
                 ContactsContract.CommonDataKinds.Phone.NUMBER,
                 ContactsContract.CommonDataKinds.Phone.STARRED,
                 ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME
         };
+        String selection =  ContactsContract.CommonDataKinds.Phone.NUMBER+" = ?";
+        String[] selectionArgs = {PhoneNumberUtils.formatNumber(phoneNumber, phoneNumber)};
 
-        Cursor cursor = callcontext.getContentResolver().query(uri, projection, null, selectionArgs, sortOrder);
-
+        Cursor cursor = callcontext.getContentResolver().query(uri, projection, selection, selectionArgs, null);
         if (cursor.moveToFirst()) {
-            do {
-                String number = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
-                String star = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.STARRED));
-                number = number.replace(" ", "");
-                number = number.replace("-", "");
-                if (phoneNumber.equals(number)) {
-                    if (star.equals("1")) {
-                        Phonename =  cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
-                        return 1;
-                    } // 즐겨찾기
-                    else {
-                        Log.i(Tag, "know Number " + phoneNumber);
-                        Phonename =  cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
-                        return 2;
-                    } // 전화번호부에 있는 번호
-                }
-            } while (cursor.moveToNext());
-
-            // 없는 번호
-            Log.i(Tag, "unknow Number");
-            return 3;
+            String star = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.STARRED));
+            if (star.equals("1")) {
+                Phonename =  cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
+                return 1;
+            } // 즐겨찾기
+            else {
+                Phonename =  cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
+                return 2;
+            } // 전화번호부에 있는 번호
         } else
-            return 3; // 주소록에 번호가 없는 경우
+            return 3; // 주소록에 번호가 없는 경우, 없는 번호
     }
 
-    // 5분전에온 부재중 전화 횟수
+    // 부재중 전화 횟수
     private int getCallLog(String phoneNumber) {
         int count = 0; // 부재중 횟수
         Calendar calendar;
@@ -203,7 +190,7 @@ public class CallReceiver extends BroadcastReceiver {
         };
         String selection = CallLog.Calls.TYPE +"!=2";
 
-        // 부재중전화 권한 확인 (후에 작성해야 할 부분!!)
+        // 부재중전화 권한 확인
         if (ActivityCompat.checkSelfPermission(callcontext, Manifest.permission.READ_CALL_LOG) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
             //    ActivityCompat#requestPermissions
