@@ -137,8 +137,8 @@ public class HowToUseActivity extends AppCompatActivity implements View.OnClickL
 
                 // AlertDialog 셋팅
                 alertDialogBuilder3
-                        .setMessage("1.Push Later 스위치를 On 하면 부재중 전화를 설정한 시간이후에 팝업창으로 알려줍니다.\n\n" +
-                                "2.SENDING EMAIL을 통해 개발자에게 이메일을 보낼 수 있습니다.\n\n" + "3.Push Sms 스위치를 On 시키면 모드생성시에 설정해둔 메시지를 차단된 송신자에게 보낸다.")
+                        .setMessage("1.Push Sms 스위치를 On 시키면 모드생성시에 설정해둔 메시지를 차단된 송신자에게 보낼 수 있습니다.\n\n"+"2.Push Later 스위치를 On 하면 부재중 전화를 설정한 시간이후에 팝업창으로 알려줍니다.\n\n" +
+                                "3.SENDING EMAIL을 통해 개발자에게 이메일을 보낼 수 있습니다.")
                         .setCancelable(false)
                         .setPositiveButton("나가기",
                                 new DialogInterface.OnClickListener() {

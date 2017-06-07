@@ -8,7 +8,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
-import android.widget.Toast;
 
 public class LaterCall extends BroadcastReceiver {
 
@@ -18,8 +17,6 @@ public class LaterCall extends BroadcastReceiver {
         // an Intent broadcast.
 
         Log.i("test LaterAlarm","아까 거부한 전화 알람");
-        // 나중에 알림 전화에 대해 알람 울리기!
-        Toast.makeText(context, "아까 거부한 전화 알람", Toast.LENGTH_SHORT).show();
 
         // 전화번호 정보 받아오기
         String number = intent.getStringExtra("phonenumber");
@@ -28,7 +25,7 @@ public class LaterCall extends BroadcastReceiver {
         String name = intent.getStringExtra("name");
 
         String info;
-        if(name.isEmpty())
+        if(name==null)
             info = "전화번호 : "+number;
         else
             info = name+ " : "+number;
@@ -44,6 +41,6 @@ public class LaterCall extends BroadcastReceiver {
                 .setDefaults(Notification.DEFAULT_SOUND | Notification.DEFAULT_VIBRATE).setContentIntent(pendingintent).setAutoCancel(true);
 
         builder.setPriority(Notification.PRIORITY_MAX);
-        notificationmanager.notify(0, builder.build());
+        notificationmanager.notify(Integer.parseInt(number), builder.build());
     }
 }

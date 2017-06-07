@@ -122,7 +122,7 @@ public class CallService extends Service {
         Intent alarmintent= new Intent(this, LaterCall.class);
         alarmintent.putExtra("phonenumber", number); // 전화번호 정보 전달
         alarmintent.putExtra("name", name); // 전화번호 정보 전달
-        PendingIntent pendingintent=PendingIntent.getService(this, Integer.parseInt(number), alarmintent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingintent=PendingIntent.getBroadcast(this, Integer.parseInt(number), alarmintent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         SharedPreferences preferences = getSharedPreferences("Later", Activity.MODE_PRIVATE);
         Calendar calendar = Calendar.getInstance(); // 현재시간

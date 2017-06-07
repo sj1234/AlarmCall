@@ -55,10 +55,7 @@
         <activity
             android:name=".HowToUseActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.Light.Dialog"
-
-
-            >
+            android:theme="@style/Theme.AppCompat.Light.Dialog">
         </activity>
 
         <activity
@@ -67,7 +64,8 @@
         </activity>
 
 
-        <service android:name=".CallService"/>
+        <service android:name=".CallService"
+            android:permission="android.permission.SYSTEM_ALERT_WINDOW" />
 
         <receiver android:name=".CallReceiver">
             <intent-filter>
@@ -76,9 +74,11 @@
         </receiver>
 
         <receiver
-            android:name=".LaterCall"
-            android:enabled="true"
-            android:exported="true" />
+            android:name=".LaterCall">
+            <intent-filter>
+                <action android:name="com.example.saran.realapplication.ALARM_START"/>
+            </intent-filter>
+        </receiver>
 
         <receiver
             android:name=".AlarmReceiver">
