@@ -450,14 +450,17 @@ public class ModeSetActivity extends AppCompatActivity implements View.OnClickLi
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == 2) {
-            Bundle extras2 = data.getExtras();
-            String filePath = Environment.getExternalStorageDirectory().getAbsolutePath()+"/AlarmCall/"+System.currentTimeMillis()+".jpg";
+            if(data!=null) {
+                Bundle extras2 = data.getExtras();
 
-            if (extras2 != null) {
-                Bitmap photo = extras2.getParcelable("data");
-                storeCropImage(photo, filePath); // CROP된 이미지를 외부저장소, 앨범에 저장한다.
-                RoundedAvatarDrawable tmpRoundedAvatarDrawable = new RoundedAvatarDrawable(photo);
-                icon.setImageDrawable(tmpRoundedAvatarDrawable);
+                String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/AlarmCall/" + System.currentTimeMillis() + ".jpg";
+
+                if (extras2 != null) {
+                    Bitmap photo = extras2.getParcelable("data");
+                    storeCropImage(photo, filePath); // CROP된 이미지를 외부저장소, 앨범에 저장한다.
+                    RoundedAvatarDrawable tmpRoundedAvatarDrawable = new RoundedAvatarDrawable(photo);
+                    icon.setImageDrawable(tmpRoundedAvatarDrawable);
+                }
             }
         }
     }
