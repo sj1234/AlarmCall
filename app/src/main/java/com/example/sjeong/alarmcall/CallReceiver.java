@@ -65,8 +65,7 @@ public class CallReceiver extends BroadcastReceiver {
             return;
         else
             callstate = state;
-
-        // 수신차단
+        
         TelMag = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
         //전화 수신음
         handleRing = new HandleRing(callcontext);
@@ -99,6 +98,7 @@ public class CallReceiver extends BroadcastReceiver {
                     default:
                         break;
                 }
+                TelMag.listen(phonelistener, PhoneStateListener.LISTEN_NONE);
             }
         };
         TelMag.listen(phonelistener, PhoneStateListener.LISTEN_CALL_STATE);
