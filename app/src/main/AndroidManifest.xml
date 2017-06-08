@@ -60,6 +60,7 @@
         <receiver android:name=".CallReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.PHONE_STATE" />
+                <action android:name="com.example.sjeong.AlarmCall.ON" />
             </intent-filter>
         </receiver>
         <receiver android:name=".LaterCall">
